@@ -1,5 +1,7 @@
 <?php
 
+// Used to define custom Artisan commands for the application
+
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 

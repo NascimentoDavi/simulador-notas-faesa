@@ -12,7 +12,7 @@ class LyAlunoController extends Controller
      */
     public function index()
     {
-        //
+        // 
     }
 
     /**
@@ -20,7 +20,7 @@ class LyAlunoController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -28,7 +28,7 @@ class LyAlunoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 
     }
 
     /**
@@ -36,7 +36,7 @@ class LyAlunoController extends Controller
      */
     public function show(LyAluno $lyAluno)
     {
-        //
+        // 
     }
 
     /**
@@ -44,7 +44,7 @@ class LyAlunoController extends Controller
      */
     public function edit(LyAluno $lyAluno)
     {
-        //
+        // 
     }
 
     /**
@@ -52,7 +52,7 @@ class LyAlunoController extends Controller
      */
     public function update(Request $request, LyAluno $lyAluno)
     {
-        //
+        // 
     }
 
     /**
@@ -60,6 +60,6 @@ class LyAlunoController extends Controller
      */
     public function destroy(LyAluno $lyAluno)
     {
-        //
+        // 
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,10 +13,7 @@ class LyAluno extends Model
     protected $table = 'ly_alunos';
 
     protected $fillable = [
-        'name',
-        'email',
-        'birth_date',
-        'telefone',
+        // It is not necessary to have fillabe fields. Only query application
     ];
 
     public function disciplinas ()

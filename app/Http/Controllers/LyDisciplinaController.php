@@ -12,7 +12,7 @@ class LyDisciplinaController extends Controller
      */
     public function index()
     {
-        //
+        // 
     }
 
     /**
@@ -20,7 +20,7 @@ class LyDisciplinaController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -28,7 +28,7 @@ class LyDisciplinaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 
     }
 
     /**
@@ -36,7 +36,7 @@ class LyDisciplinaController extends Controller
      */
     public function show(LyDisciplina $lyDisciplina)
     {
-        //
+        // 
     }
 
     /**
@@ -44,7 +44,7 @@ class LyDisciplinaController extends Controller
      */
     public function edit(LyDisciplina $lyDisciplina)
     {
-        //
+        // 
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LyMatricula extends Model
 {
@@ -11,7 +12,6 @@ class LyMatricula extends Model
     protected $table = 'ly_matriculas';
 
     protected $fillable = [
-        'ly_aluno_id',
-        'ly_disciplina_id',
+        // It is not necessary to have fillabe fields. Only query application
     ];
 }

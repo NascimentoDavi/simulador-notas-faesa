@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LyDisciplina extends Model
 {
@@ -11,8 +12,7 @@ class LyDisciplina extends Model
     protected $table = 'ly_disciplinas';
 
     protected $fillable = [
-        'disciplina',
-        'name'
+        // It is not necessary to have fillabe fields. Only query application
     ];
 
     public function alunos ()
