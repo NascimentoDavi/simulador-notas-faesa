@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class LyDisciplina extends Model
+{
+    use HasFactory;
+    
+    protected $table = 'ly_disciplinas';
+
+    protected $fillable = [
+        'disciplina',
+        'name'
+    ];
+
+    public function alunos ()
+    {
+        return $this->belongsToMany(LyAluno::class, 'ly_matriculas')->withTimestamps();
+    }
+
+    public function notas ()
+    {
+        return $this->hasMany(LyNotas::class);
+    }
+}
