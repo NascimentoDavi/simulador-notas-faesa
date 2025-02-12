@@ -12,8 +12,8 @@
 
 <body>
     <div class="container">
-        <img src="faesa.png" alt="Logo" {{-- method="POST" --}}>
-        <form action="{{ route('login') }}">
+        <img src="faesa.png" alt="Logo">
+        <form action="{{ route('login') }}"  {{-- method="POST"> --}}
             @csrf <!-- evitar erros de token -->
 
             <label for="login">Usuário</label>

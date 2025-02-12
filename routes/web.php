@@ -12,3 +12,7 @@ Route::get('/', function () {
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/menu', function () {
+    return view(view: 'menu');
+})->name('menu');
