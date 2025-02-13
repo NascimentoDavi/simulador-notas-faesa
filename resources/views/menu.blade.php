@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <p>Login: {{ $credenciais['Login'] }}</p>
-    <p>Password: {{ $credenciais['Senha'] }}</p>
+    {{-- Disciplines to be displayed --}}
+    {{-- Space to calculate the grade --}}
 
 @endsection()

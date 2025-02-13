@@ -12,11 +12,11 @@
 
 <body>
 
-    <header>Default Header</header>
+    @includ('navbar')
 
     @yield('content')
     
-    <footer>Default Footer</footer>
+    @include('footer')
 
 </body>
 
