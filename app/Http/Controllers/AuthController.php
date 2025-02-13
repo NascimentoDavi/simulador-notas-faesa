@@ -17,8 +17,21 @@ class AuthController extends Controller
             'Login' => $request->login,
             'Senha' => $request->senha
         ];
+
+        // Current date
+        $anoAtual = date('Y');
+        $semestreAtual = (date('n') <= 6) ? '1' : '2';
+
+        $pessoa = LyPessoa::where('WINUSUARIO', '=', 'FAESA\\' . $credenciais['Login'])->first();
+        $aluno = LyAluno::where('NOME_COMPL', '=', $pessoa['NOME_COMPL'])->first();
+        $notas = LyNota::where('ALUNO', '=', $aluno['ALUNO'])
+                        ->where('ANO', '=', $anoAtual)
+                        ->where('SEMESTRE', '=', $semestreAtual)
+                        ->get(['DISCIPLINA', 'CONCEITO']);
+
         // $user = User::where('Login', '=', $credenciais['Login'])->first();
-        return view('menu');
+
+        return view('menu', compact('notas'));
     }
 
     public function logout(Request $request)

@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class LyDisciplinaController extends Controller
 {
+
+    public function getDisciplinas ()
+    {
+        // Do something.
+    }
+
     /**
      * Display a listing of the resource.
      */

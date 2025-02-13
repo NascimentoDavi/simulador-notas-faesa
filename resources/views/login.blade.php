@@ -2,6 +2,7 @@
 <html lang="pt-br">
 
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/loginScreen.css') }}" />
@@ -13,8 +14,8 @@
 <body>
     <div class="container">
         <img src="faesa.png" alt="Logo">
-        <form action="{{ route('login') }}"  {{-- method="POST"> --}}
-            @csrf <!-- evitar erros de token -->
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
 
             <label for="login">Usuário</label>
             <input type="text" id="login" name="login" required>
