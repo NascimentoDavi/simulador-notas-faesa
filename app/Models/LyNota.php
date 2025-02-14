@@ -9,7 +9,7 @@ class LyNota extends Model
 {
     use HasFactory;
 
-    protected $table = 'LY_NOTAS';
+    protected $table = 'LY_NOTA';
 
     protected $fillable = [
         // It is not necessary to have fillabe fields. Only query application

@@ -10,7 +10,7 @@ class LyAluno extends Model
 {
     use HasFactory;
 
-    protected $table = 'LY_ALUNOS';
+    protected $table = 'LY_ALUNO';
 
     protected $fillable = [
         // It is not necessary to have fillabe fields. Only query application

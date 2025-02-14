@@ -9,7 +9,7 @@ class LyMatricula extends Model
 {
     use HasFactory;
 
-    protected $table = 'ly_matriculas';
+    protected $table = 'LY_MATRICULA';
 
     protected $fillable = [
         // It is not necessary to have fillabe fields. Only query application

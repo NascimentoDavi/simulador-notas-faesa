@@ -12,11 +12,8 @@
 
 <body>
 
-    @includ('navbar')
-
     @yield('content')
     
-    @include('footer')
 
 </body>
 
