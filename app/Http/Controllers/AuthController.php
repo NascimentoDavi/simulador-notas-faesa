@@ -11,6 +11,7 @@ use App\Models\LyAluno;
 use App\Models\LyNota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class AuthController extends Controller
 {
@@ -67,7 +68,9 @@ class AuthController extends Controller
 
         // $user = User::where('Login', '=', $credenciais['Login'])->first();
 
-        return view('menu', compact('notasPivot'));
+        View::share('aluno', $aluno);
+        return view('menu', compact('notasPivot', 'aluno'));
+        return view('menu', compact('notasPivot', 'aluno'));
     }
 
     public function logout(Request $request)

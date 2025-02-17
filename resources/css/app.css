@@ -1,3 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Blue Color: #2596be */
+/* Secondary Color: #7aacce */
+/* Third Color: #fc7c34 */
+/* Light Color: #ecf5f9 */
+
+/* Custom colors */
+:root {
+    --blue-color: #085ca4;
+    --secondary-color: #7aacce;
+    --third-color: #fc7c34;
+    --light-color: #ecf5f9;
+}
+
+.poppins-thin {
+    font-family: "Poppins", serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+  
+  .poppins-extralight {
+    font-family: "Poppins", serif;
+    font-weight: 200;
+    font-style: normal;
+  }
+  
+  .poppins-light {
+    font-family: "Poppins", serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .poppins-regular {
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .poppins-medium {
+    font-family: "Poppins", serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.poppins-semibold {
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+.bg-blue-navbar-footer {
+    background-color: var(--blue-color);
+}
+
+.secondary-custom {
+    background-color: var(--secondary-color);
+}
+
+.bg-secondary-color {
+    background-color: var(--third-color);
+}
+
+.bg-main-color {
+    background-color: var(--light-color);
+}
+
+.font-color {
+    color: var(--light-color);
+}
+
+#faesa-logo-navbar {
+    width: 150px;
+    width: 150px;
+    margin-right: 40px
+}
