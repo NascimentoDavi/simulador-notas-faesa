@@ -72,7 +72,13 @@
 }
 
 #faesa-logo-navbar {
-    width: 150px;
-    width: 150px;
+    width: 130px;
+    height: 50px;
     margin-right: 40px
+}
+
+@media (max-width: 440px) {
+  #simulador-notas {
+      display: none;
+  }
 }

@@ -8,13 +8,17 @@
     
 </style>
 
-<div class="container mt-4">
+<div class="container">
 
     <div class="row">
         
         <div class="col-lg-10 col-md-12 mx-auto">
             
-            <h2 class="mb-3 poppins-semibold">Notas do Aluno</h2>
+            <div class="mb-3 p-0 gap-0">
+                <h2 class="poppins-semibold">Notas do Aluno</h2>
+                <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h4>
+                <h6 class="d-block d-sm-none m-0">{{ $aluno->ALUNO }}</h4>
+            </div>
 
             @if($notasPivot->isEmpty())
                 <div class="alert alert-warning" role="alert">

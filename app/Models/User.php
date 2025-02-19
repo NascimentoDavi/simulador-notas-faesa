@@ -17,6 +17,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'CARTEIRINHA_UPDATE_LOGIN_FAESA';
     protected $fillable = [
         'name',
         'email',

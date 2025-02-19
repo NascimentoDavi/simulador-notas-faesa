@@ -1,26 +1,39 @@
-<nav class="navbar navbar-expand-sm bg-blue-navbar-footer">
-    <div class="container">
+<nav class="navbar navbar-expand-md bg-blue-navbar-footer">
+    <div class="container-fluid">
 
         {{-- Navbar Brand --}}
-        <a href="#" class="navbar-brand d-flex align-items-center">
-            <img src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">
-            Simulador de Notas
+        <a href="#" class="navbar-brand d-flex align-items-center me-sm-3 me-md-5 p-0">
+            <img class="m-0 p-0" src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">
+            <span class="ms-3" id="simulador-notas">Simulador de Notas</span>
         </a>
-        
+
         {{-- Nome e Matrícula do aluno --}}
-        <div class="d-flex flex-column">
-            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9">{{ $aluno->NOME_COMPL }}</p>
-            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9">{{ $aluno->ALUNO }}</p>
+        <div class="d-none d-md-flex flex-column ms-5 ps-5">
+            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                {{ $aluno->NOME_COMPL }}
+            </p>
+            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                {{ $aluno->ALUNO }}
+            </p>
+        </div>
+        
+        {{-- NavBar Button | Toggle Button --}}
+        {{-- Not working properly --}}
+        <button class="navbar-toggler btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavBar" aria-controls="navbarNav" aria-expanded="false" arial-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>        
+
+        {{-- Logout Button | Dropdown link --}}
+        {{-- Not working properly --}}
+        <div class="collapse navbar-collapse" id="menuNavBar">
+            <div class="navbar-nav">
+                <button class="">Log-out</button>
+            </div>
         </div>
 
-        {{-- <div class="collapse navbar-collapse">
-            <div class="navbar-nav">
-                <a href="#" class="nav-link">Menu 1</a>
-                <a href="#" class="nav-link">Menu 2</a>
-                <a href="#" class="nav-link">Menu 3</a>
-                <a href="#" class="nav-link">Menu 4</a>
-            </div>
-        </div> --}}
+       <button type="button" class="d-none d-md-block btn btn-warning" style="white-space: nowrap">
+            Log-out
+       </button>
 
     </div>
 </nav>

@@ -1,19 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+use App\Http\Controllers\LoginController;
+use App\Http\Middleware\CheckUserExists;
 
 Route::get('/', function () {
-    return view(view: 'login');
+    return view('login');
 })->name('beginning');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/login', [LoginController::class, 'login'])
+    ->middleware('check-user')
+    ->name('login');
 
-Route::get('/menu', function () {
-    return view(view: 'menu');
-})->name('menu');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/menu', [])
+
+// Route::middleware(['web', 'Auth.Login'])->group(function () {
+
+//     Route::get('/menu', function () {
+//         return view('menu');
+//     })->name('menu');
+    
+// });
