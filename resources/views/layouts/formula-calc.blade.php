@@ -1,22 +1,29 @@
 <div class="container">
-    <p>Simule sua Nota</p>
+    <p class="text-center">Simule sua Nota</p>
 
-    <div class="d-flex flex-column flex-md-row gap-sm-1">
-
-        <div class="input-group mb-3">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">C1</button>
-            <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+    <div class="row g-2 d-grid d-lg-flex justify-content-center align-items-center text-center">
+        <div class="col-12 col-lg-auto">
+            <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button">C1</button>
+                <input type="number" class="form-control text-center" maxlength="3"
+                    style="max-width: 100px;" oninput="this.value=this.value.slice(0,3)">
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">C2</button>
-            <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        <div class="col-12 col-lg-auto">
+            <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button">C2</button>
+                <input type="number" class="form-control text-center" maxlength="3"
+                    style="max-width: 100px;" oninput="this.value=this.value.slice(0,3)">
+            </div>
         </div>
 
-        <div class="input-group mb-3">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">C3</button>
-            <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        <div class="col-12 col-lg-auto">
+            <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button">C3</button>
+                <input type="number" class="form-control text-center" maxlength="3"
+                    style="max-width: 100px;" oninput="this.value=this.value.slice(0,3)">
+            </div>
         </div>
-
     </div>
 </div>
