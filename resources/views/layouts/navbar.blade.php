@@ -1,5 +1,11 @@
-<nav class="navbar navbar-expand-md bg-blue-navbar-footer">
-    <div class="container-fluid">
+<div class="d-none d-md-block container text-end">
+    <a href="" class="mx-1 text-decoration-none">Portal do Aluno</a>
+    |
+    <a href="" class="mx-1 text-decoration-none">AVA</a>
+</div>
+
+<nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top">
+    <div class="container">
 
         {{-- Navbar Brand --}}
         <a href="#" class="navbar-brand d-flex align-items-center me-sm-3 me-md-5 p-0">

@@ -6,64 +6,56 @@ use Illuminate\Support\Facades\Http;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use DB;
 
 class AuthMiddleware
 {
+    
     public function handle(Request $request, Closure $next)
     {
+        if ($request->route()->getName() == 'beginning') {
+            return $next($request);
 
-        echo "Something in the way";
+        } elseif ($request->route()->getName() == 'logout') {
+            return $next($request);
 
-        // if ($request->route()->getName() == 'beginning') {
-        //     return $next($request);
+        } elseif ($request->route()->getName() == 'login') {
 
-        // } elseif ($request->route->getName() == 'logout') {
-        //     return $next($request);
+            $credentials = [
+                'username' => $request->login,
+                'password' => $request->senha,
+            ];
 
-        // } elseif ($request->route()->getName() == 'login') {
+            // API DATA
+            $return = $this->getApiData($credentials);
 
-        //     $credentials = [
-        //         'username' => $request->login,
-        //         'password' => $request->senha,
-        //     ];
+            if ($return == true) {
+                return $next($request);
+            } else {
+                return redirect()->back()->with('error', "Invalid Credentials");
+            }
 
-        //     $return = $this->getApiData($request);
-        //     $encryptedData = User::select('Login', 'Senha', 'id')
-        //         ->where('Login', '=', 'administrador')
-        //         ->get()->toArray();
-        //     $id_user = $encryptedData[0]['id'];
-
-        //     if ($return == true) {
-        //         Auth::loginUsingId($id_user);
-        //         return $net($request);
-        //     } else {
-        //         return redirect()->back()->with('error', "Invalid Credentials");
-        //     }
-        // } else {
-        //     return $next($request);
-        // }        
+        } else {
+            return $next($request);
+        }        
     }
 
-    public function getApiData(Request $request)
+    public function getApiData(array $credentials)
     {
-        $credentials = [
-            'username' => $request->login,
-            'password' => $request->senha
-        ];
-
-        $api_url = 'https://api-manage-ad.faesa.br/api/v1/ad-manage/auth';
+        $apiUrl = 'http://api-manage-ad.faesa.br/api/v1/ad-manage/auth';
 
         $response = Http::withHeaders([
             'Accept' => "application/json",
             "Authorization" => "ppzU5NqaBpzuaGDy"
         ])
-        ->withBody(json_encode($credentials), 'application/json')->post($apiUrl);
-        if($response->status() == 200) {
+        ->withBody(json_encode($credentials),'application/json')
+        ->post($apiUrl);
+
+        if ($response->status() == 200) {
             return true;
         } else {
             return false;
         }
     }
+
 }

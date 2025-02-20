@@ -13,9 +13,15 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+
+        // Se for possivel logar como aluno, codigo daqui pra baixo funcionará
+
+        $pessoa = LyPessoa::where('WINUSUARIO', "=", "FAESA\\{$request->input('login')}")->first();
+
+        $request->merge(['pessoa' => $pessoa]);
+
         $pessoa = $request->get('pessoa');
 
-        // Divide responsabilities with other Controllers:
         $anoAtual = '2024';
         $semestreAtual = '2';
 
