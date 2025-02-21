@@ -1,7 +1,7 @@
 <div class="d-none d-md-block container text-end">
-    <a href="" class="mx-1 text-decoration-none">Portal do Aluno</a>
+    <a href="https://portaldoaluno.faesa.br/Login/" class="mx-1 text-decoration-none">Portal do Aluno</a>
     |
-    <a href="" class="mx-1 text-decoration-none">AVA</a>
+    <a href="https://ava.faesa.br/d2l/login" class="mx-1 text-decoration-none">AVA</a>
 </div>
 
 <nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top">
@@ -26,7 +26,7 @@
             </p>
         </div>
         
-        {{-- NavBar Button | Toggle Button --}}
+        {{-- NavBar Button | Toggle sButton --}}
         {{-- Not working properly --}}
         <button class="navbar-toggler btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavBar" aria-controls="navbarNav" aria-expanded="false" arial-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
