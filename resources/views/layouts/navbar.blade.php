@@ -21,6 +21,9 @@
             <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
                 {{ $aluno->ALUNO }}
             </p>
+            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                {{ $curso->CURSO }} | {{ $curso->NOME }}
+            </p>
         </div>
         
         {{-- NavBar Button | Toggle Button --}}
@@ -38,7 +41,7 @@
         </div>
 
        <button type="button" class="d-none d-md-block btn btn-warning" style="white-space: nowrap">
-            Log-out
+            <a href="{{ route("logout") }}" class="text-decoration-none" style="color:black">Log-out</a>
        </button>
 
     </div>

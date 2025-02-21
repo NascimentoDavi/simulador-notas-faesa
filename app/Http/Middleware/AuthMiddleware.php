@@ -51,6 +51,8 @@ class AuthMiddleware
         ->withBody(json_encode($credentials),'application/json')
         ->post($apiUrl);
 
+        dd($response->json());
+
         if ($response->status() == 200) {
             return true;
         } else {

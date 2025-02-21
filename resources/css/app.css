@@ -86,3 +86,19 @@
       display: none;
   }
 }
+
+.form-calc-background {
+  background-color: #e3aa8a;
+}
+
+@media (max-width: 500px) {
+  #disciplinaSelect {
+      width: 100%;  /* Ocupa 100% da largura em telas menores que 500px */
+  }
+}
+
+@media (min-width: 501px) {
+  #disciplinaSelect {
+      width: 50%;   /* Ocupa 50% da largura em telas maiores que 500px */
+  }
+}

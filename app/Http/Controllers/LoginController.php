@@ -7,25 +7,26 @@ use App\Http\Controllers\ValidationController;
 use App\Models\LyPessoa;
 use App\Models\LyAluno;
 use App\Models\LyNota;
+use App\Models\LyCurso;
 use Illuminate\Support\Facades\View;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
-    {
-
+    {        
         // Se for possivel logar como aluno, codigo daqui pra baixo funcionará
-
         $pessoa = LyPessoa::where('WINUSUARIO', "=", "FAESA\\{$request->input('login')}")->first();
 
         $request->merge(['pessoa' => $pessoa]);
 
-        $pessoa = $request->get('pessoa');
+        // $pessoa = $request->get('pessoa');
 
         $anoAtual = '2024';
         $semestreAtual = '2';
 
         $aluno = LyAluno::where('NOME_COMPL', '=', $pessoa['NOME_COMPL'])->first();
+
+        $curso = LyCurso::where('CURSO', '=', $aluno['CURSO'])->first();
 
         $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->where('LY_NOTA.ALUNO', '=', $aluno['ALUNO'])
@@ -56,8 +57,13 @@ class LoginController extends Controller
             return (object) $groupedData;
         });
 
-        View::share('aluno', $aluno);
-        return view('menu', compact('notasPivot', 'aluno'));
+        session([
+            'notasPivot' => $notasPivot,
+            'aluno' => $aluno,
+            'curso' => $curso,
+        ]);
+
+        return redirect()->intended('/menu');
     }
 
     public function logout(Request $request)

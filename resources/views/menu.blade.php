@@ -14,10 +14,11 @@
         
         <div class="col-lg-10 col-md-12 mx-auto">
             
-            <div class="mb-3 p-0 gap-0">
-                <h2 class="poppins-semibold">Notas do Aluno</h2>
+            <div class="mb-3 p-0">
+                <h2 class="poppins-semibold m-0 p-0">Notas do Aluno</h2>
                 <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h4>
                 <h6 class="d-block d-sm-none m-0">{{ $aluno->ALUNO }}</h4>
+                <h6 class="d-block d-sm-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>
             </div>
 
             @if($notasPivot->isEmpty())

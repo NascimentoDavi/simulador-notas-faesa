@@ -42,6 +42,11 @@
             @endif
 
             <input type="submit" value="Entrar">
+
+            <div class="forgot-password-link">
+                <a href="https://acesso.faesa.br/#/auth-user/forgot-password">Esqueceu a senha?</a>
+            </div>
+
         </form>
     </div>
 
