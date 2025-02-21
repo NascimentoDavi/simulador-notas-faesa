@@ -42,7 +42,8 @@ class AuthMiddleware
 
     public function getApiData(array $credentials)
     {
-        $apiUrl = 'http://api-manage-ad.faesa.br/api/v1/ad-manage/auth';
+        // api
+        $apiUrl = 'https://faesa-mobile-api.faesa.br/api/v1/app-faesa/auth';
 
         $response = Http::withHeaders([
             'Accept' => "application/json",
