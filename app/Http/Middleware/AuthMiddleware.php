@@ -43,7 +43,7 @@ class AuthMiddleware
     public function getApiData(array $credentials)
     {
         // api
-        $apiUrl = 'https://faesa-mobile-api.faesa.br/api/v1/app-faesa/auth';
+        $apiUrl = 'http://faesa-mobile-api.faesa.br/api/v1/app-faesa/auth';
 
         $response = Http::withHeaders([
             'Accept' => "application/json",
@@ -51,8 +51,6 @@ class AuthMiddleware
         ])
         ->withBody(json_encode($credentials),'application/json')
         ->post($apiUrl);
-
-        dd($response->json());
 
         if ($response->status() == 200) {
             return true;

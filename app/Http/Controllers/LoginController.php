@@ -8,6 +8,8 @@ use App\Models\LyPessoa;
 use App\Models\LyAluno;
 use App\Models\LyNota;
 use App\Models\LyCurso;
+use App\Models\LyDisciplina;
+use App\Models\LyMatricula;
 use Illuminate\Support\Facades\View;
 
 class LoginController extends Controller
@@ -17,17 +19,18 @@ class LoginController extends Controller
         // Se for possivel logar como aluno, codigo daqui pra baixo funcionará
         $pessoa = LyPessoa::where('WINUSUARIO', "=", "FAESA\\{$request->input('login')}")->first();
 
+        // Add pessoa into 'request'
         $request->merge(['pessoa' => $pessoa]);
-
-        // $pessoa = $request->get('pessoa');
 
         $anoAtual = '2024';
         $semestreAtual = '2';
 
         $aluno = LyAluno::where('NOME_COMPL', '=', $pessoa['NOME_COMPL'])->first();
 
-        $curso = LyCurso::where('CURSO', '=', $aluno['CURSO'])->first();
+        $disciplinas = LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])->value('DISCIPLINA');
+        $formula = LyDisciplina::where('DISCIPLINA', '=', $disciplinas)->first();
 
+        $curso = LyCurso::where('CURSO', '=', $aluno['CURSO'])->first();
         $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->where('LY_NOTA.ALUNO', '=', $aluno['ALUNO'])
             ->where('LY_NOTA.ANO', '=', $anoAtual)
@@ -61,8 +64,10 @@ class LoginController extends Controller
             'notasPivot' => $notasPivot,
             'aluno' => $aluno,
             'curso' => $curso,
+            'formula_nm' => substr($formula->FORMULA_MF2, 1, 18),
+            'formula_mp' => substr($formula->FORMULA_MF1, 0, 15),
         ]);
-
+        
         return redirect()->intended('/menu');
     }
 

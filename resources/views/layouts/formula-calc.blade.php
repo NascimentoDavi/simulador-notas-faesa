@@ -23,7 +23,7 @@
             <div class="">
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C1</button>
-                    <input type="number" class="form-control text-center border border-1 border-dark" maxlength="3"
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" maxlength="3"
                         style="max-width: 90px;" id="notaC1" oninput="this.value=this.value.slice(0,3)" value="">
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="">
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C2</button>
-                    <input type="number" class="form-control text-center border border-1 border-dark" maxlength="3"
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" maxlength="3"
                         style="max-width: 90px;" id="notaC2" oninput="this.value=this.value.slice(0,3)" value="">
                 </div>
             </div>
@@ -39,7 +39,7 @@
             <div class="">
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
-                    <input type="number" class="form-control text-center border border-1 border-dark" maxlength="3"
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" maxlength="3"
                         style="max-width: 90px;" id="notaC3" oninput="this.value=this.value.slice(0,3)" value="">
                 </div>
             </div>
@@ -56,7 +56,7 @@
             <div>
                 <div class="input-group mx-lg-1">
                         <button class="btn btn-outline-secondary" type="button">MP</button>
-                        <input type="number" class="form-control text-center border border-1 border-dark" maxlength="3"
+                        <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
                         style="max-width: 90px;" id="notaMP" oninput="this.value=this.value.slice(0,3)" value="" disabled>
                 </div>
             </div>
@@ -64,7 +64,7 @@
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">NM</button>
-                    <input type="number" class="form-control text-center border border-1 border-dark" maxlength="3"
+                    <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
                         style="max-width: 90px;" id="notaNM" oninput="this.value=this.value.slice(0,3)" value="" disabled>
                 </div>
             </div>
@@ -78,8 +78,10 @@
 </div>
 
 <script>
-    var curso = @json($curso->CURSO);  // Passando o valor de $curso->CURSO para o JavaScript
-    
+    var curso = @json($curso->CURSO);
+    var formula_nm = @json($formula_nm);
+    var formula_mp = @json($formula_mp);
+
     document.getElementById('disciplinaSelect').addEventListener('change', function() {
         var selectedOption = this.options[this.selectedIndex];
 
@@ -104,23 +106,29 @@
     });
 
     document.getElementById('simularBtn').addEventListener('click', function() {
-        var c1 = parseFloat(document.getElementById('notaC1').value) || 0;
-        var c2 = parseFloat(document.getElementById('notaC2').value) || 0;
-        var c3 = parseFloat(document.getElementById('notaC3').value) || 0;
+        var c1 = parseFloat(document.getElementById('notaC1').value.replace(',', '.')) || 0;
+        var c2 = parseFloat(document.getElementById('notaC2').value.replace(',', '.')) || 0;
+        var c3 = parseFloat(document.getElementById('notaC3').value.replace(',', '.')) || 0;
         
         // Condicional para a fórmula de NM dependendo do valor de 'curso'
-        var nm;
-        var curso = @json($curso->CURSO);
-        if ( curso == 3006) {
-            nm = ((c1 + c2 + c3) * 0.1) / 0.4;
-        } else {
-            nm = ((c1 + c2 + c3) * 0.6) / 0.4;
-        }
+        // var nm;
+        // var curso = @json($curso->CURSO);
+        // if ( curso == 3006) {
+        //     nm = ((c1 + c2 + c3) * 0.1) / 0.4;
+        // } else {
+        //     nm = (((c1 + c2 + c3)/3) * 0.6) / 0.4;
+        // }
 
-        var mp = (c1 + c2 + c3) / 3;
+        // var mp = (c1 + c2 + c3) / 3;
+
+        let expressao = formula_nm.replaceAll("C1", c1)
+                    .replaceAll("C2", c2)
+                    .replaceAll("C3", c3);
+
+        let mediaProvaFinal = ((5 - eval(expressao)) / 0.4);
 
         // Preencher os campos MP e NM
-        document.getElementById('notaMP').value = mp.toFixed(2); // Média ponderada
-        document.getElementById('notaNM').value = nm.toFixed(2); // Nota final, com base na fórmula
+        // document.getElementById('notaMP').value = mp.toFixed(2); // Média ponderada
+        document.getElementById('notaNM').value = mediaProvaFinal.toFixed(2); // Nota final, com base na fórmula
     });
 </script>
