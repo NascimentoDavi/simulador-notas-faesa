@@ -16,6 +16,20 @@
             
             <div class="mb-3 p-0">
                 <h2 class="poppins-semibold m-0 p-0">Notas do Aluno</h2>
+
+                <div class="my-1">
+                    <!-- Adicionando a div.row para tornar o select responsivo -->
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <select class="form-select" id="exampleSelect">
+                                <option value="1">2025</option>
+                                <option value="1">2024</option>
+                                <option value="1">2023</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                  
                 <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h4>
                 <h6 class="d-block d-sm-none m-0">{{ $aluno->ALUNO }}</h4>
                 <h6 class="d-block d-sm-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>

@@ -24,7 +24,7 @@
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C1</button>
                     <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" maxlength="3"
-                        style="max-width: 90px;" id="notaC1" oninput="this.value=this.value.slice(0,3)" value="">
+                        style="max-width: 90px;" id="notaC1" maxlength="3" value="">
                 </div>
             </div>
             
@@ -32,7 +32,7 @@
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C2</button>
                     <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" maxlength="3"
-                        style="max-width: 90px;" id="notaC2" oninput="this.value=this.value.slice(0,3)" value="">
+                        style="max-width: 90px;" id="notaC2" maxlength="3" value="">
                 </div>
             </div>
     
@@ -40,7 +40,7 @@
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
                     <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" maxlength="3"
-                        style="max-width: 90px;" id="notaC3" oninput="this.value=this.value.slice(0,3)" value="">
+                        style="max-width: 90px;" id="notaC3" maxlength="3" value="">
                 </div>
             </div>
         </div>
@@ -71,7 +71,12 @@
         </div>
 
         <div class="text-center mt-3">
-            *MP = Média Aritmética: (C1 + C2 + C3) / 3
+            *MP = Média Parcial
+            <br>
+            *NM = Nota mínima necessária na avaliação final
+            <br>
+            <br>
+            Média aritmética: (C1+C2+C3)/3
         </div>
     </div>
 

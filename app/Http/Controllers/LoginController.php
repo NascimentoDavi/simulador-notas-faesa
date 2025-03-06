@@ -22,8 +22,9 @@ class LoginController extends Controller
         // Add pessoa into 'request'
         $request->merge(['pessoa' => $pessoa]);
 
-        $anoAtual = '2024';
-        $semestreAtual = '2';
+        $anoAtual = date('Y');
+        $mesAtual = date('M');
+        $semestreAtual = ($mesAtual <= 6) ? '1' : '2';
 
         $aluno = LyAluno::where('NOME_COMPL', '=', $pessoa['NOME_COMPL'])->first();
 

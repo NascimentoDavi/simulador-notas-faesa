@@ -40,6 +40,7 @@
     @include('layouts.formula-calc')
     
     <div class="pt-5 mt-5">
+        <br>
     </div>
 
     @include('layouts.footer')

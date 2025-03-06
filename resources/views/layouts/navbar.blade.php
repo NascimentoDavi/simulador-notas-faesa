@@ -1,5 +1,5 @@
 <div class="d-none d-md-block container text-end">
-    <a href="https://portaldoaluno.faesa.br/Login/" class="mx-1 text-decoration-none">Portal do Aluno</a>
+    <a href="https://portaldoaluno.faesa.br/Login/" class="mx-1 text-decoration-none" style="font-size: 15px">Portal do Aluno</a>
     |
     <a href="https://ava.faesa.br/d2l/login" class="mx-1 text-decoration-none">AVA</a>
 </div>
@@ -14,7 +14,7 @@
         </a>
 
         {{-- Nome e Matrícula do aluno --}}
-        <div class="d-none d-md-flex flex-column ms-5 ps-5">
+        <div class="d-none d-md-flex flex-column ms-5">
             <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
                 {{ $aluno->NOME_COMPL }}
             </p>
@@ -26,23 +26,33 @@
             </p>
         </div>
         
-        {{-- NavBar Button | Toggle sButton --}}
-        {{-- Not working properly --}}
-        <button class="navbar-toggler btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavBar" aria-controls="navbarNav" aria-expanded="false" arial-label="Toggle navigation">
+        <!-- Botão para abrir o offcanvas -->
+        <button class="navbar-toggler btn-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuOffcanvas">
             <span class="navbar-toggler-icon"></span>
-        </button>        
+        </button>
 
-        {{-- Logout Button | Dropdown link --}}
-        {{-- Not working properly --}}
-        <div class="collapse navbar-collapse" id="menuNavBar">
-            <div class="navbar-nav">
-                <button class="">Log-out</button>
+        <!-- Menu Offcanvas -->
+        <div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="menuOffcanvas" aria-labelledby="menuOffcanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="menuOffcanvasLabel">
+                    Simulador de Notas
+                    <img class="" src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-offcanvas" style="height: 20px">
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body text-center d-md-none">
+                <a href="{{ route('logout') }}" class="btn btn-danger w-75 mb-2">Log-out</a>
+                <a href="https://portaldoaluno.faesa.br/Login/" class="btn btn-primary w-75 mb-2">Portal do Aluno</a>
+                <a href="https://ava.faesa.br/d2l/login" class="btn btn-secondary w-75 mb-2">AVA</a>
             </div>
         </div>
 
-       <button type="button" class="d-none d-md-block btn btn-warning" style="white-space: nowrap">
-            <a href="{{ route("logout") }}" class="text-decoration-none" style="color:black">Log-out</a>
-       </button>
+        <!-- Bootstrap JS (inclui Popper.js) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <button type="button" class="d-none d-md-block btn btn-warning ms-4" style="white-space: nowrap">
+                <a href="{{ route("logout") }}" class="text-decoration-none" style="color:black">Log-out</a>
+        </button>
 
     </div>
 </nav>

@@ -21,15 +21,17 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             ->name('logout');
 
     Route::get('/menu', function () {
-            // Recupera os dados da sessão
-            $notasPivot = session('notasPivot');
-            $aluno = session('aluno');
-            $curso = session('curso');
-            $formula_nm = session('formula_nm');
-            $formula_mp = session('formula_mp');
+                if (!session()->has('aluno')) {
+                        return redirect()->route('login');
+                }
 
-            // Passa os dados para a view
-            return view('menu', compact('notasPivot', 'aluno', 'curso', 'formula_nm', 'formula_mp'));
-            })->name('menu');
+                $notasPivot = session('notasPivot');
+                $aluno = session('aluno');
+                $curso = session('curso');
+                $formula_nm = session('formula_nm');
+                $formula_mp = session('formula_mp');
+
+                return view('menu', compact('notasPivot', 'aluno', 'curso', 'formula_nm', 'formula_mp'));
+        })->name('menu');
 
 });
