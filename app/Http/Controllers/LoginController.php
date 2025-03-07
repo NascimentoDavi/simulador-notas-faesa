@@ -22,9 +22,12 @@ class LoginController extends Controller
         // Add pessoa into 'request'
         $request->merge(['pessoa' => $pessoa]);
 
-        $anoAtual = date('Y');
-        $mesAtual = date('M');
-        $semestreAtual = ($mesAtual <= 6) ? '1' : '2';
+        // $anoAtual = date('Y');
+        // $mesAtual = date('M');
+        // $semestreAtual = ($mesAtual <= 6) ? '1' : '2';
+
+        $anoAtual = '2024';
+        $semestreAtual = '2';
 
         $aluno = LyAluno::where('NOME_COMPL', '=', $pessoa['NOME_COMPL'])->first();
 
@@ -68,7 +71,7 @@ class LoginController extends Controller
             'formula_nm' => substr($formula->FORMULA_MF2, 1, 18),
             'formula_mp' => substr($formula->FORMULA_MF1, 0, 15),
         ]);
-        
+
         return redirect()->intended('/menu');
     }
 

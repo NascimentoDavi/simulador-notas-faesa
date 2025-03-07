@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LySimuladorNotaFormulaController;
 use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/', function () {
@@ -31,7 +32,11 @@ Route::middleware([AuthMiddleware::class])->group(function () {
                 $formula_nm = session('formula_nm');
                 $formula_mp = session('formula_mp');
 
+                // Passa os dados para a view
                 return view('menu', compact('notasPivot', 'aluno', 'curso', 'formula_nm', 'formula_mp'));
         })->name('menu');
 
+        Route::get('/notas', [LyNotaController::class, 'getNotas'])->name('getNotas');
+
+        Route::post('/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
 });

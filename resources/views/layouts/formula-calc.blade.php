@@ -45,31 +45,61 @@
             </div>
         </div>
     </div>
-    
+
+
     <div class="container d-flex justify-content-center mt-5 gap-lg-3 ga-md-3 gap-sm-3 gap-2 mb-5">
-        <button class="btn btn-primary" id="simularBtn">Simular</button>
+        {{-- SIMULACAO DE NOTA --}}
+        <form id="simularForm">
+            @csrf
+            <button type="submit" class="btn btn-primary">Simular</button>
+        </form>
         <button class="btn btn-warning" id="limparBtn">Limpar</button>
     </div>
     
-    <div class="container">
-        <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
-            <div>
-                <div class="input-group mx-lg-1">
-                        <button class="btn btn-outline-secondary" type="button">MP</button>
-                        <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
-                        style="max-width: 90px;" id="notaMP" oninput="this.value=this.value.slice(0,3)" value="" disabled>
-                </div>
-            </div>
-
-            <div>
-                <div class="input-group mx-lg-1">
-                    <button class="btn btn-outline-secondary" type="button">NM</button>
-                    <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
-                        style="max-width: 90px;" id="notaNM" oninput="this.value=this.value.slice(0,3)" value="" disabled>
-                </div>
+    <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
+        <div>
+            <div class="input-group mx-lg-1">
+                <button class="btn btn-outline-secondary" type="button">MP</button>
+                <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
+                    style="max-width: 90px;" id="notaMP" disabled>
             </div>
         </div>
-
+        <div>
+            <div class="input-group mx-lg-1">
+                <button class="btn btn-outline-secondary" type="button">NM</button>
+                <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
+                    style="max-width: 90px;" id="notaNM" disabled>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("simularForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Impede o envio do formulário
+    
+            fetch("{{ route('simular') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("notaMP").value = data.mp;
+                document.getElementById("notaNM").value = data.nm;
+            })
+            .catch(error => console.error("Erro ao processar a simulação:", error));
+        });
+    
+        // Limpar os campos ao clicar no botão "Limpar"
+            document.getElementById("limparBtn").addEventListener("click", function() {
+            document.getElementById("notaMP").value = "";
+            document.getElementById("notaNM").value = "";
+        });
+    </script>
+    
         <div class="text-center mt-3">
             *MP = Média Parcial
             <br>
@@ -78,9 +108,14 @@
             <br>
             Média aritmética: (C1+C2+C3)/3
         </div>
-    </div>
 
+    </div>
 </div>
+
+
+
+
+
 
 <script>
     var curso = @json($curso->CURSO);
@@ -99,41 +134,5 @@
             document.getElementById('notaC2').value = '';
             document.getElementById('notaC3').value = '';
         }
-    });
-
-    document.getElementById('limparBtn').addEventListener('click', function() {
-        document.getElementById('notaC1').value = '';
-        document.getElementById('notaC2').value = '';
-        document.getElementById('notaC3').value = '';
-        document.getElementById('notaMP').value = '';
-        document.getElementById('notaNM').value = '';
-        document.getElementById('disciplinaSelect').value = '';
-    });
-
-    document.getElementById('simularBtn').addEventListener('click', function() {
-        var c1 = parseFloat(document.getElementById('notaC1').value.replace(',', '.')) || 0;
-        var c2 = parseFloat(document.getElementById('notaC2').value.replace(',', '.')) || 0;
-        var c3 = parseFloat(document.getElementById('notaC3').value.replace(',', '.')) || 0;
-        
-        // Condicional para a fórmula de NM dependendo do valor de 'curso'
-        // var nm;
-        // var curso = @json($curso->CURSO);
-        // if ( curso == 3006) {
-        //     nm = ((c1 + c2 + c3) * 0.1) / 0.4;
-        // } else {
-        //     nm = (((c1 + c2 + c3)/3) * 0.6) / 0.4;
-        // }
-
-        // var mp = (c1 + c2 + c3) / 3;
-
-        let expressao = formula_nm.replaceAll("C1", c1)
-                    .replaceAll("C2", c2)
-                    .replaceAll("C3", c3);
-
-        let mediaProvaFinal = ((5 - eval(expressao)) / 0.4);
-
-        // Preencher os campos MP e NM
-        // document.getElementById('notaMP').value = mp.toFixed(2); // Média ponderada
-        document.getElementById('notaNM').value = mediaProvaFinal.toFixed(2); // Nota final, com base na fórmula
     });
 </script>
