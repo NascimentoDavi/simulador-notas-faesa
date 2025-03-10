@@ -53,7 +53,9 @@
             @csrf
             <button type="submit" class="btn btn-primary">Simular</button>
         </form>
-        <button class="btn btn-warning" id="limparBtn">Limpar</button>
+        <div>
+            <button class="btn btn-warning" id="limparBtn">Limpar</button>
+        </div>
     </div>
     
     <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
@@ -72,34 +74,6 @@
             </div>
         </div>
     </div>
-    
-    <script>
-        document.getElementById("simularForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Impede o envio do formulário
-    
-            fetch("{{ route('simular') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("notaMP").value = data.mp;
-                document.getElementById("notaNM").value = data.nm;
-            })
-            .catch(error => console.error("Erro ao processar a simulação:", error));
-        });
-    
-        // Limpar os campos ao clicar no botão "Limpar"
-            document.getElementById("limparBtn").addEventListener("click", function() {
-            document.getElementById("notaMP").value = "";
-            document.getElementById("notaNM").value = "";
-        });
-    </script>
-    
         <div class="text-center mt-3">
             *MP = Média Parcial
             <br>
@@ -108,16 +82,47 @@
             <br>
             Média aritmética: (C1+C2+C3)/3
         </div>
-
     </div>
 </div>
 
 
 
-
-
-
 <script>
+    document.getElementById("simularForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Impede o envio do formulário
+        
+        const c1 = document.getElementById("notaC1").value;
+        const c2 = document.getElementById("notaC2").value;
+        const c3 = document.getElementById("notaC3").value;
+
+        const requestData = {
+            c1: c1,
+            c2: c2,
+            c3: c3
+        }
+
+        fetch("{{ route('simular') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("notaMP").value = data.mediaAritmetica.toFixed(2);
+            document.getElementById("notaNM").value = data.mediaProvaFinal.toFixed(2);
+        })
+        .catch(error => console.error("Erro ao processar a simulação:", error));
+    });
+
+    // Limpar os campos ao clicar no botão "Limpar"
+        document.getElementById("limparBtn").addEventListener("click", function() {
+        document.getElementById("notaMP").value = "";
+        document.getElementById("notaNM").value = "";
+    });
+
     var curso = @json($curso->CURSO);
     var formula_nm = @json($formula_nm);
     var formula_mp = @json($formula_mp);

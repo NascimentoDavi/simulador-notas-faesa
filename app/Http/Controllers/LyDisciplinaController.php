@@ -3,69 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\LyDisciplina;
+use App\Models\LyMatricula;
+use App\Models\LyAluno;
 use Illuminate\Http\Request;
 
 class LyDisciplinaController extends Controller
 {
-
-    public function getDisciplinas ()
+    public function getMatriculas($aluno)
     {
-        // Do something.
+        $matriculas = LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])->get('DISCIPLINA');
+        return $matriculas;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // 
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getFormulaFromDisciplina($matriculas)
     {
-        // 
-    }
+        if ($matriculas->isEmpty()) {
+            return null;
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        // 
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(LyDisciplina $lyDisciplina)
-    {
-        // 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(LyDisciplina $lyDisciplina)
-    {
-        // 
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, LyDisciplina $lyDisciplina)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LyDisciplina $lyDisciplina)
-    {
-        //
+        return LyDisciplina::where('DISCIPLINA', '=', $matriculas[0]->DISCIPLINA)
+            ->first(['FORMULA_MF1', 'FORMULA_MF2']);
     }
 }

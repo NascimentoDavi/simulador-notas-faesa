@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LyNotaController;
 use App\Http\Controllers\LySimuladorNotaFormulaController;
 use App\Http\Middleware\AuthMiddleware;
 

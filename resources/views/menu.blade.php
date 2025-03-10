@@ -18,17 +18,24 @@
                 <h2 class="poppins-semibold m-0 p-0">Notas do Aluno</h2>
 
                 <div class="my-1">
-                    <!-- Adicionando a div.row para tornar o select responsivo -->
-                   <!-- Sua view com o select -->
-                    <form method="GET" action="{{ route('getNotas') }}">
+                    <form method="POST" action="{{ route('getNotas') }}" id="notasPorPeriodo">
                         <div class="my-1">
                             <div class="row">
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <select class="form-select" name="ano" id="notasForm">
+                                    <select class="form-select" name="ano" id="anoSelect">
                                         <option value="2025">2025</option>
                                         <option value="2024">2024</option>
                                         <option value="2023">2023</option>
                                     </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <select class="form-select" name="semestre" id="semestreSelect">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <button class="btn btn-primary">Pesquisar</button>
                                 </div>
                             </div>
                         </div>
@@ -85,3 +92,23 @@
 </div>
 
 @endsection
+
+<script>
+    document.getElementById("notasPorPeriodo").addEventListener("Submit", function(event) {
+        event.preventDefault();
+
+        const $ano = document.getElementById('anoSelect').value;
+        const $semestre = document.getElementById('semestreSelect').value;
+
+        fetch("{{ route('getNotas') }}", {
+            method: "GET",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify($ano, $semestre)
+        })
+        .then(response => response.json())
+        .then(data)
+    })
+</script>
