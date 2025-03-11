@@ -18,9 +18,11 @@
                 <h2 class="poppins-semibold m-0 p-0">Notas do Aluno</h2>
 
                 <div class="my-1">
-                    <form method="POST" action="{{ route('getNotas') }}" id="notasPorPeriodo">
+                    <form id="notasPorPeriodo">
+                        @csrf
                         <div class="my-1">
                             <div class="row">
+
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <select class="form-select" name="ano" id="anoSelect">
                                         <option value="2025">2025</option>
@@ -28,15 +30,18 @@
                                         <option value="2023">2023</option>
                                     </select>
                                 </div>
+
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <select class="form-select" name="semestre" id="semestreSelect">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                     </select>
                                 </div>
+
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <button class="btn btn-primary">Pesquisar</button>
                                 </div>
+
                             </div>
                         </div>
                     </form>
@@ -91,24 +96,32 @@
     </div>
 </div>
 
-@endsection
-
 <script>
-    document.getElementById("notasPorPeriodo").addEventListener("Submit", function(event) {
-        event.preventDefault();
+    document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
+        event.preventDefault(); // Impede o envio do formulário
+        
+        const ano = document.getElementById("anoSelect").value;
+        const semestre = document.getElementById("semestreSelect").value;
 
-        const $ano = document.getElementById('anoSelect').value;
-        const $semestre = document.getElementById('semestreSelect').value;
+        const requestData = {
+            ano: ano,
+            semestre: semestre
+        }
 
         fetch("{{ route('getNotas') }}", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify($ano, $semestre)
+            body: JSON.stringify(requestData)
         })
         .then(response => response.json())
-        .then(data)
-    })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.error("Erro ao processar a simulação:", error));
+    });
 </script>
+
+@endsection
