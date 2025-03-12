@@ -37,18 +37,19 @@ class LoginController extends Controller
         // FORMULA
         $formula = $disciplinaController->getFormulaFromDisciplina($matriculas);
 
-        // $anoAtual = date('Y');
-        // $mesAtual = date('M');
-        // $semestreAtual = ($mesAtual <= 6) ? '1' : '2';
-        $anoAtual = '2024';
-        $semestreAtual = '2';
+        $anoAtual = date('Y');
+        $mesAtual = date('M');
+        $semestreAtual = ($mesAtual <= 6) ? '1' : '2';
 
         // GET CURSO
         $curso = $alunoController->getCursoFromAluno($aluno);
 
-         // GET NOTAS
-         $notaController = app(LyNotaController::class);
-         $notasPivot = $notaController->getNotasPivot($aluno, $anoAtual, $semestreAtual);
+        // Condicional para formula e selecao de tabela
+
+
+        // GET NOTAS
+        $notaController = app(LyNotaController::class);
+        $notasPivot = $notaController->getNotasPivot($aluno, $anoAtual, $semestreAtual);
 
         session([
             'notasPivot' => $notasPivot,

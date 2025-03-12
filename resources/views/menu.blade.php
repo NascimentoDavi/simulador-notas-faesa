@@ -53,52 +53,40 @@
                 <h6 class="d-block d-sm-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>
             </div>
 
-
-            @if($notasPivot->isEmpty())
-                <div class="alert alert-warning" role="alert">
-                    Nenhuma nota encontrada.
-                </div>
-            @else
-                <div class="table-responsive">
-
-                    <table class="table table-bordered table-striped">
-                        
-                        <thead class="table-dark">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="grades-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Nome da Disciplina</th>
+                            <th>C1</th>
+                            <th>C2</th>
+                            <th>C3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($notasPivot as $nota)
                             <tr>
-                                <th>Disciplina</th>
-                                <th>Nome da Disciplina</th>
-                                <th>C1</th>
-                                <th>C2</th>
-                                <th>C3</th>
+                                <td data-label="Disciplina">{{ $nota->DISCIPLINA }}</td>
+                                <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
+                                    {{ $nota->NOME_DISCIPLINA }}
+                                </td>
+                                <td data-label="C1">{{ $nota->C1 }}</td>
+                                <td data-label="C2">{{ $nota->C2 }}</td>
+                                <td data-label="C3">{{ $nota->C3 }}</td>
                             </tr>
-                        </thead>
-                        
-                        <tbody>
-                            @foreach($notasPivot as $nota)
-                                <tr>
-                                    <td data-label="Disciplina">{{ $nota->DISCIPLINA }}</td>
-                                    <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
-                                        {{ $nota->NOME_DISCIPLINA }}
-                                    </td>
-                                    <td data-label="C1">{{ $nota->C1 }}</td>
-                                    <td data-label="C2">{{ $nota->C2 }}</td>
-                                    <td data-label="C3">{{ $nota->C3 }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-                    </table>
-
-                </div>
-
-            @endif
         </div>
     </div>
 </div>
 
 <script>
     document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
-        event.preventDefault(); // Impede o envio do formulário
+        event.preventDefault();
         
         const ano = document.getElementById("anoSelect").value;
         const semestre = document.getElementById("semestreSelect").value;
@@ -118,7 +106,24 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+
+            const notasArray = Object.values(data.notas);
+
+            console.log(notasArray);
+
+            let tableBody = document.getElementById("grades-table").getElementsByTagName('tbody')[0];
+
+            tableBody.innerHTML = '';
+
+            notasArray.forEach(nota => {
+                let row = tableBody.insertRow();
+
+                row.insertCell(0).textContent = nota.DISCIPLINA;
+                row.insertCell(1).textContent = nota.NOME_DISCIPLINA;
+                row.insertCell(2).textContent = nota.C1 !== null && nota.C1 !== undefined ? nota.C1 : '-';
+                row.insertCell(3).textContent = nota.C2 !== null && nota.C2 !== undefined ? nota.C2 : '-';
+                row.insertCell(4).textContent = nota.C3 !== null && nota.C3 !== undefined ? nota.C3 : '-';
+            });
         })
         .catch(error => console.error("Erro ao processar a simulação:", error));
     });

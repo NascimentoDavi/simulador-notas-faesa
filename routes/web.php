@@ -37,7 +37,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
                 return view('menu', compact('notasPivot', 'aluno', 'curso', 'formula_nm', 'formula_mp'));
         })->name('menu');
 
-        Route::post('/notas', [LyNotaController::class, 'getNotas'])->name('getNotas');
+        Route::match(['get', 'post'], '/notas', [LyNotaController::class, 'getNotas'])->name('getNotas');
 
         Route::post('/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
 });
