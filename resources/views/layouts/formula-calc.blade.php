@@ -7,17 +7,17 @@
             <select class="form-control border border-1 border-dark" id="disciplinaSelect" name="disciplina" style="width: 100%; max-width: 50%;">
                 <option value="">Selecione uma Disciplina</option>
                 @foreach($notasPivot as $nota)
-                    <option value="{{ $nota->DISCIPLINA }}" 
-                            data-c1="{{ $nota->C1 }}" 
-                            data-c2="{{ $nota->C2 }}" 
-                            data-c3="{{ $nota->C3 }}">
-                        {{ $nota->NOME_DISCIPLINA }}
-                    </option>
+                <option value="{{ $nota->DISCIPLINA }}"
+                    data-c1="{{ $nota->C1 }}"
+                    data-c2="{{ $nota->C2 }}"
+                    data-c3="{{ $nota->C3 }}">
+                    {{ $nota->NOME_DISCIPLINA }}
+                </option>
                 @endforeach
             </select>
         </div>
     </div>
-    
+
     <div class="container mt-3">
         <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
             <div class="">
@@ -27,7 +27,7 @@
                         style="max-width: 90px;" id="notaC1" maxlength="3" value="">
                 </div>
             </div>
-            
+
             <div class="">
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C2</button>
@@ -35,7 +35,7 @@
                         style="max-width: 90px;" id="notaC2" maxlength="3" value="">
                 </div>
             </div>
-    
+
             <div class="">
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
@@ -57,7 +57,7 @@
             <button class="btn btn-warning" id="limparBtn">Limpar</button>
         </div>
     </div>
-    
+
     <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
         <div>
             <div class="input-group mx-lg-1">
@@ -69,20 +69,20 @@
         <div>
             <div class="input-group mx-lg-1">
                 <button class="btn btn-outline-secondary" type="button">NM</button>
-                <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
+                <input type="text" class="form-control text-center border border-1 border-dark" maxlength="4"
                     style="max-width: 90px;" id="notaNM" disabled>
             </div>
         </div>
     </div>
-        <div class="text-center mt-3">
-            *MP = Média Parcial
-            <br>
-            *NM = Nota mínima necessária na avaliação final
-            <br>
-            <br>
-            Média aritmética: (C1+C2+C3)/3
-        </div>
+    <div class="text-center mt-3">
+        *MP = Média Parcial
+        <br>
+        *NM = Nota mínima necessária na avaliação final
+        <br>
+        <br>
+        Média aritmética: (C1+C2+C3)/3
     </div>
+</div>
 </div>
 
 
@@ -90,7 +90,7 @@
 <script>
     document.getElementById("simularForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Impede o envio do formulário
-        
+
         const c1 = document.getElementById("notaC1").value;
         const c2 = document.getElementById("notaC2").value;
         const c3 = document.getElementById("notaC3").value;
@@ -102,28 +102,28 @@
         }
 
         fetch("{{ route('simular') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("notaMP").value = data.mediaAritmetica.toFixed(2);
-            document.getElementById("notaNM").value = data.mediaProvaFinal.toFixed(2);
-        })
-        .catch(error => console.error("Erro ao processar a simulação:", error));
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
+                document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
+            })
+            .catch(error => console.error("Erro ao processar a simulação:", error));
     });
 
     // Limpar os campos ao clicar no botão "Limpar"
-        document.getElementById("limparBtn").addEventListener("click", function() {
+    document.getElementById("limparBtn").addEventListener("click", function() {
         document.getElementById("notaMP").value = "";
         document.getElementById("notaNM").value = "";
     });
 
-    var curso = @json($curso->CURSO);
+    var curso = @json($curso -> CURSO);
     var formula_nm = @json($formula_nm);
     var formula_mp = @json($formula_mp);
 

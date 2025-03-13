@@ -40,8 +40,6 @@ class LyNotaController extends Controller
                 }
             }
 
-            dd($groupedData);
-
             return (object) $groupedData;
         });
     }
@@ -52,6 +50,6 @@ class LyNotaController extends Controller
         $ano = $request->input('ano');
         $semestre = $request->input('semestre');
 
-        return getNotasPivot($aluno, $ano, $semestre);
+        /*return getNotasPivot($aluno, $ano, $semestre);*/
     }
 }

@@ -6,31 +6,24 @@ use Illuminate\Http\Request;
 
 class LySimuladorNotaFormulaController extends Controller
 {   
-    public function simular (Request $request)
+    public function simular(Request $request)
     {
-        $formula_mp = session('formula_mp');
-        $formula_nm = session('formula_nm');
+        $c1 = floatval($request->input('c1', 0));
+        $c2 = floatval($request->input('c2', 0));
+        $c3 = floatval($request->input('c3', 0));
+    
+        // Calculando a média das provas
+        $mediaAritmetica = round(($c1 + $c2 + $c3) / 3, 2);
+    
+        // Cálculo da média da prova final
+        $mediaProvaFinal = round((5 - ($mediaAritmetica * 0.6)) / 0.4, 2);
 
-        $c1 = $request->input('c1', 0);
-        $c2 = $request->input('c2', 0);
-        $c3 = $request->input('c3', 0);
-
-        $expressao_mp = str_replace(['C1', 'C2', 'C3'], [$c1, $c2, $c3], $formula_mp);
-        $expressao_nm = str_replace(['C1', 'C2', 'C3'], [$c1, $c2, $c3], $formula_nm);
-
-        try {
-            $resultado_mp = eval("return $expressao_mp;");
-            $resultado_nm = eval("return $expressao_nm;");
-        } catch (\Throwable $e) {
-            return response()->json(['error' => 'Invalid Formula'], 400);
-        }
-
-        $mediaAritmetica = $resultado_mp;
-        $mediaProvaFinal = ((5.02 - $resultado_nm) / 0.4);
-
+        $mediaProvaFinal = ceil($mediaProvaFinal * 20) / 20;
+    
         return response()->json([
-            'mediaAritmetica' => $mediaAritmetica,
-            'mediaProvaFinal' => $mediaProvaFinal,
+            'mediaAritmetica' => number_format($mediaAritmetica, 2, '.', ''),
+            'mediaProvaFinal' => number_format($mediaProvaFinal, 2, '.', ''),
         ]);
-    }
+    }    
+    
 }
