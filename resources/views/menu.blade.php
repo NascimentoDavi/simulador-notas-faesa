@@ -106,7 +106,6 @@
         })
         .then(response => response.json())
         .then(data => {
-
             const notasArray = Object.values(data.notas);
 
             console.log(notasArray);

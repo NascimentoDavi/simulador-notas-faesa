@@ -46,7 +46,6 @@ class LoginController extends Controller
 
         // Condicional para formula e selecao de tabela
 
-
         // GET NOTAS
         $notaController = app(LyNotaController::class);
         $notasPivot = $notaController->getNotasPivot($aluno, $anoAtual, $semestreAtual);
