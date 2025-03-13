@@ -44,9 +44,6 @@ class LoginController extends Controller
         // GET CURSO
         $curso = $alunoController->getCursoFromAluno($aluno);
 
-        // Condicional para formula e selecao de tabela
-
-
         // GET NOTAS
         $notaController = app(LyNotaController::class);
         $notasPivot = $notaController->getNotasPivot($aluno, $anoAtual, $semestreAtual);

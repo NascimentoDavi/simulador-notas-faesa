@@ -4,14 +4,10 @@
 
 @section('content')
 
-<style>
-    
-</style>
-
 <div class="container">
 
     <div class="row">
-        
+
         <div class="col-lg-10 col-md-12 mx-auto">
             
             <div class="mb-3 p-0">
@@ -23,7 +19,8 @@
                         <div class="my-1">
                             <div class="row">
 
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                <!-- Select Ano -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                     <select class="form-select" name="ano" id="anoSelect">
                                         <option value="2025">2025</option>
                                         <option value="2024">2024</option>
@@ -31,28 +28,30 @@
                                     </select>
                                 </div>
 
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                <!-- Select Semestre -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                     <select class="form-select" name="semestre" id="semestreSelect">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                     </select>
                                 </div>
 
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                <!-- Button Pesquisar -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 d-flex align-items-center justify-content-center">
                                     <button class="btn btn-primary">Pesquisar</button>
                                 </div>
 
                             </div>
                         </div>
                     </form>
-
                 </div>
-                  
-                <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h4>
-                <h6 class="d-block d-sm-none m-0">{{ $aluno->ALUNO }}</h4>
+
+                <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h6>
+                <h6 class="d-block d-sm-none m-0">{{ $aluno->ALUNO }}</h6>
                 <h6 class="d-block d-sm-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>
             </div>
 
+            <!-- Table -->
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="grades-table">
                     <thead class="table-dark">
@@ -79,41 +78,47 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
 
 <script>
     document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        const ano = document.getElementById("anoSelect").value;
-        const semestre = document.getElementById("semestreSelect").value;
+    event.preventDefault();
+    
+    const ano = document.getElementById("anoSelect").value;
+    const semestre = document.getElementById("semestreSelect").value;
 
-        const requestData = {
-            ano: ano,
-            semestre: semestre
-        }
+    const requestData = {
+        ano: ano,
+        semestre: semestre
+    }
 
-        fetch("{{ route('getNotas') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            const notasArray = Object.values(data.notas);
+    fetch("{{ route('getNotas') }}", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const notasArray = Object.values(data.notas);
 
-            console.log(notasArray);
+        let tableBody = document.getElementById("grades-table").getElementsByTagName('tbody')[0];
 
-            let tableBody = document.getElementById("grades-table").getElementsByTagName('tbody')[0];
+        // Limpar tabela antes de adicionar novos dados
+        tableBody.innerHTML = '';
 
-            tableBody.innerHTML = '';
-
+        if (notasArray.length === 0) {
+            // Criar uma linha informando que não há notas
+            let row = tableBody.insertRow();
+            let cell = row.insertCell(0);
+            cell.colSpan = 5; // Mesclar todas as colunas
+            cell.classList.add("text-center", "fw-bold"); // Adicionar estilos
+            cell.textContent = "Nenhuma nota encontrada";
+        } else {
             notasArray.forEach(nota => {
                 let row = tableBody.insertRow();
 
@@ -123,9 +128,11 @@
                 row.insertCell(3).textContent = nota.C2 !== null && nota.C2 !== undefined ? nota.C2 : '-';
                 row.insertCell(4).textContent = nota.C3 !== null && nota.C3 !== undefined ? nota.C3 : '-';
             });
-        })
-        .catch(error => console.error("Erro ao processar a simulação:", error));
-    });
+        }
+    })
+    .catch(error => console.error("Erro ao processar a simulação:", error));
+});
+
 </script>
 
 @endsection
