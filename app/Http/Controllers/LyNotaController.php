@@ -10,7 +10,7 @@ class LyNotaController extends Controller
 {
     public function getNotasPivot($aluno, $anoAtual, $semestreAtual)
     {
-        if($aluno['CURSO'] == '3006') {
+        if(session('curso')->CURSO == '3006') {
             $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->where('LY_NOTA.ALUNO', '=', $aluno['ALUNO'])
             ->where('LY_NOTA.ANO', '=', $anoAtual)
@@ -45,7 +45,7 @@ class LyNotaController extends Controller
                 'C3' => null
             ];
 
-            if($aluno['CURSO'] == '3006') {
+            if(session('curso')->CURSO == '3006') {
                 foreach ($group as $nota) {
                     if ($nota->PROVA == 'C1') {
                         $groupedData['C1'] = $nota->CONCEITO;
@@ -76,6 +76,10 @@ class LyNotaController extends Controller
         $ano = $request->input('ano');
         $semestre = $request->input('semestre');
 
-        return getNotasPivot($aluno, $ano, $semestre);
+        // Chama o método getNotasPivot corretamente
+        $notas = $this->getNotasPivot($aluno, $ano, $semestre);
+
+        // Retorna os dados como JSON
+        return response()->json(['notas' => $notas]);
     }
 }
