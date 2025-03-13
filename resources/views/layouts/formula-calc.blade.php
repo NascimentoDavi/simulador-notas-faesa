@@ -83,12 +83,10 @@
         Média aritmética: (C1+C2+C3)/3
     </div>
 </div>
-</div>
-
 
 
 <script>
-    document.getElementById("simularForm").addEventListener("submit", function(event) {
+document.getElementById("simularForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Impede o envio do formulário
 
         const c1 = document.getElementById("notaC1").value;
