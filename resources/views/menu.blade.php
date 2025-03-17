@@ -64,7 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($notasPivot as $nota)
+                        {{-- @foreach($notasPivot as $nota)
                             <tr>
                                 <td data-label="Disciplina">{{ $nota->DISCIPLINA }}</td>
                                 <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
@@ -74,7 +74,7 @@
                                 <td data-label="C2">{{ $nota->C2 }}</td>
                                 <td data-label="C3">{{ $nota->C3 }}</td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -83,55 +83,34 @@
 </div>
 
 <script>
+
     document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const ano = document.getElementById("anoSelect").value;
-    const semestre = document.getElementById("semestreSelect").value;
+        event.preventDefault(); // Impede envio padrão do formulário. Não recarrega a página
 
-    const requestData = {
-        ano: ano,
-        semestre: semestre
-    }
+        const aluno = @json(session('aluno'));
+        const ano = document.getElementById("anoSelect").value;
+        const semestre = document.getElementById("semestreSelect").value;
 
-    fetch("{{ route('getNotas') }}", {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        const notasArray = Object.values(data.notas);
-
-        let tableBody = document.getElementById("grades-table").getElementsByTagName('tbody')[0];
-
-        // Limpar tabela antes de adicionar novos dados
-        tableBody.innerHTML = '';
-
-        if (notasArray.length === 0) {
-            // Criar uma linha informando que não há notas
-            let row = tableBody.insertRow();
-            let cell = row.insertCell(0);
-            cell.colSpan = 5; // Mesclar todas as colunas
-            cell.classList.add("text-center", "fw-bold"); // Adicionar estilos
-            cell.textContent = "Nenhuma nota encontrada";
-        } else {
-            notasArray.forEach(nota => {
-                let row = tableBody.insertRow();
-
-                row.insertCell(0).textContent = nota.DISCIPLINA;
-                row.insertCell(1).textContent = nota.NOME_DISCIPLINA;
-                row.insertCell(2).textContent = nota.C1 !== null && nota.C1 !== undefined ? nota.C1 : '-';
-                row.insertCell(3).textContent = nota.C2 !== null && nota.C2 !== undefined ? nota.C2 : '-';
-                row.insertCell(4).textContent = nota.C3 !== null && nota.C3 !== undefined ? nota.C3 : '-';
-            });
+        const requestData = {
+            aluno: aluno,
+            ano: ano,
+            semestre: semestre
         }
+
+        fetch("{{ route('getNotas') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.error("erro ao buscar as notas", error));
     })
-    .catch(error => console.error("Erro ao processar a simulação:", error));
-});
 
 </script>
 

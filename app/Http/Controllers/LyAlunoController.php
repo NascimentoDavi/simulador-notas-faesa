@@ -4,19 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\LyAluno;
 use App\Models\LyCurso;
+use App\Services\LyAlunoService;
 use Illuminate\Http\Request;
 
 class LyAlunoController extends Controller
 {
+    protected $alunoService;
+
+    public function __construct(LyAlunoService $alunoService)
+    {
+        $this->alunoService = $alunoService;
+    }
+
     public function getAluno($pessoa)
     {
-        $aluno = LyAluno::where('NOME_COMPL', '=', $pessoa->NOME_COMPL)->first();
-        return $aluno;
+       return $this->alunoService->getAluno($pessoa);
     }
 
     public function getCursoFromAluno($aluno)
     {
-        $curso = LyCurso::where('CURSO', '=', $aluno['CURSO'])->first();
-        return $curso;
+        return $this->alunoService->getCursoFromAluno($aluno);
     }
 }
