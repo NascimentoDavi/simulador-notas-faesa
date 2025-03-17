@@ -6,13 +6,8 @@
             <button class="btn btn-outline-secondary" type="button">Disciplina</button>
             <select class="form-control border border-1 border-dark" id="disciplinaSelect" name="disciplina" style="width: 100%; max-width: 50%;">
                 <option value="">Selecione uma Disciplina</option>
-                @foreach($notasPivot as $nota)
-                <option value="{{ $nota->DISCIPLINA }}"
-                    data-c1="{{ $nota->C1 }}"
-                    data-c2="{{ $nota->C2 }}"
-                    data-c3="{{ $nota->C3 }}">
-                    {{ $nota->NOME_DISCIPLINA }}
-                </option>
+                @foreach(session('disciplinas', []) as $disciplina) <!-- Carrega as disciplinas da sessão -->
+                <option value="{{ $disciplina }}">{{ $disciplina }}</option> <!-- Exibe o código da disciplina -->
                 @endforeach
             </select>
         </div>
@@ -84,58 +79,74 @@
     </div>
 </div>
 
-
 <script>
-document.getElementById("simularForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Impede o envio do formulário
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("simularForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Impede o envio do formulário
 
-        const c1 = document.getElementById("notaC1").value;
-        const c2 = document.getElementById("notaC2").value;
-        const c3 = document.getElementById("notaC3").value;
+            const c1 = document.getElementById("notaC1").value;
+            const c2 = document.getElementById("notaC2").value;
+            const c3 = document.getElementById("notaC3").value;
+            const disciplina = document.getElementById("disciplinaSelect").value;
 
-        const requestData = {
-            c1: c1,
-            c2: c2,
-            c3: c3
-        }
+            if (!disciplina) {
+                alert("Selecione uma disciplina!");
+                return;
+            }
 
-        fetch("{{ route('simular') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(requestData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
-                document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
-            })
-            .catch(error => console.error("Erro ao processar a simulação:", error));
-    });
+            const requestData = {
+                c1: c1,
+                c2: c2,
+                c3: c3,
+                disciplina: disciplina
+            }
 
-    // Limpar os campos ao clicar no botão "Limpar"
-    document.getElementById("limparBtn").addEventListener("click", function() {
-        document.getElementById("notaMP").value = "";
-        document.getElementById("notaNM").value = "";
-    });
+            fetch("{{ route('simular') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
 
-    var curso = @json($curso -> CURSO);
-    var formula_nm = @json($formula_nm);
-    var formula_mp = @json($formula_mp);
+                    document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
+                    document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
+                })
+                .catch(error => console.error("Erro ao processar a simulação:", error));
+        });
 
-    document.getElementById('disciplinaSelect').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
+        // Limpar os campos ao clicar no botão "Limpar"
+        document.getElementById("limparBtn").addEventListener("click", function() {
+            document.getElementById("notaMP").value = "";
+            document.getElementById("notaNM").value = "";
+            document.getElementById("notaC1").value = "";
+            document.getElementById("notaC2").value = "";
+            document.getElementById("notaC3").value = "";
+        });
 
-        if (selectedOption.value) {
-            document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';
-            document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || '';
-            document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || '';
-        } else {
-            document.getElementById('notaC1').value = '';
-            document.getElementById('notaC2').value = '';
-            document.getElementById('notaC3').value = '';
-        }
+        var curso = @json($curso -> CURSO); // Corrigido: coloquei o espaço após o '->'
+        var formula_nm = @json($formula_nm);
+        var formula_mp = @json($formula_mp);
+
+        document.getElementById('disciplinaSelect').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+
+            if (selectedOption.value) {
+                document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';
+                document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || '';
+                document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || '';
+            } else {
+                document.getElementById('notaC1').value = '';
+                document.getElementById('notaC2').value = '';
+                document.getElementById('notaC3').value = '';
+            }
+        });
     });
 </script>

@@ -1,7 +1,7 @@
 <footer class="p-3 text-center fixed-bottom footer-bg-color">
-    Todos os Direitos Reservados
+    
     <br>
-    <div id="footer-links" class="d-flex flex-row justify-content-center">
+    <!--<div id="footer-links" class="d-flex flex-row justify-content-center">
         <a href="https://www.instagram.com/faesa_oficial/" target="_blank" class="social-icon">
             <i class="bi bi-instagram mx-2"></i>
         </a>
@@ -11,7 +11,7 @@
         <a href="https://api.whatsapp.com/send?1=pt_BR&phone=552721224100" target="_blank" class="social-icon">
             <i class="bi bi-whatsapp mx-2"></i>
         </a>
-    </div>
+    </div>-->
 </footer>
 
 <style>

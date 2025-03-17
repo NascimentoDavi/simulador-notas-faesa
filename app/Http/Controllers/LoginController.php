@@ -18,10 +18,10 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+
         // PESSOA
         $pessoaController = app(LyPessoaController::class);
         $pessoa = $pessoaController->getPessoa($request->input('login'));
-
         // ALUNO
         $alunoController = app(LyAlunoController::class);
         $aluno = $alunoController->getAluno($pessoa);
@@ -29,6 +29,16 @@ class LoginController extends Controller
         // MATRICULAS
         $disciplinaController = app(LyDisciplinaController::class);
         $matriculas = $disciplinaController->getMatriculas($aluno);
+
+        $disciplinas = $matriculas->pluck('DISCIPLINA');
+        $anos = $matriculas->pluck('ANO')->unique()->sort()->values();
+        $semestres = $matriculas->pluck('SEMESTRE')->unique()->sort()->values();
+        /*dd($disciplinas,$anos,$semestres);*/
+
+        $disciplinaController = app(LyDisciplinaController::class);
+        $notas = $disciplinaController->getNota($aluno);
+
+        /*dd($notas);*/
 
         if ($matriculas->isEmpty()) {
             return response()->view('error', [], 400);
@@ -44,18 +54,15 @@ class LoginController extends Controller
         // GET CURSO
         $curso = $alunoController->getCursoFromAluno($aluno);
 
-        // Condicional para formula e selecao de tabela
-
-        // GET NOTAS
-        $notaController = app(LyNotaController::class);
-        $notasPivot = $notaController->getNotasPivot($aluno, $anoAtual, $semestreAtual);
-
         session([
-            'notasPivot' => $notasPivot,
             'aluno' => $aluno,
+            'disciplinas' => $disciplinas,
+            'anos' => $anos,
+            'notas' => $notas,
+            'semestres' => $semestres,
             'curso' => $curso,
-            'formula_nm' => substr($formula->FORMULA_MF2, 1, 18),
             'formula_mp' => substr($formula->FORMULA_MF1, 0, 15),
+            'formula_field' => substr($formula->FL_FIELD_01, 0, 30),
         ]);
 
         return redirect()->intended('/menu');

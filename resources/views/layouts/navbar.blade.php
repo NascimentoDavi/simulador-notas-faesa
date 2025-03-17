@@ -9,7 +9,7 @@
 
         {{-- Navbar Brand --}}
         <a href="#" class="navbar-brand d-flex align-items-center me-sm-3 me-md-5 p-0">
-            <img class="m-0 p-0" src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">
+            <!--<img class="m-0 p-0" src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">-->
             <span class="ms-3" id="simulador-notas">Simulador de Notas</span>
         </a>
 

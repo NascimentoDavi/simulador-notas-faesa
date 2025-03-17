@@ -9,7 +9,7 @@ class LyDisciplina extends Model
 {
     use HasFactory;
     
-    protected $table = 'LY_DISCIPLINA';
+    protected $table = 'LY_TURMA';
 
     protected $fillable = [
         // It is not necessary to have fillabe fields. Only query application
@@ -18,10 +18,5 @@ class LyDisciplina extends Model
     public function alunos ()
     {
         return $this->belongsToMany(LyAluno::class, 'ly_matriculas')->withTimestamps();
-    }
-
-    public function notas ()
-    {
-        return $this->hasMany(LyNotas::class);
     }
 }
