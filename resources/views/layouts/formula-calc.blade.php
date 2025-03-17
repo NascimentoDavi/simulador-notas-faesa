@@ -5,8 +5,9 @@
         <div class="input-group d-flex justify-content-center" style="max-width: 500px; width: 100%;">
             <button class="btn btn-outline-secondary" type="button">Disciplina</button>
             <select class="form-control border border-1 border-dark" id="disciplinaSelect" name="disciplina" style="width: 100%; max-width: 50%;">
-                <option value="">Selecione uma Disciplina</option>
-                <!-- As opções de disciplinas serão inseridas aqui dinamicamente -->
+
+                
+
             </select>
         </div>
     </div>
@@ -77,7 +78,7 @@
 
 <script>
 document.getElementById("simularForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Impede o envio do formulário
+        event.preventDefault();
 
         const c1 = document.getElementById("notaC1").value;
         const c2 = document.getElementById("notaC2").value;

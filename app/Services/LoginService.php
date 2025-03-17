@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTOs\LoginDataDTO;
 use App\Services\LyAlunoService;
 use App\Services\LyPessoaService;
 use App\Services\LyDisciplinaService;
@@ -36,27 +37,25 @@ class LoginService
     {
         $pessoa = $this->pessoaService->getPessoa($login);
         if (!$pessoa) {
-            return ['error' => 'Pessoa não encontrada'];
+            return null;
         }
 
         $aluno = $this->alunoService->getAluno($pessoa);
         if (!$aluno) {
-            return ['error' => 'Aluno não encontrado'];
+            return null;
         }
 
         $matriculas = $this->disciplinaService->getMatriculas($aluno);
         if ($matriculas->isEmpty()) {
-            return ['error' => 'Nenhuma matrícula encontrada'];
+            return null;
         }
 
+        $notas = $this->disciplinaService->getNotas($aluno);
+
         $formula = $this->disciplinaService->getFormulaFromDisciplina($matriculas);
-        
         $curso = $this->alunoService->getCursoFromAluno($aluno);
 
-        return [
-            'aluno' => $aluno,
-            'curso' => $curso,
-            'formula' => $formula,
-        ];
+        // Retorna os dados encapsulados em um DTO - Data Transfer Objec
+        return LoginDataDTO::create($aluno, $curso, $formula, $notas);
     }
 }

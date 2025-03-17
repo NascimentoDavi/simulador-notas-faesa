@@ -19,25 +19,34 @@
                         <div class="my-1">
                             <div class="row">
 
-                                <!-- Select Ano -->
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <select class="form-select" name="ano" id="anoSelect">
-                                        <option value="2025">2025</option>
-                                        <option value="2024">2024</option>
-                                        <option value="2023">2023</option>
+                                        {{-- JavaScript --}}
                                     </select>
                                 </div>
 
-                                <!-- Select Semestre -->
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <select class="form-select" name="semestre" id="semestreSelect">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
+                                        <option value="1">1º Semestre</option>
+                                        <option value="2">2º Semestre</option>
                                     </select>
                                 </div>
 
-                                <!-- Button Pesquisar -->
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 d-flex align-items-center justify-content-center">
+                                <script>
+
+                                    const anoSelect = document.getElementById('anoSelect');
+                                    const currentYear = new Date().getFullYear();
+
+                                    for(let i = currentYear; i >= currentYear - 5; i--) {
+                                        const option = document.createElement('option');
+                                        option.value = i;
+                                        option.textContent = i;
+                                        anoSelect.appendChild(option);
+                                    }
+
+                                </script>
+
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <button class="btn btn-primary">Pesquisar</button>
                                 </div>
 
@@ -64,17 +73,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach($notasPivot as $nota)
-                            <tr>
-                                <td data-label="Disciplina">{{ $nota->DISCIPLINA }}</td>
-                                <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
-                                    {{ $nota->NOME_DISCIPLINA }}
-                                </td>
-                                <td data-label="C1">{{ $nota->C1 }}</td>
-                                <td data-label="C2">{{ $nota->C2 }}</td>
-                                <td data-label="C3">{{ $nota->C3 }}</td>
-                            </tr>
-                        @endforeach --}}
+                        @foreach(session('notas', []) as $nota)
+                        <tr>
+                            <td data-label="Disciplina">{{ $nota['DISCIPLINA'] }}</td>
+                            <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
+                                {{ $nota['DISCIPLINA'] }}
+                            </td>
+                            <td data-label="C1">{{ $nota['C1'] ?? 'NI' }}</td>
+                            <td data-label="C2">{{ $nota['C2'] ?? 'NI' }}</td>
+                            <td data-label="C3">{{ $nota['C3'] ?? 'NI' }}</td> <!-- Usando o operador null coalescing -->
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -84,33 +93,33 @@
 
 <script>
 
-    document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
-        event.preventDefault(); // Impede envio padrão do formulário. Não recarrega a página
+    // document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
+    //     event.preventDefault(); // Impede envio padrão do formulário. Não recarrega a página
 
-        const aluno = @json(session('aluno'));
-        const ano = document.getElementById("anoSelect").value;
-        const semestre = document.getElementById("semestreSelect").value;
+    //     const aluno = @json(session('aluno'));
+    //     const ano = document.getElementById("anoSelect").value;
+    //     const semestre = document.getElementById("semestreSelect").value;
 
-        const requestData = {
-            aluno: aluno,
-            ano: ano,
-            semestre: semestre
-        }
+    //     const requestData = {
+    //         aluno: aluno,
+    //         ano: ano,
+    //         semestre: semestre
+    //     }
 
-        fetch("{{ route('getNotas') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => console.error("erro ao buscar as notas", error));
-    })
+    //     fetch("{{ route('getNotas') }}", {
+    //         method: "POST",
+    //         headers: {
+    //             "X-CSRF-TOKEN": "{{ csrf_token() }}",
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(requestData)
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log(data);
+    //     })
+    //     .catch(error => console.error("erro ao buscar as notas", error));
+    // })
 
 </script>
 

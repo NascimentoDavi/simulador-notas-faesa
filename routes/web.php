@@ -27,14 +27,14 @@ Route::middleware([AuthMiddleware::class])->group(function () {
                         return redirect()->route('login');
                 }
 
-                $notasPivot = session('notasPivot');
                 $aluno = session('aluno');
                 $curso = session('curso');
+                $notas = session('notas');
                 $formula_nm = session('formula_nm');
                 $formula_mp = session('formula_mp');
 
                 // Passa os dados para a view
-                return view('menu', compact('notasPivot', 'aluno', 'curso', 'formula_nm', 'formula_mp'));
+                return view('menu', compact('aluno', 'curso', 'notas', 'formula_nm', 'formula_mp'));
         })->name('menu');
 
         Route::match(['get', 'post'], '/notas', [LyNotaController::class, 'getNotas'])->name('getNotas');
