@@ -6,6 +6,7 @@ use App\Models\LyMatricula;
 use App\Models\LyDisciplina;
 use App\Models\LyAluno;
 use App\Models\LyNota;
+use App\Models\LyNotaHistMatr;
 
 class LyDisciplinaService
 {
@@ -86,10 +87,38 @@ class LyDisciplinaService
      * @param string $semestre O semestre para filtrar as notas.
      * @return array Array com as notas filtradas por ano e semestre.
      */
-    public function getNotasAnoSemestre($aluno, $ano, $semestre)
+    public function getNotaAnoSemestre($aluno, $ano, $semestre)
     {
-        $matriculas = $this->getMatriculas($aluno);        
-        $notas = [];
-        return $notas;
+        $matriculas = $this->getMatriculas($aluno);
+
+        $disciplinas = LyDisciplina::whereIn('DISCIPLINA', $matriculas->pluck('DISCIPLINA'))->get();
+
+        $notas = LyNotaHistMatr::join('ly_disciplina', 'LY_NOTA.DISCIPLINA', '=', 'ly_disciplina.DISCIPLINA')
+            ->select(
+                'LyNotaHistMatr.DISCIPLINA',
+                'LyNotaHistMatr.NOTA_ID',
+                'LyNotaHistMatr.CONCEITO',
+                'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
+            )
+            ->where('LyNotaHistMatr.ALUNO', $aluno['ALUNO'])
+            ->where('LyNotaHistMatr.ANO', $ano)
+            ->where('LyNotaHistMatr.SEMESTRE', $semestre)
+            ->whereIn('LyNotaHistMatr.NOTA_ID', ['C1', 'C2', 'C3'])
+            ->get()
+            ->groupBy('DISCIPLINA');
+
+        $notasOrganizadas = $disciplinas->map(function ($disciplina) use ($notas) {
+            $notasDisciplina = $notas->get($disciplina->DISCIPLINA, collect());
+
+            return [
+                'DISCIPLINA' => $disciplina->DISCIPLINA,
+                'NOME_DISCIPLINA' => $disciplina->NOME,
+                'C1' => $notasDisciplina->where('NOTA_ID', 'C1')->first()->CONCEITO ?? '-',
+                'C2' => $notasDisciplina->where('NOTA_ID', 'C2')->first()->CONCEITO ?? '-',
+                'C3' => $notasDisciplina->where('NOTA_ID', 'C3')->first()->CONCEITO ?? '-',
+            ];
+        });
+
+        return $notasOrganizadas;
     }
 }

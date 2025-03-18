@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LyLoginController;
 use App\Http\Controllers\LyNotaController;
+use App\Http\Controllers\LyDisciplinaController;
 use App\Http\Controllers\LySimuladorNotaFormulaController;
 use App\Http\Middleware\AuthMiddleware;
 
@@ -37,7 +38,9 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         return view('menu', compact('aluno', 'curso', 'notas', 'formula_nm', 'formula_mp'));
         })->name('menu');
 
-        Route::match(['get', 'post'], '/notas', [LyNotaController::class, 'getNotas'])->name('getNotas');
+        Route::match(['get', 'post'], '/notas', [LyDisciplinaController::class, 'getNotas'])->name('getNotas');
+
+        Route::match(['get', 'post'], '/notas-por-periodo/{aluno}/{ano}/{semestre}', [LyDisciplinaController::class, 'getNotaAnoSemestre'])->name('getNotasAnoSemestre');
 
         Route::post('/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
         

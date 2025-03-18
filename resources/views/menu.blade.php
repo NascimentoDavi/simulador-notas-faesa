@@ -97,33 +97,24 @@
 
 <script>
 
-    // document.getElementById("notasPorPeriodo").addEventListener("submit", function(event) {
-    //     event.preventDefault(); // Impede envio padrão do formulário. Não recarrega a página
+    document.getElementById('notasPorPeriodo').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    //     const aluno = @json(session('aluno'));
-    //     const ano = document.getElementById("anoSelect").value;
-    //     const semestre = document.getElementById("semestreSelect").value;
+        let formData = new FormData(this);
 
-    //     const requestData = {
-    //         aluno: aluno,
-    //         ano: ano,
-    //         semestre: semestre
-    //     }
-
-    //     fetch("{{ route('getNotas') }}", {
-    //         method: "POST",
-    //         headers: {
-    //             "X-CSRF-TOKEN": "{{ csrf_token() }}",
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(requestData)
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log(data);
-    //     })
-    //     .catch(error => console.error("erro ao buscar as notas", error));
-    // })
+        fetch('/notas-por-periodo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.error('Erro: ', error));
+    });
 
 </script>
 

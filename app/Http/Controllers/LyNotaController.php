@@ -65,4 +65,9 @@ class LyNotaController extends Controller
         // Retornar o array com os dados agrupados
         return response()->json($notasAgrupadas);
     }
+
+    public function getNotasPorPeriodo()
+    {
+        //
+    }
 }

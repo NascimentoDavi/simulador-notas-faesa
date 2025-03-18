@@ -33,4 +33,9 @@ class LyDisciplinaController extends Controller
     {
         return $this->disciplinaService->getNotas($aluno);
     }
+
+    public function getNotaAnoSemestre($aluno, $ano, $semestre)
+    {
+        return $this->disciplinaService->getNotaAnoSemestre($aluno, $ano, $semestre);
+    }
 }
