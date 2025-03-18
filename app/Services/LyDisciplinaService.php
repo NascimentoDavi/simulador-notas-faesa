@@ -46,10 +46,8 @@ class LyDisciplinaService
     {
         $matriculas = $this->getMatriculas($aluno);
 
-        // Vamos buscar as disciplinas que o aluno está matriculado
         $disciplinas = LyDisciplina::whereIn('DISCIPLINA', $matriculas->pluck('DISCIPLINA'))->get();
 
-        // Agora, busque as notas do aluno para essas disciplinas
         $notas = LyNota::join('ly_disciplina', 'LY_NOTA.DISCIPLINA', '=', 'ly_disciplina.DISCIPLINA')
             ->select(
                 'LY_NOTA.DISCIPLINA',
@@ -64,9 +62,7 @@ class LyDisciplinaService
             ->get()
             ->groupBy('DISCIPLINA');
 
-        // Vamos agora garantir que mesmo que não existam notas para a disciplina, ela será exibida com nome e notas vazias.
         $notasOrganizadas = $disciplinas->map(function ($disciplina) use ($notas) {
-            // Obter as notas para a disciplina ou definir valores padrão
             $notasDisciplina = $notas->get($disciplina->DISCIPLINA, collect());
 
             return [

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\LoginService;
+use App\Services\LyLoginService;
 use App\DTOs\LoginDataDTO;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class LyLoginController extends Controller
 {
     protected $loginService;
 
-    public function __construct(LoginService $loginService)
+    public function __construct(LyLoginService $loginService)
     {
         $this->loginService = $loginService;
     }

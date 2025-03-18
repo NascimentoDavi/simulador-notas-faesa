@@ -18,47 +18,51 @@
                         @csrf
                         <div class="my-1">
                             <div class="row">
-
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                
+                                <!-- Campo de Ano -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                     <select class="form-select" name="ano" id="anoSelect">
                                         {{-- JavaScript --}}
                                     </select>
                                 </div>
-
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                
+                                <!-- Campo de Semestre -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                     <select class="form-select" name="semestre" id="semestreSelect">
                                         <option value="1">1º Semestre</option>
                                         <option value="2">2º Semestre</option>
                                     </select>
                                 </div>
-
-                                <script>
-
-                                    const anoSelect = document.getElementById('anoSelect');
-                                    const currentYear = new Date().getFullYear();
-
-                                    for(let i = currentYear; i >= currentYear - 5; i--) {
-                                        const option = document.createElement('option');
-                                        option.value = i;
-                                        option.textContent = i;
-                                        anoSelect.appendChild(option);
-                                    }
-
-                                </script>
-
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <button class="btn btn-primary">Pesquisar</button>
+                
+                                <!-- Botão Pesquisar -->
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mx-auto mx-md-0">
+                                    <button class="btn btn-primary w-100">Pesquisar</button>
                                 </div>
-
+                
                             </div>
                         </div>
                     </form>
                 </div>
-
-                <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h6>
-                <h6 class="d-block d-sm-none m-0">{{ $aluno->ALUNO }}</h6>
-                <h6 class="d-block d-sm-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>
-            </div>
+                
+                <div class="mb-2">
+                    <!-- Exibição de Informações do Aluno -->
+                    <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h6>
+                    <h6 class="d-block d-md-none m-0">{{ $aluno->ALUNO }}</h6>
+                    <h6 class="d-block d-md-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>
+                </div>
+                
+                <script>
+                    const anoSelect = document.getElementById('anoSelect');
+                    const currentYear = new Date().getFullYear();
+                
+                    for (let i = currentYear; i >= currentYear - 5; i--) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        anoSelect.appendChild(option);
+                    }
+                </script>
+                
 
             <!-- Table -->
             <div class="table-responsive">

@@ -5,9 +5,11 @@
         <div class="input-group d-flex justify-content-center" style="max-width: 500px; width: 100%;">
             <button class="btn btn-outline-secondary" type="button">Disciplina</button>
             <select class="form-control border border-1 border-dark" id="disciplinaSelect" name="disciplina" style="width: 100%; max-width: 50%;">
-
-                
-
+                @foreach ($notas as $nota)
+                    <option value="{{ $nota['DISCIPLINA'] }}" data-c1="{{ $nota['C1'] }}" data-c2="{{ $nota['C2'] }}" data-c3="{{ $nota['C3'] }}">
+                        {{ $nota['NOME_DISCIPLINA'] }}
+                    </option>
+                @endforeach
             </select>
         </div>
     </div>
@@ -71,14 +73,13 @@
         *NM = Nota mínima necessária na avaliação final
         <br>
         <br>
-        Média aritmética: (C1+C2+C3)/3
     </div>
 </div>
 
 
 <script>
 document.getElementById("simularForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Formulário não é enviado
 
         const c1 = document.getElementById("notaC1").value;
         const c2 = document.getElementById("notaC2").value;
@@ -116,10 +117,9 @@ document.getElementById("simularForm").addEventListener("submit", function(event
     var formula_nm = @json($formula_nm);
     var formula_mp = @json($formula_mp);
 
+    // Quando a disciplina for selecionada, as notas C1, C2 e C3 serão preenchidas
     document.getElementById('disciplinaSelect').addEventListener('change', function() {
         var selectedOption = this.options[this.selectedIndex];
-
-        console.log(selectedOption.attributes);
 
         if (selectedOption.value) {
             document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';
@@ -131,4 +131,15 @@ document.getElementById("simularForm").addEventListener("submit", function(event
             document.getElementById('notaC3').value = '';
         }
     });
+
+    document.getElementById('disciplinaSelect').addEventListener('change', function() {
+        // Obtém a disciplina selecionada
+        var selectedOption = this.options[this.selectedIndex];
+        
+        // Preenche os campos C1, C2, C3 com as notas da disciplina selecionada
+        document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';  // C1
+        document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || '';  // C2
+        document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || '';  // C3
+    });
+
 </script>

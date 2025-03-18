@@ -7,14 +7,14 @@ use App\Services\LyAlunoService;
 use App\Services\LyPessoaService;
 use App\Services\LyDisciplinaService;
 
-class LoginService
+class LyLoginService
 {
     protected $alunoService;
     protected $pessoaService;
     protected $disciplinaService;
 
     /**
-     * Construtor do LoginService.
+     * Construtor do LyLoginService.
      *
      * @param LyAlunoService $alunoService
      * @param LyPessoaService $pessoaService
