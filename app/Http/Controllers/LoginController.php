@@ -23,17 +23,13 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $login = $request->input('login');
-        
-        // Chama o LoginService para realizar o login
+        $login = $request->input('login');        
         $loginDataDTO = $this->loginService->realizarLogin($login);
 
-        // Verifica se o DTO é nulo, o que indica erro
         if (!$loginDataDTO) {
             return response()->view('error', ['message' => 'Erro no login'], 400);
         }
-
-        // Cria a sessão com os dados do login a partir do DTO
+        
         session([
             'aluno' => $loginDataDTO->aluno,
             'curso' => $loginDataDTO->curso,

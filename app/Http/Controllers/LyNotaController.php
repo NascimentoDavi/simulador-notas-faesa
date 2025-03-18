@@ -16,10 +16,8 @@ class LyNotaController extends Controller
         $semestreAtual = 1; // Exemplo, ajuste conforme seu caso
         $curso = $aluno['CURSO'];
 
-        // Variável para armazenar as notas
         $notas = [];
 
-        // Verificando o curso do aluno
         if ($curso == '3006') {
             // Caso o curso seja '3006', utilizar a tabela 'LY_NOTA'
             $notas = DB::table('LY_NOTA')
@@ -42,7 +40,6 @@ class LyNotaController extends Controller
                 ->get();
         }
 
-        // Agrupando os resultados por DISCIPLINA e organizando as provas (C1, C2, C3)
         $notasAgrupadas = $notas->groupBy('DISCIPLINA')->map(function ($group) {
             $groupedData = [
                 'DISCIPLINA' => $group->first()->DISCIPLINA,

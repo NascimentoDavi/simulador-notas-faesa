@@ -77,11 +77,11 @@
                         <tr>
                             <td data-label="Disciplina">{{ $nota['DISCIPLINA'] }}</td>
                             <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
-                                {{ $nota['DISCIPLINA'] }}
+                                {{ $nota['NOME_DISCIPLINA'] }}
                             </td>
                             <td data-label="C1">{{ $nota['C1'] ?? 'NI' }}</td>
                             <td data-label="C2">{{ $nota['C2'] ?? 'NI' }}</td>
-                            <td data-label="C3">{{ $nota['C3'] ?? 'NI' }}</td> <!-- Usando o operador null coalescing -->
+                            <td data-label="C3">{{ $nota['C3'] ?? 'NI' }}</td> 
                         </tr>
                         @endforeach
                     </tbody>
