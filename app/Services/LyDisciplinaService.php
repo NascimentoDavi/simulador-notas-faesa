@@ -6,7 +6,6 @@ use App\Models\LyMatricula;
 use App\Models\LyDisciplina;
 use App\Models\LyAluno;
 use App\Models\LyNota;
-use App\Models\LyNotaHistMatr;
 
 class LyDisciplinaService
 {
@@ -47,30 +46,38 @@ class LyDisciplinaService
     {
         $matriculas = $this->getMatriculas($aluno);
 
-        $notas = LyNotaHistMatr::join('ly_disciplina', 'ly_nota_histmatr.DISCIPLINA', '=', 'ly_disciplina.DISCIPLINA')
+        // Vamos buscar as disciplinas que o aluno está matriculado
+        $disciplinas = LyDisciplina::whereIn('DISCIPLINA', $matriculas->pluck('DISCIPLINA'))->get();
+
+        // Agora, busque as notas do aluno para essas disciplinas
+        $notas = LyNota::join('ly_disciplina', 'LY_NOTA.DISCIPLINA', '=', 'ly_disciplina.DISCIPLINA')
             ->select(
-                'LY_NOTA_HISTMATR.DISCIPLINA',
-                'LY_NOTA_HISTMATR.NOTA_ID',
-                'LY_NOTA_HISTMATR.CONCEITO',
+                'LY_NOTA.DISCIPLINA',
+                'LY_NOTA.PROVA',
+                'LY_NOTA.CONCEITO',
                 'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
             )
-            ->where('ly_nota_histmatr.ALUNO', $aluno['ALUNO'])
-            ->where('ly_nota_histmatr.ANO', '2024')
-            ->where('ly_nota_histmatr.SEMESTRE', '1')
-            ->whereIn('ly_nota_histmatr.NOTA_ID', ['C1', 'C2', 'C3'])
+            ->where('LY_NOTA.ALUNO', $aluno['ALUNO'])
+            ->where('LY_NOTA.ANO', $matriculas->pluck('ANO'))
+            ->where('LY_NOTA.SEMESTRE', $matriculas->pluck('SEMESTRE'))
+            ->whereIn('LY_NOTA.PROVA', ['C1', 'C2', 'C3'])
             ->get()
             ->groupBy('DISCIPLINA');
 
-        $notasOrganizadas = $notas->map(function ($group) {
-            $groupedData = [
-                'DISCIPLINA' => $group->first()->DISCIPLINA,
-                'NOME_DISCIPLINA' => $group->first()->NOME_DISCIPLINA,
-                'C1' => $group->where('NOTA_ID', 'C1')->first()->CONCEITO ?? 'NI',
-                'C2' => $group->where('NOTA_ID', 'C2')->first()->CONCEITO ?? 'NI',
-                'C3' => $group->where('NOTA_ID', 'C3')->first()->CONCEITO ?? 'NI',
+        // Vamos agora garantir que mesmo que não existam notas para a disciplina, ela será exibida com nome e notas vazias.
+        $notasOrganizadas = $disciplinas->map(function ($disciplina) use ($notas) {
+            // Obter as notas para a disciplina ou definir valores padrão
+            $notasDisciplina = $notas->get($disciplina->DISCIPLINA, collect());
+
+            return [
+                'DISCIPLINA' => $disciplina->DISCIPLINA,
+                'NOME_DISCIPLINA' => $disciplina->NOME,
+                'C1' => $notasDisciplina->where('PROVA', 'C1')->first()->CONCEITO ?? '-',
+                'C2' => $notasDisciplina->where('PROVA', 'C2')->first()->CONCEITO ?? '-',
+                'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? '-',
             ];
-            return $groupedData;
         });
+
         return $notasOrganizadas;
     }
 

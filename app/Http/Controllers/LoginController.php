@@ -29,7 +29,7 @@ class LoginController extends Controller
         if (!$loginDataDTO) {
             return response()->view('error', ['message' => 'Erro no login'], 400);
         }
-        
+
         session([
             'aluno' => $loginDataDTO->aluno,
             'curso' => $loginDataDTO->curso,

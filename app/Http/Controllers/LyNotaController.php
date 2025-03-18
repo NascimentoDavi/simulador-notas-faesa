@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\LyNota;
-use App\Models\LyNotaHistMatr;
 use Illuminate\Http\Request;
 
 class LyNotaController extends Controller
