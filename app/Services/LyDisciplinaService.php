@@ -18,7 +18,7 @@ class LyDisciplinaService
      */
     public function getMatriculas($aluno)
     {
-        return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])->get('DISCIPLINA');
+        return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])->get(['DISCIPLINA', 'ANO', 'SEMESTRE']);
     }
 
     /**
@@ -49,7 +49,7 @@ class LyDisciplinaService
 
         $disciplinas = LyDisciplina::whereIn('DISCIPLINA', $matriculas->pluck('DISCIPLINA'))->get();
 
-        $notas = LyNota::join('ly_disciplina', 'LY_NOTA.DISCIPLINA', '=', 'ly_disciplina.DISCIPLINA')
+        $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->select(
                 'LY_NOTA.DISCIPLINA',
                 'LY_NOTA.PROVA',
@@ -57,8 +57,8 @@ class LyDisciplinaService
                 'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
             )
             ->where('LY_NOTA.ALUNO', $aluno['ALUNO'])
-            ->where('LY_NOTA.ANO', $matriculas->pluck('ANO'))
-            ->where('LY_NOTA.SEMESTRE', $matriculas->pluck('SEMESTRE'))
+            ->where('LY_NOTA.ANO', $matriculas->pluck('ANO')->toArray()[0])
+            ->where('LY_NOTA.SEMESTRE', $matriculas->pluck('SEMESTRE')->toArray()[0])
             ->whereIn('LY_NOTA.PROVA', ['C1', 'C2', 'C3'])
             ->get()
             ->groupBy('DISCIPLINA');
@@ -69,9 +69,9 @@ class LyDisciplinaService
             return [
                 'DISCIPLINA' => $disciplina->DISCIPLINA,
                 'NOME_DISCIPLINA' => $disciplina->NOME,
-                'C1' => $notasDisciplina->where('PROVA', 'C1')->first()->CONCEITO ?? '-',
-                'C2' => $notasDisciplina->where('PROVA', 'C2')->first()->CONCEITO ?? '-',
-                'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? '-',
+                'C1' => $notasDisciplina->where('PROVA', 'C1')->first()->CONCEITO ?? 0,
+                'C2' => $notasDisciplina->where('PROVA', 'C2')->first()->CONCEITO ?? 0,
+                'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? 0
             ];
         });
 

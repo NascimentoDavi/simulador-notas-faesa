@@ -56,6 +56,6 @@ class LyLoginService
         $curso = $this->alunoService->getCursoFromAluno($aluno);
 
         // Retorna os dados encapsulados em um DTO - Data Transfer Objec
-        return LoginDataDTO::create($aluno, $curso, $formula, $notas);
+        return LoginDataDTO::create($aluno, $curso, $formula, $notas, );
     }
 }

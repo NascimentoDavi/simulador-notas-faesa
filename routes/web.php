@@ -42,6 +42,5 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
         Route::match(['get', 'post'], '/notas-por-periodo/{aluno}/{ano}/{semestre}', [LyDisciplinaController::class, 'getNotaAnoSemestre'])->name('getNotasAnoSemestre');
 
-        Route::post('/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
-        
+        Route::match(['get', 'post'],'/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
 });

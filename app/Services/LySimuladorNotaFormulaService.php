@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class SimuladorNotaFormulaService
+class LySimuladorNotaFormulaService
 {
 
     /**
@@ -15,7 +15,6 @@ class SimuladorNotaFormulaService
      */
     public function simularNotas($c1, $c2, $c3)
     {
-        
         // Calculando a média das provas
         $mediaAritmetica = round(($c1 + $c2 + $c3) / 3, 2);
             

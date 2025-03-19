@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(LyDisciplinaService::class, function ($app) {
             return new LyDisciplinaService();
         });
+
+        $this->app->singleton(LySimuladorNotaFormulaService::class, function ($app) {
+            return new LySimuladorNotaFormulaService();
+        });
     
         $this->app->singleton(LyLoginService::class, function ($app) {
             return new LyLoginService(

@@ -19,8 +19,8 @@ class LySimuladorNotaFormulaController extends Controller
     public function simular(Request $request)
     {
         $c1 = floatval($request->input('c1', 0));
-        $c1 = floatval($request->input('c1', 0));
-        $c1 = floatval($request->input('c1', 0));
+        $c2 = floatval($request->input('c2', 0));
+        $c3 = floatval($request->input('c3', 0));
 
         $result = $this->simuladorNotaFormulaService->simularNotas($c1, $c2, $c3);
 
