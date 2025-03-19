@@ -6,64 +6,65 @@ use Illuminate\Support\Facades\Http;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use DB;
 
 class AuthMiddleware
 {
-    protected $publicRoutes = ['beginning', 'logout', 'login'];
-
     public function handle(Request $request, Closure $next)
     {
-        if (in_array($request->route()->getName(), $this->publicRoutes)) {
+        if (in_array($request->route()->getName(), ['beginning', 'logout'])) {
             return $next($request);
         }
 
         if ($request->route()->getName() == 'login') {
             $credentials = [
-                'username' => $request->login,
-                'password' => $request->senha,
+                'username' => $request->input('login'),
+                'password' => $request->input('senha'),
             ];
 
-            $apiResponse = $this->getApiData($credentials);
+            // API DATA
+            $response = $this->getApiData($credentials);
 
-            if ($apiResponse['status'] === 200) {
+            if ($response['success']) {
                 return $next($request);
             } else {
-                Log::error('Login failed: ' . $apiResponse['message']);
-                return redirect()->back()->with('error', $apiResponse['message']);
+                return redirect()->back()->with('error', "Invalid Credentials");
             }
         }
 
         return $next($request);
     }
 
-    /**
-     * Faz a requisição para a API de autenticação
-     *
-     * @param array $credentials
-     * @return array
-     */
-    public function getApiData(array $credentials)
+    public function getApiData(array $credentials): array
     {
-        $apiUrl = env('API_URL', 'http://faesa-mobile-api.faesa.br/api/v1/app-faesa/auth');
-        $apiKey = env('API_KEY', 'ppzU5NqaBpzuaGDy');
+        $apiUrl = config('services.faesa.api_url');
+        $apiKey = env('FAESA_API_KEY');
 
         try {
             $response = Http::withHeaders([
-                'Accept' => "application/json",
-                "Authorization" => $apiKey
+                'Accept'        => "application/json",
+                'Authorization' => $apiKey
             ])
-            ->withBody(json_encode($credentials), 'application/json')
-            ->post($apiUrl);
+            ->timeout(5)
+            ->post($apiUrl, $credentials);
 
             if ($response->successful()) {
-                return ['status' => 200, 'message' => 'Success'];
-            } else {
-                return ['status' => $response->status(), 'message' => $response->body()];
+                return [
+                    'success' => true,
+                    'data'    => $response->json()
+                ];
             }
+
+            return [
+                'success' => false,
+                'message' => 'Invalid Credentials',
+                'status'  => $response->status()
+            ];
         } catch (\Exception $e) {
-            Log::error('API request failed: ' . $e->getMessage());
-            return ['status' => 500, 'message' => 'Failed to contact the authentication API'];
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
         }
     }
 }
