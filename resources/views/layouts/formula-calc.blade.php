@@ -33,7 +33,7 @@
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
-                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0" max="10" style="max-width: 90px;" id="notaC3" value="" oninput="limitarValor(this)">
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0.00" max="10.00" style="max-width: 90px;" id="notaC3" value="" oninput="limitarValor(this)">
                 </div>
             </div>
         </div>
@@ -41,11 +41,24 @@
     
     <script>
         function limitarValor(input) {
-            let valor = parseFloat(input.value);
+            let valor = input.value;
+    
+            // Verifica se o valor é um número válido
+            if (isNaN(valor)) return;
+    
+            // Limita a quantidade de caracteres após o ponto decimal a dois
+            let partes = valor.split('.');
+            if (partes.length > 1) {
+                partes[1] = partes[1].substring(0, 2); // Limita a 2 casas decimais
+                input.value = partes.join('.'); // Junta novamente as partes
+            }
+    
+            // Limita o valor para estar entre 0 e 10
+            valor = parseFloat(input.value);
             if (valor < 0) {
-                input.value = 0;
+                input.value = '0.00';
             } else if (valor > 10) {
-                input.value = 10;
+                input.value = '10.00';
             }
         }
     </script>
@@ -114,13 +127,20 @@ document.getElementById("simularForm").addEventListener("submit", function(event
             .then(response => response.json())
             .then(data => {
                 document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
-                document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
+                if(c1 + c2 + c3 < 0.16) {
+                    document.getElementById('notaNM').value = ' ';
+                } else {
+                    document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
+                }
             })
             .catch(error => console.error("Erro ao processar a simulação:", error));
     });
 
     // Limpar os campos ao clicar no botão "Limpar"
     document.getElementById("limparBtn").addEventListener("click", function() {
+        document.getElementById("notaC1").value = "";
+        document.getElementById("notaC2").value = "";
+        document.getElementById("notaC3").value = "";
         document.getElementById("notaMP").value = "";
         document.getElementById("notaNM").value = "";
     });
