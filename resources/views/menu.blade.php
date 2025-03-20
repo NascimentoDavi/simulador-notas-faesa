@@ -44,7 +44,7 @@
                     </form>
                 </div>
                 
-                <div class="mb-2">
+                <div class="mb-3">
                     <!-- Exibição de Informações do Aluno -->
                     <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h6>
                     <h6 class="d-block d-md-none m-0">{{ $aluno->ALUNO }}</h6>

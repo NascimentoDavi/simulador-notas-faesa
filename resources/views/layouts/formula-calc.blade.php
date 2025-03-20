@@ -19,39 +19,38 @@
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C1</button>
-                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" max="99.9" style="max-width: 90px;" id="notaC1" value="" oninput="limitarValor(this)">
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0" max="10" style="max-width: 90px;" id="notaC1" value="" oninput="limitarValor(this)">
                 </div>
             </div>
     
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C2</button>
-                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" max="99.9" style="max-width: 90px;" id="notaC2" value="" oninput="limitarValor(this)">
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0" max="10" style="max-width: 90px;" id="notaC2" value="" oninput="limitarValor(this)">
                 </div>
             </div>
     
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
-                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" max="99.9" style="max-width: 90px;" id="notaC3" value="" oninput="limitarValor(this)">
+                    <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0" max="10" style="max-width: 90px;" id="notaC3" value="" oninput="limitarValor(this)">
                 </div>
             </div>
         </div>
     </div>
     
-    {{-- Script para limitar valor dos campos de nota c1, c2 e c3 --}}
     <script>
-    function limitarValor(input) {
-        let valor = input.value;
-    
-        if (valor.match(/^\d{3,}$/)) {
-            input.value = valor.slice(0, 2);
-        } else if (valor.match(/^\d{1,2}(\.\d{3,})/)) {
-            input.value = valor.slice(0, valor.indexOf('.') + 3);
+        function limitarValor(input) {
+            let valor = parseFloat(input.value);
+            if (valor < 0) {
+                input.value = 0;
+            } else if (valor > 10) {
+                input.value = 10;
+            }
         }
-    }
     </script>
-
+    
+    
     <div class="container d-flex justify-content-center mt-5 gap-lg-3 ga-md-3 gap-sm-3 gap-2 mb-5">
         {{-- SIMULACAO DE NOTA --}}
         <form id="simularForm">
