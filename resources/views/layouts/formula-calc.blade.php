@@ -102,79 +102,86 @@
 
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("simularForm").addEventListener("submit", function(event) {
+            event.preventDefault();
 
-document.getElementById("simularForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+            let c1 = document.getElementById("notaC1").value;
+            let c2 = document.getElementById("notaC2").value;
+            let c3 = document.getElementById("notaC3").value;
+            const disciplina = document.getElementById("disciplinaSelect").value;
 
-        let c1 = document.getElementById("notaC1").value;
-        let c2 = document.getElementById("notaC2").value;
-        let c3 = document.getElementById("notaC3").value;
+            if(!disciplina) {
+                alert("Selecione uma disciplina, seu burro");
+                return;
+            }
 
-        const requestData = {
-            c1: c1,
-            c2: c2,
-            c3: c3
-        }
+            const requestData = {
+                c1: c1,
+                c2: c2,
+                c3: c3,
+                disciplina: disciplina
+            }
 
-        fetch("{{ route('simular') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(requestData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
-                if(c1 + c2 + c3 < 0.16) {
-                    document.getElementById('notaNM').value = ' ';
-                } else {
-                    document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
-                }
-            })
-            .catch(error => console.error("Erro ao processar a simulação:", error));
-    });
+            fetch("{{ route('simular') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                            return;
+                        }
+                        document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
+                        document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
+                    })
+                    .catch(error => console.error("Erro ao processar a simulação:", error));
+        });
 
-    // Limpar os campos ao clicar no botão "Limpar"
-    document.getElementById("limparBtn").addEventListener("click", function() {
-        document.getElementById("notaC1").value = "";
-        document.getElementById("notaC2").value = "";
-        document.getElementById("notaC3").value = "";
-        document.getElementById("notaMP").value = "";
-        document.getElementById("notaNM").value = "";
-    });
+        // Limpar os campos ao clicar no botão "Limpar"
+        document.getElementById("limparBtn").addEventListener("click", function() {
+            document.getElementById("notaC1").value = "";
+            document.getElementById("notaC2").value = "";
+            document.getElementById("notaC3").value = "";
+            document.getElementById("notaMP").value = "";
+            document.getElementById("notaNM").value = "";
+        });
 
-    var curso = @json($curso->CURSO);
-    var formula_nm = @json($formula_nm);
-    var formula_mp = @json($formula_mp);
+        var curso = @json($curso->CURSO);
+        var formula_nm = @json($formula_nm);
+        var formula_mp = @json($formula_mp);
 
-    // Quando a disciplina for selecionada, as notas C1, C2 e C3 serão preenchidas
-    document.getElementById('disciplinaSelect').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
+        // Quando a disciplina for selecionada, as notas C1, C2 e C3 serão preenchidas
+        document.getElementById('disciplinaSelect').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
 
-        if (selectedOption.value) {
-            // Verificando se os valores das notas são válidos, caso contrário, atribui 0
-            document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || 0;
-            document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || 0;
-            document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || 0;
-        } else {
-            // Se nada for selecionado, atribui 0
-            document.getElementById('notaC1').value = 0;
-            document.getElementById('notaC2').value = 0;
-            document.getElementById('notaC3').value = 0;
-        }
-    });
+            if (selectedOption.value) {
+                // Verificando se os valores das notas são válidos, caso contrário, atribui 0
+                document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || 0;
+                document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || 0;
+                document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || 0;
+            } else {
+                // Se nada for selecionado, atribui 0
+                document.getElementById('notaC1').value = 0;
+                document.getElementById('notaC2').value = 0;
+                document.getElementById('notaC3').value = 0;
+            }
+        });
 
 
-    // document.getElementById('disciplinaSelect').addEventListener('change', function() {
-    //     // Obtém a disciplina selecionada
-    //     var selectedOption = this.options[this.selectedIndex];
-        
-    //     // Preenche os campos C1, C2, C3 com as notas da disciplina selecionada
-    //     document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';  // C1
-    //     document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || '';  // C2
-    //     document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || '';  // C3
-    // });
-
+        // document.getElementById('disciplinaSelect').addEventListener('change', function() {
+        //     // Obtém a disciplina selecionada
+        //     var selectedOption = this.options[this.selectedIndex];
+            
+        //     // Preenche os campos C1, C2, C3 com as notas da disciplina selecionada
+        //     document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';  // C1
+        //     document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || '';  // C2
+        //     document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || '';  // C3
+        // });
+})
 </script>

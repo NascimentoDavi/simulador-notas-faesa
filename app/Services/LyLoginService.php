@@ -50,12 +50,16 @@ class LyLoginService
             return null;
         }
 
+        $disciplinas = $matriculas->pluck('DISCIPLINAS');
+        $anos = $matriculas->pluck('ANO')->unique()->sort()->values();
+        $semestres = $matriculas->pluck('SEMESTRE')->unique()->sort()->values();
+
         $notas = $this->disciplinaService->getNotas($aluno);
 
         $formula = $this->disciplinaService->getFormulaFromDisciplina($matriculas);
         $curso = $this->alunoService->getCursoFromAluno($aluno);
 
         // Retorna os dados encapsulados em um DTO - Data Transfer Objec
-        return LoginDataDTO::create($aluno, $curso, $formula, $notas, );
+        return LoginDataDTO::create($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula, $notas);
     }
 }

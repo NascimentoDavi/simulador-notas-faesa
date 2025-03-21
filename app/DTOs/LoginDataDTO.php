@@ -5,21 +5,31 @@ namespace App\DTOs;
 class LoginDataDTO
 {
     public $aluno;
+    public $disciplinas;
+    public $anos;
+    public $notas;
+    public $semestres;
     public $curso;
     public $formula;
-    public $notas;
 
     /**
      * Construtor
      *
      * @param $aluno
+     * @param $disciplinas
+     * @param $anos
+     * @param $notas
+     * @param $semestres
      * @param $curso
      * @param $formula
-     * @param $notas
      */
-    public function __construct($aluno, $curso, $formula, $notas)
+    public function __construct($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula)
     {
         $this->aluno = $aluno;
+        $this->disciplinas = $disciplinas;
+        $this->anos = $anos;
+        $this->notas = $notas;
+        $this->semestres = $semestres;
         $this->curso = $curso;
         $this->formula = $formula;
         $this->notas = $notas;
@@ -29,13 +39,16 @@ class LoginDataDTO
      * Criar um DTO a partir dos dados retornados.
      *
      * @param $aluno
+     * @param $disciplinas
+     * @param $anos
+     * @param $notas
+     * @param $semestres
      * @param $curso
      * @param $formula
-     * @param $notas
      * @return LoginDataDTO
      */
-    public static function create($aluno, $curso, $formula, $notas)
+    public static function create($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula)
     {
-        return new self($aluno, $curso, $formula, $notas);
+        return new self($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula);
     }
 }

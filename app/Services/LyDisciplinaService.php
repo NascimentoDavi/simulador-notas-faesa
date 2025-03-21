@@ -34,7 +34,7 @@ class LyDisciplinaService
         }
 
         return LyDisciplina::where('DISCIPLINA', '=', $matriculas[0]->DISCIPLINA)
-            ->first(['FORMULA_MF1', 'FORMULA_MF2']);
+            ->first(['DISCIPLINA', 'FORMULA_MF1', 'FL_FIELD_01']);
     }
 
     /**

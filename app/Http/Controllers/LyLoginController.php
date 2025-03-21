@@ -32,9 +32,12 @@ class LyLoginController extends Controller
 
         session([
             'aluno' => $loginDataDTO->aluno,
-            'curso' => $loginDataDTO->curso,
+            'disciplinas' => $loginDataDTO->disciplinas,
+            'anos' => $loginDataDTO->anos,
             'notas' => $loginDataDTO->notas,
-            'formula_nm' => substr($loginDataDTO->formula->FORMULA_MF2, 1, 18),
+            'semestres' => $loginDataDTO->semestres,
+            'curso' => $loginDataDTO->curso,
+            'formula_field' => substr($loginDataDTO->formula->FL_FIELD_01, 1, 18),
             'formula_mp' => substr($loginDataDTO->formula->FORMULA_MF1, 0, 15),
         ]);
 
