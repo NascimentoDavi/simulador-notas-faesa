@@ -23,25 +23,24 @@ class LyLoginController extends Controller
      */
     public function login(Request $request)
     {
-        $login = $request->input('login');        
-        $loginDataDTO = $this->loginService->realizarLogin($login);
+        $login = $request->input('login');     
+        $loginDataDTO = $this->
+        loginService->realizarLogin($login);
 
         if (!$loginDataDTO) {
-            return response()->view('error', ['message' => 'Erro no login'], 400);
+            return response()
+            ->view('error',
+            ['message' => 'Erro no login'], 400);
         }
-
         session([
-            'aluno' => $loginDataDTO->aluno,
-            'disciplinas' => $loginDataDTO->disciplinas,
-            'anos' => $loginDataDTO->anos,
-            'notas' => $loginDataDTO->notas,
-            'semestres' => $loginDataDTO->semestres,
-            'curso' => $loginDataDTO->curso,
-            'formula_field' => substr($loginDataDTO->formula->FL_FIELD_01, 1, 18),
-            'formula_mp' => substr($loginDataDTO->formula->FORMULA_MF1, 0, 15),
+            'aluno' => $loginDataDTO->       aluno,
+            'disciplinas' => $loginDataDTO-> disciplinas,
+            'anos' => $loginDataDTO->        anos,
+            'notas' => $loginDataDTO->       notas,
+            'semestres' => $loginDataDTO->   semestres,
+            'curso' => $loginDataDTO->       curso,
         ]);
-
-    return redirect()->intended('/menu');
+        return redirect()->intended('/menu');
     }
 
     public function logout()

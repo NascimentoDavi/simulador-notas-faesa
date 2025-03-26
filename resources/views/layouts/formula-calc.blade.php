@@ -5,6 +5,7 @@
         <div class="input-group d-flex justify-content-center" style="max-width: 500px; width: 100%;">
             <button class="btn btn-outline-secondary" type="button">Disciplina</button>
             <select class="form-control border border-1 border-dark" id="disciplinaSelect" name="disciplina" style="width: 100%; max-width: 50%;">
+                <option value="">Selecione uma disciplina</option>
                 @foreach ($notas as $nota)
                     <option value="{{ $nota['DISCIPLINA'] }}" data-c1="{{ $nota['C1'] }}" data-c2="{{ $nota['C2'] }}" data-c3="{{ $nota['C3'] }}">
                         {{ $nota['NOME_DISCIPLINA'] }}
@@ -16,6 +17,8 @@
     
     <div class="container mt-3">
         <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
+
+            {{--  C1 --}}
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C1</button>
@@ -23,6 +26,7 @@
                 </div>
             </div>
     
+            {{-- C2 --}}
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C2</button>
@@ -30,6 +34,7 @@
                 </div>
             </div>
     
+            {{-- C3 --}}
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
@@ -39,6 +44,8 @@
         </div>
     </div>
     
+    
+    {{-- VALIDAÇÃO DO VALOR INSERIDO NOS CAMPOS --}}
     <script>
         function limitarValor(input) {
             let valor = input.value;
@@ -49,11 +56,9 @@
             // Limita a quantidade de caracteres após o ponto decimal a dois
             let partes = valor.split('.');
             if (partes.length > 1) {
-                partes[1] = partes[1].substring(0, 2); // Limita a 2 casas decimais
-                input.value = partes.join('.'); // Junta novamente as partes
+                partes[1] = partes[1].substring(0, 2);
+                input.value = partes.join('.');
             }
-    
-            // Limita o valor para estar entre 0 e 10
             valor = parseFloat(input.value);
             if (valor < 0) {
                 input.value = '0.00';
@@ -63,9 +68,8 @@
         }
     </script>
     
-    
+    {{-- SIMULAÇÃO DE NOTA --}}
     <div class="container d-flex justify-content-center mt-5 gap-lg-3 ga-md-3 gap-sm-3 gap-2 mb-5">
-        {{-- SIMULACAO DE NOTA --}}
         <form id="simularForm">
             @csrf
             <button type="submit" class="btn btn-primary">Simular</button>
@@ -75,6 +79,7 @@
         </div>
     </div>
 
+    {{-- RESULTADOS DA SIMULAÇÃO --}}
     <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
         <div>
             <div class="input-group mx-lg-1">
@@ -91,6 +96,8 @@
             </div>
         </div>
     </div>
+
+    {{-- INFORMAÇÕES DA SIMULACAO --}}
     <div class="text-center mt-3">
         *MP = Média Parcial
         <br>
@@ -98,21 +105,46 @@
         <br>
         <br>
     </div>
+
 </div>
 
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("simularForm").addEventListener("submit", function(event) {
+    document.addEventListener("DOMContentLoaded", function() {
+        // Modal Bootstrap
+        const modalHTML = `
+            <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="errorModalLabel">Erro</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Selecione uma disciplina antes de continuar!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Adicionando o modal ao DOM
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        document.getElementById("simularForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
             let c1 = document.getElementById("notaC1").value;
             let c2 = document.getElementById("notaC2").value;
             let c3 = document.getElementById("notaC3").value;
-            const disciplina = document.getElementById("disciplinaSelect").value;
+            let disciplina = document.getElementById("disciplinaSelect").value;
 
-            if(!disciplina) {
-                alert("Selecione uma disciplina, seu burro");
+            // Verificando se a disciplina foi selecionada
+            if (!disciplina) {
+                let errorModal = new bootstrap.Modal(document.getElementById("errorModal"));
+                errorModal.show();
                 return;
             }
 
@@ -123,6 +155,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 disciplina: disciplina
             }
 
+            console.log(requestData);
+
             fetch("{{ route('simular') }}", {
                     method: "POST",
                     headers: {
@@ -132,15 +166,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     body: JSON.stringify(requestData)
                 })
                 .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            alert(data.error);
-                            return;
-                        }
-                        document.getElementById("notaMP").value = parseFloat(data.mediaAritmetica).toFixed(1);
-                        document.getElementById("notaNM").value = parseFloat(data.mediaProvaFinal).toFixed(2);
-                    })
-                    .catch(error => console.error("Erro ao processar a simulação:", error));
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    } else if (c1 + c2 + c3 < 0.16) {
+                        document.getElementById("notaMP").value = 0.0;
+                        document.getElementById("notaNM").value = 0.0;
+                    } else {
+                        console.log(data);
+                        document.getElementById("notaMP").value = parseFloat(data.original.mediaAritmetica).toFixed(1);
+                        document.getElementById("notaNM").value = parseFloat(data.original.mediaProvaFinal).toFixed(2);
+                    }
+                })
+                .catch(error => console.error("Erro ao processar a simulação:", error));
         });
 
         // Limpar os campos ao clicar no botão "Limpar"
@@ -173,15 +212,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-
-        // document.getElementById('disciplinaSelect').addEventListener('change', function() {
-        //     // Obtém a disciplina selecionada
-        //     var selectedOption = this.options[this.selectedIndex];
-            
-        //     // Preenche os campos C1, C2, C3 com as notas da disciplina selecionada
-        //     document.getElementById('notaC1').value = selectedOption.getAttribute('data-c1') || '';  // C1
-        //     document.getElementById('notaC2').value = selectedOption.getAttribute('data-c2') || '';  // C2
-        //     document.getElementById('notaC3').value = selectedOption.getAttribute('data-c3') || '';  // C3
-        // });
-})
+        // Ensure focus is properly handled when modal is hidden
+        const errorModalElement = document.getElementById("errorModal");
+        errorModalElement.addEventListener("hidden.bs.modal", function () {
+            // Reset focus to the first element in the form or the trigger element
+            document.getElementById("disciplinaSelect").focus();
+        });
+    });
 </script>

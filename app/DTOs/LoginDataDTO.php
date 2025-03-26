@@ -10,7 +10,6 @@ class LoginDataDTO
     public $notas;
     public $semestres;
     public $curso;
-    public $formula;
 
     /**
      * Construtor
@@ -21,9 +20,8 @@ class LoginDataDTO
      * @param $notas
      * @param $semestres
      * @param $curso
-     * @param $formula
      */
-    public function __construct($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula)
+    public function __construct($aluno, $disciplinas, $anos, $notas, $semestres, $curso)
     {
         $this->aluno = $aluno;
         $this->disciplinas = $disciplinas;
@@ -31,7 +29,6 @@ class LoginDataDTO
         $this->notas = $notas;
         $this->semestres = $semestres;
         $this->curso = $curso;
-        $this->formula = $formula;
         $this->notas = $notas;
     }
 
@@ -44,11 +41,10 @@ class LoginDataDTO
      * @param $notas
      * @param $semestres
      * @param $curso
-     * @param $formula
      * @return LoginDataDTO
      */
-    public static function create($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula)
+    public static function create($aluno, $disciplinas, $anos, $notas, $semestres, $curso)
     {
-        return new self($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $formula);
+        return new self($aluno, $disciplinas, $anos, $notas, $semestres, $curso);
     }
 }

@@ -20,9 +20,9 @@
             document.getElementById("countdown").innerText = count;
             if (count > 1) {
                 count--;
-                setTimeout(updateCountdown, 1000); // Atualiza a cada 1 segundo
+                setTimeout(updateCountdown, 1000);
             } else {
-                window.location.href = "{{ route('login') }}"; // Redireciona para login após 5s
+                window.location.href = "{{ route('login') }}";
             }
         }
         window.onload = updateCountdown;
@@ -31,7 +31,7 @@
 <body>
     <div>
         <h2>Erro</h2>
-        <p>Nenhuma matrícula encontrada para este aluno.</p>
+        <p>Nenhuma matrícula encontrada.</p>
         <p>Você será redirecionado para a tela de login em <span id="countdown">5</span> segundos...</p>
     </div>
 </body>
