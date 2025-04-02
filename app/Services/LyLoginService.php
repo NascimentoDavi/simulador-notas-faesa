@@ -22,10 +22,7 @@ class LyLoginService
      * @param LyPessoaService $pessoaService
      * @param LyDisciplinaService $disciplinaService
      */
-    public function __construct(
-        LyAlunoService $alunoService,
-        LyPessoaService $pessoaService,
-        LyDisciplinaService $disciplinaService)
+    public function __construct(LyAlunoService $alunoService, LyPessoaService $pessoaService, LyDisciplinaService $disciplinaService)
     {
         $this->alunoService = $alunoService;
         $this->pessoaService = $pessoaService;
@@ -58,16 +55,28 @@ class LyLoginService
             return null;
         }
 
-        // DISCIPLINA, ANO AND SEMESTER
+        // DISCIPLINA
         $disciplinas = $this->disciplinaService->getDisciplinas($matriculas);
+
+        // ANO E SEMESTRE
         $anos = $matriculas->pluck('ANO')->unique()->sort()->values();
         $semestres = $matriculas->pluck('SEMESTRE')->unique()->sort()->values();
 
+        // NOTAS
         $notas = $this->disciplinaService->getNotas($aluno, $matriculas, $disciplinas);
 
+        // CURSO
         $curso = $this->alunoService->getCursoFromAluno($aluno);
 
-        // Retorna os dados encapsulados em um DTO - Data Transfer Objec
-        return LoginDataDTO::create($aluno, $disciplinas, $anos, $notas, $semestres, $curso, $notas);
+        // Retorna os Dados encapsulados em DTO - Data Transfer Object
+        return LoginDataDTO::create(
+            $aluno,
+            $disciplinas,
+            $anos,
+            $notas,
+            $semestres,
+            $curso,
+            $notas
+        );
     }
 }

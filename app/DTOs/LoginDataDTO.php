@@ -4,6 +4,7 @@ namespace App\DTOs;
 
 class LoginDataDTO
 {
+    // Propriedades do Objeto
     public $aluno;
     public $disciplinas;
     public $anos;

@@ -1,5 +1,5 @@
-<footer class="p-3 text-center fixed-bottom footer-bg-color">
-    Todos os Direitos Reservados
+<footer class="p-2 text-center fixed-bottom footer-bg-color">
+    <span style="color: white">Todos os Direitos Reservados</span>
     <br>
     <div id="footer-links" class="d-flex flex-row justify-content-center">
         <a href="https://www.instagram.com/faesa_oficial/" target="_blank" class="social-icon">

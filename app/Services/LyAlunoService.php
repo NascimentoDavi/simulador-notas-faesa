@@ -12,7 +12,13 @@ class LyAlunoService
      */
     public function getAluno($pessoa)
     {
-        return LyAluno::where('NOME_COMPL', '=', $pessoa->NOME_COMPL)->first();
+
+        // Caso o aluo tenha mais de uma matrícula, pega a mais recente
+        // In case the student has more than one enrollment, it captures the most recent one
+
+        return LyAluno::where('NOME_COMPL', '=', $pessoa->NOME_COMPL)
+        ->latest('DT_INGRESSO')
+        ->first();
     }
 
     /**

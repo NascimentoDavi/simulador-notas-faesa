@@ -24,7 +24,7 @@ class LySimuladorNotaFormulaController extends Controller
 
         $ano = date("Y");
 
-        $result = $this->simuladorNotaFormulaService->simularNotas($c1, $c2, $c3, $request->input('disciplina'), $ano);
+        $result = $this->simuladorNotaFormulaService->simularNotas($c1, $c2, $c3, session('aluno')->ALUNO, $request->input('disciplina'), $ano);
 
         return response()->json($result);
     }

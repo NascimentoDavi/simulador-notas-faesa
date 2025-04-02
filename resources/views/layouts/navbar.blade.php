@@ -1,7 +1,6 @@
-<div class="d-none d-md-block container text-end">
-    <a href="https://portaldoaluno.faesa.br/Login/" class="mx-1 text-decoration-none" style="font-size: 15px">Portal do Aluno</a>
-    |
-    <a href="https://ava.faesa.br/d2l/login" class="mx-1 text-decoration-none">AVA</a>
+<div class="d-none d-md-block container text-end" style="height: 17px;">
+    <a href="https://portaldoaluno.faesa.br/Login/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 123px">Portal do Aluno | </a>
+    <a href="https://ava.faesa.br/d2l/login" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 95px"> AVA</a>
 </div>
 
 <nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top">
@@ -10,7 +9,7 @@
         {{-- Navbar Brand --}}
         <a href="#" class="navbar-brand d-flex align-items-center me-sm-3 me-md-5 p-0">
             <img class="m-0 p-0" src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">
-            <span class="ms-3" id="simulador-notas">Simulador de Notas</span>
+            <span class="ms-3" id="simulador-notas" style="color: #ecf5f9">Simulador de Notas</span>
         </a>
 
         {{-- Nome e Matrícula do aluno --}}
@@ -40,11 +39,13 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
             </div>
+
             <div class="offcanvas-body text-center d-md-none">
                 <a href="{{ route('logout') }}" class="btn btn-danger w-75 mb-2">Log-out</a>
                 <a href="https://portaldoaluno.faesa.br/Login/" class="btn btn-primary w-75 mb-2">Portal do Aluno</a>
                 <a href="https://ava.faesa.br/d2l/login" class="btn btn-secondary w-75 mb-2">AVA</a>
             </div>
+
         </div>
 
         <!-- Bootstrap JS (inclui Popper.js) -->

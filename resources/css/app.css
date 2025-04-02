@@ -2,12 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===================== */
+/*        COLORS        */
+/* ===================== */
+
 /* Blue Color: #2596be */
 /* Secondary Color: #7aacce */
 /* Third Color: #fc7c34 */
 /* Light Color: #ecf5f9 */
 
-/* Custom colors */
 :root {
     --blue-color: #085ca4;
     --secondary-color: #7aacce;
@@ -15,31 +18,35 @@
     --light-color: #ecf5f9;
 }
 
+/* ===================== */
+/*       TYPOGRAPHY      */
+/* ===================== */
+
 .poppins-thin {
     font-family: "Poppins", serif;
     font-weight: 100;
     font-style: normal;
-  }
-  
-  .poppins-extralight {
+}
+
+.poppins-extralight {
     font-family: "Poppins", serif;
     font-weight: 200;
     font-style: normal;
-  }
-  
-  .poppins-light {
+}
+
+.poppins-light {
     font-family: "Poppins", serif;
     font-weight: 300;
     font-style: normal;
-  }
-  
-  .poppins-regular {
+}
+
+.poppins-regular {
     font-family: "Poppins", serif;
     font-weight: 400;
     font-style: normal;
-  }
-  
-  .poppins-medium {
+}
+
+.poppins-medium {
     font-family: "Poppins", serif;
     font-weight: 500;
     font-style: normal;
@@ -49,7 +56,11 @@
     font-family: "Poppins", serif;
     font-weight: 600;
     font-style: normal;
-  }
+}
+
+/* ===================== */
+/*      BACKGROUND       */
+/* ===================== */
 
 .bg-blue-navbar-footer {
     background-color: var(--blue-color);
@@ -67,38 +78,58 @@
     background-color: var(--light-color);
 }
 
+.footer-bg-color {
+    background-color: var(--blue-color);
+}
+
+.form-calc-background {
+    background-color: #e3aa8a;
+}
+
+/* ===================== */
+/*        TEXT COLOR     */
+/* ===================== */
+
 .font-color {
     color: var(--light-color);
 }
 
-.footer-bg-color {
-  background-color: var(--secondary-color);
-}
+/* ===================== */
+/*        IMAGES        */
+/* ===================== */
 
 #faesa-logo-navbar {
     width: 130px;
     height: 47px;
-    margin-right: 40px
+    margin-right: 40px;
 }
+
+/* ===================== */
+/*        TABLES        */
+/* ===================== */
+
+#table_notas tr th {
+    background-color: var(--blue-color);
+}
+
+/* ===================== */
+/*      RESPONSIVITY     */
+/* ===================== */
 
 @media (max-width: 440px) {
-  #simulador-notas {
-      display: none;
-  }
-}
-
-.form-calc-background {
-  background-color: #e3aa8a;
+    #simulador-notas {
+        display: none;
+    }
 }
 
 @media (max-width: 500px) {
-  #disciplinaSelect {
-      width: 100%;  /* Ocupa 100% da largura em telas menores que 500px */
-  }
+    #disciplinaSelect {
+        width: 100%;  /* Ocupa 100% da largura em telas menores que 500px */
+    }
 }
 
 @media (min-width: 501px) {
-  #disciplinaSelect {
-      width: 50%;   /* Ocupa 50% da largura em telas maiores que 500px */
-  }
+    #disciplinaSelect {
+        width: 50%;   /* Ocupa 50% da largura em telas maiores que 500px */
+    }
 }

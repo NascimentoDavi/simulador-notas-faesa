@@ -24,23 +24,27 @@ class LySimuladorNotaFormulaService
      * @param float $c3 Nota da prova c3
      * @return array Retorna as médias formatadas
      */
-    public function simularNotas($c1, $c2, $c3, $disciplina, $ano)
+    public function simularNotas($c1, $c2, $c3, $aluno, $disciplina, $ano)
     {
-        // FÓRMULA
-        $formula = $this
-        ->turmaService
-        ->getFormulaFromTurma($disciplina, $ano);
+        // // FÓRMULA
+        // $formula = $this
+        // ->turmaService
+        // ->getFormulaFromTurma($disciplina, $ano, $turma);
+
+        $turmas = $this->turmaService->getTurma($aluno, $disciplina);
+
+        $formula = $this->turmaService->getFormulaFromTurma($disciplina, $turmas);
 
         if (!$formula) {
             return response()->json(['error' => 'Disciplina não encontrada.'], 404);
         }
 
-        // FÓRMULAS
-        $formulaMP = $formula->FORMULA_MF1;
-        $formulaNM = $formula->FL_FIELD_01;
+        $formulaArray = array_values($formula->toArray());
+        $formulaMP = $formulaArray[0] ?? null;
+        $formulaNM = $formulaArray[1] ?? null;
 
         if (!$formulaMP || !$formulaNM) {
-            return response()->json(['error' => 'Fórmula não encontrada para esta disciplina.'], 500);
+            return response()->json(['error' => 'Fórmula não encontrada para esta turma.'], 500);
         }
 
         // Substitui os valores de C1, C2 e C3 na fórmula

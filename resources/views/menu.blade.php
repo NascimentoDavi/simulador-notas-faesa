@@ -32,7 +32,7 @@
             {{-- TABELA --}}
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="grades-table">
-                    <thead class="table-dark">
+                    <thead class="table-dark" id="table_notas">
                         <tr>
                             <th>Disciplina</th>
                             <th>Nome da Disciplina</th>
