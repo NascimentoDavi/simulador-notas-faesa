@@ -49,6 +49,8 @@ class LyLoginService
             return null;
         }
 
+        // Adicionar condicional para que alunos de pós não acessem. Mensagem de "Matrícula não encontrada" deve ser informada".
+
         // MATRICULA
         $matriculas = $this->disciplinaService->getMatriculas($aluno);
         if ($matriculas->isEmpty()) {
