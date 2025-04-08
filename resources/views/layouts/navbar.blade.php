@@ -3,7 +3,7 @@
     <a href="https://ava.faesa.br/d2l/login" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 95px"> AVA</a>
 </div>
 
-<nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top">
+<nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top border-bottom border-black">
     <div class="container">
 
         {{-- Navbar Brand --}}

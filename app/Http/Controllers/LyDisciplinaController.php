@@ -20,7 +20,7 @@ class LyDisciplinaController extends Controller
 
     public function getMatriculas($aluno)
     {
-        return $this->disciplinaService->getMatriculas($aluno);
+        return $this->disciplinaService->getdMatriculas($aluno);
     }
 
 

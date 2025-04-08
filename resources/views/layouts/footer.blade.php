@@ -1,4 +1,4 @@
-<footer class="p-2 text-center fixed-bottom footer-bg-color">
+<footer class="p-2 text-center fixed-bottom footer-bg-color border-top border-black">
     <span style="color: white">Todos os Direitos Reservados</span>
     <br>
     <div id="footer-links" class="d-flex flex-row justify-content-center">

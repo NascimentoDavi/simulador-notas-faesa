@@ -7,7 +7,7 @@ use App\Models\LyMatricula;
 
 class LyTurmaService
 {
-    // FORMULA DE CALCULO
+    // FORMULA DE CÁLCULO
     public function getFormulaFromTurma($disciplina, $turmas)
     {
         foreach ($turmas as $turma) {
@@ -38,7 +38,6 @@ class LyTurmaService
         $turmas = LyMatricula::where('DISCIPLINA', $disciplina)
             ->where('ALUNO', $aluno)
             ->whereIn('SIT_MATRICULA', ['Matriculado', 'Aprovado'])
-            ->where('ANO', '2025')
             ->get(['TURMA', 'DISCIPLINA'])
             ->map(function ($turma) {
                 $turma['DISCIPLINA'] = ucfirst(strtolower($turma['DISCIPLINA'])); // Garante a capitalização correta

@@ -26,7 +26,6 @@ class LyDisciplinaService
     public function getMatriculas($aluno)
     {
         return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])
-        ->where('ANO', '2025')
         ->get(['DISCIPLINA', 'ANO', 'SEMESTRE']);
     }
 
