@@ -1,47 +1,63 @@
 <?php
 
+
 namespace App\Services;
 
-use App\Models\LyDisciplina;
 
+use App\Models\LyDisciplina;
 use App\DTOs\LoginDataDTO;
 use App\Services\LyAlunoService;
 use App\Services\LyPessoaService;
 use App\Services\LyDisciplinaService;
+use App\Services\LyOpcoesService;
+
 
 class LyLoginService
 {
+
     protected $alunoService;
     protected $pessoaService;
     protected $disciplinaService;
-
+    protected $opcoesService;
     /**
      * Construtor do LyLoginService.
      *
      * @param LyAlunoService $alunoService
      * @param LyPessoaService $pessoaService
      * @param LyDisciplinaService $disciplinaService
+     * @param LyOpcoesService $opcoesService
      */
-    public function __construct(LyAlunoService $alunoService, LyPessoaService $pessoaService, LyDisciplinaService $disciplinaService)
+    public function __construct(LyAlunoService $alunoService, 
+                                LyPessoaService $pessoaService,
+                                LyDisciplinaService $disciplinaService,
+                                LyOpcoesService $opcoesService)
     {
         $this->alunoService = $alunoService;
         $this->pessoaService = $pessoaService;
         $this->disciplinaService = $disciplinaService;
+        $this->opcoesService = $opcoesService;
     }
+
 
     /**
      * Realiza o login do usuário.
      *
-     * @param string $login
+     * @param string $usuario
      * @return array
      */
-    public function realizarLogin($login)
+    public function realizarLogin($usuario)
     {
+        
+        // ANO SEMESTRE ATUAIS
+        $anoSemestre = $this->opcoesService->getAnoSemestreAtual();
+    
+        
         // PESSOA
-        $pessoa = $this->pessoaService->getPessoa($login);
+        $pessoa = $this->pessoaService->getPessoa($usuario);
         if (!$pessoa) {
             return null;
         }
+
 
         // ALUNO
         $aluno = $this->alunoService->getAluno($pessoa);
@@ -49,34 +65,33 @@ class LyLoginService
             return null;
         }
 
-        // Adicionar condicional para que alunos de pós não acessem. Mensagem de "Matrícula não encontrada" deve ser informada".
-
+        
         // MATRICULA
-        $matriculas = $this->disciplinaService->getMatriculas($aluno);
+        $matriculas = $this->disciplinaService->getMatriculas($aluno, $anoSemestre[0], $anoSemestre[1]);
         if ($matriculas->isEmpty()) {
             return null;
         }
+        
 
         // DISCIPLINA
         $disciplinas = $this->disciplinaService->getDisciplinas($matriculas);
-
-        // ANO E SEMESTRE
-        $anos = $matriculas->pluck('ANO')->unique()->sort()->values();
-        $semestres = $matriculas->pluck('SEMESTRE')->unique()->sort()->values();
+        
 
         // NOTAS
-        $notas = $this->disciplinaService->getNotas($aluno, $matriculas, $disciplinas);
+        $notas = $this->disciplinaService->getNotas($aluno, $anoSemestre[0], $anoSemestre[1], $disciplinas);
+        
 
         // CURSO
         $curso = $this->alunoService->getCursoFromAluno($aluno);
 
-        // Retorna os Dados encapsulados em DTO - Data Transfer Object
+        
+        // DTO
         return LoginDataDTO::create(
             $aluno,
             $disciplinas,
-            $anos,
+            $anoSemestre[0],
             $notas,
-            $semestres,
+            $anoSemestre[1],
             $curso,
             $notas
         );

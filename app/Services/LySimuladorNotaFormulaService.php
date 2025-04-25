@@ -9,13 +9,14 @@ use App\Services\LyTurmaService;
 class LySimuladorNotaFormulaService
 {
 
+    // Injecao de Dependencia via Construtor
     protected $turmaService;
-
     public function __construct(LyTurmaService $turmaService)
     {
         $this->turmaService = $turmaService;
     }
     
+
     /**
      * Simula as notas e calcula as médias.
      *
@@ -26,16 +27,12 @@ class LySimuladorNotaFormulaService
      */
     public function simularNotas($c1, $c2, $c3, $aluno, $disciplina, $ano)
     {
-        // // FÓRMULA
-        // $formula = $this
-        // ->turmaService
-        // ->getFormulaFromTurma($disciplina, $ano, $turma);
 
+        // Armazena as turmas nas quais o aluno está matriculado
         $turmas = $this->turmaService->getTurma($aluno, $disciplina);
 
+        // Armazena a formula 
         $formula = $this->turmaService->getFormulaFromTurma($disciplina, $turmas);
-
-        // dd($formula);
 
         if (!$formula) {
             return response()->json(['error' => 'Disciplina não encontrada.'], 404);

@@ -7,27 +7,37 @@ use App\Http\Controllers\LyDisciplinaController;
 use App\Http\Controllers\LySimuladorNotaFormulaController;
 use App\Http\Middleware\AuthMiddleware;
 
+
+// Primeira Rota
 Route::get('/', function () {
 return view('login');
 })->name('beginning');
 
+
 Route::middleware([AuthMiddleware::class])->group(function () {
 
-        Route::post('/login', [LyLoginController::class, 'login'])
-        ->name('login');
 
+        // LOGIN GET
         Route::get('/login', function () {
         return view('login');
-        })->name('beginning');
+        })->name('loginGET');
 
+
+        // LOGIN POST
+        Route::post('/login', [LyLoginController::class, 'login'])
+        ->name('loginPOST');
+
+        // LOGOUT GET
         Route::get('/logout', [LyLoginController::class, 'logout'])
         ->name('logout');
 
+        // MENU GET
         Route::get('/menu', function () {
-        if (!session()->has('aluno')) {
-        return redirect()->route('login');
-        }
+                if (!session()->has('aluno')) {
+                        return redirect()->route('login');
+                }
 
+        // Armazena os dados da sessao nas variaveis
         $aluno = session('aluno');
         $curso = session('curso');
         $notas = session('notas');

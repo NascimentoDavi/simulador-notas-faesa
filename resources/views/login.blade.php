@@ -14,7 +14,7 @@
 <body>
     <div class="container">
         <img src="faesa.png" alt="Logo">
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('loginPOST') }}" method="POST">
             @csrf
 
             <label for="login">Usuário</label>

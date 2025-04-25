@@ -1,12 +1,17 @@
 <?php
 
+
 namespace App\Services;
+
 
 use App\Models\LyTurma;
 use App\Models\LyMatricula;
 
+
 class LyTurmaService
 {
+
+
     // FORMULA DE CÁLCULO
     public function getFormulaFromTurma($disciplina, $turmas)
     {
@@ -32,19 +37,24 @@ class LyTurmaService
         return null;
     }
 
-    // GET TURMA
+
+    // Retorna Turma a partir da Disciplina
     public function getTurma($aluno, $disciplina)
     {
         $turmas = LyMatricula::where('DISCIPLINA', $disciplina)
             ->where('ALUNO', $aluno)
-            ->whereIn('SIT_MATRICULA', ['Matriculado', 'Aprovado'])
+            
+            ->where('SIT_MATRICULA', 'Matriculado') // Não utilizamos o valor da coluna 'Aprovado', pois pegamos somente as disciplinas do semestre atual
+
             ->get(['TURMA', 'DISCIPLINA'])
+
             ->map(function ($turma) {
-                $turma['DISCIPLINA'] = ucfirst(strtolower($turma['DISCIPLINA'])); // Garante a capitalização correta
+                $turma['DISCIPLINA'] = ucfirst(strtolower($turma['DISCIPLINA'])); // Garante a capitalização correta | Primeira letra maiúscula e restante minúsculo
                 return $turma;
             })
             ->toArray();
 
         return $turmas;
     }
+
 }

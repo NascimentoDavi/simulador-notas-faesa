@@ -23,9 +23,11 @@ class LyDisciplinaService
      * @param array $aluno Dados do aluno para buscar as matrículas.
      * @return \Illuminate\Database\Eloquent\Collection Coleção de matrículas do aluno.
      */
-    public function getMatriculas($aluno)
+    public function getMatriculas($aluno, $ano, $semestre)
     {
         return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])
+                          ->where('ANO', $ano)
+                          ->where('SEMESTRE',  $semestre)
         ->get(['DISCIPLINA', 'ANO', 'SEMESTRE']);
     }
 
@@ -35,7 +37,7 @@ class LyDisciplinaService
      * @param array $aluno Dados do aluno para buscar as notas.
      * @return \Illuminate\Support\Collection Coleção de notas organizadas por disciplina.
      */
-    public function getNotas($aluno, $matriculas, $disciplinas)
+    public function getNotas($aluno, $ano, $semestre, $disciplinas)
     {
         $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->select(
@@ -45,8 +47,8 @@ class LyDisciplinaService
                 'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
             )
             ->where('LY_NOTA.ALUNO', $aluno['ALUNO'])
-            ->where('LY_NOTA.ANO', $matriculas->pluck('ANO')->toArray()[0])
-            ->where('LY_NOTA.SEMESTRE', $matriculas->pluck('SEMESTRE')->toArray()[0])
+            ->where('LY_NOTA.ANO', $ano)
+            ->where('LY_NOTA.SEMESTRE', $semestre)
             ->whereIn('LY_NOTA.PROVA', ['C1', 'C2', 'C3'])
             ->get()
             ->groupBy('DISCIPLINA');

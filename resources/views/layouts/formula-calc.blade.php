@@ -1,6 +1,8 @@
 <div class="mt-4">
     <h5 class="text-center">Simule sua Nota</h5>
 
+
+    <!-- SELECAO DE DISCIPLINA -->
     <div class="d-flex justify-content-center mt-4">
         <div class="input-group d-flex justify-content-center" style="max-width: 500px; width: 100%;">
             <button class="btn btn-outline-secondary" type="button">Disciplina</button>
@@ -14,6 +16,7 @@
             </select>
         </div>
     </div>
+
     
     <div class="container mt-3">
         <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
@@ -67,6 +70,7 @@
             }
         }
     </script>
+
     
     {{-- SIMULAÇÃO DE NOTA --}}
     <div class="container d-flex justify-content-center mt-5 gap-lg-3 ga-md-3 gap-sm-3 gap-2 mb-5">
@@ -133,12 +137,18 @@
         // Adicionando o modal ao DOM
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
+        // Pega Formulário quando é submetido
         document.getElementById("simularForm").addEventListener("submit", function(event) {
+
+            // Evita que página seja recarregada
             event.preventDefault();
 
+            // Armazena valores de notas
             let c1 = document.getElementById("notaC1").value;
             let c2 = document.getElementById("notaC2").value;
             let c3 = document.getElementById("notaC3").value;
+
+            // Armazena disciplina selecionada
             let disciplina = document.getElementById("disciplinaSelect").value;
 
             // Verificando se a disciplina foi selecionada

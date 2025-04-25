@@ -27,8 +27,8 @@
     {{-- Bootstrap JS --}}
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-VtORhFLrx2qy79yFXIv7Kfq5UhHKHV6I9W7iErPbArzjxvAK9TwWIJ9GkR96z9GB"
-        crossorigin="anonymous"></script>
-
+        crossorigin="anonymous">
+    </script>
 
     <title>@yield('title') - FAESA</title>
 </head>

@@ -1,23 +1,30 @@
 <?php
 
+
 namespace App\Http\Controllers;
+
 
 use Illuminate\Http\Request;
 use App\Services\LySimuladorNotaFormulaService;
 
+
 class LySimuladorNotaFormulaController extends Controller
 {   
-    
-    protected $simuladorNotaFormulaService;
 
-    // Dependencie Injection
+    
+    // Injecao de Dependencia via Construtor
+    protected $simuladorNotaFormulaService;
     public function __construct(LySimuladorNotaFormulaService $simuladorNotaFormulaService)
     {
         $this->simuladorNotaFormulaService = $simuladorNotaFormulaService;
     }
 
+
+    // Função para realizar Simulacao
     public function simular(Request $request)
     {
+
+    // Armazena os valores das notas nas variaveis através da request (valor enviado no formulario)
         $c1 = floatval($request->input('c1', 0));
         $c2 = floatval($request->input('c2', 0));
         $c3 = floatval($request->input('c3', 0));
