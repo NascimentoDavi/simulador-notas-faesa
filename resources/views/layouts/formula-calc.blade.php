@@ -1,7 +1,11 @@
 <div class="mt-4">
+
+    
+
     <h5 class="text-center">Simule sua Nota</h5>
 
 
+    
     <!-- SELECAO DE DISCIPLINA -->
     <div class="d-flex justify-content-center mt-4">
         <div class="input-group d-flex justify-content-center" style="max-width: 500px; width: 100%;">
@@ -17,11 +21,13 @@
         </div>
     </div>
 
-    
+
+
+    <!-- CAMPOS DE PREENCHIMENTO DOS VALORES DAS NOTAS -->
     <div class="container mt-3">
         <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
 
-            {{--  C1 --}}
+            <!-- C1 -->
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C1</button>
@@ -29,7 +35,7 @@
                 </div>
             </div>
     
-            {{-- C2 --}}
+            <!-- C2 -->
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C2</button>
@@ -37,7 +43,7 @@
                 </div>
             </div>
     
-            {{-- C3 --}}
+            <!-- C3 -->
             <div>
                 <div class="input-group mx-lg-1">
                     <button class="btn btn-outline-secondary" type="button">C3</button>
@@ -48,8 +54,11 @@
     </div>
     
     
-    {{-- VALIDAÇÃO DO VALOR INSERIDO NOS CAMPOS --}}
+
+    <!-- VALIDACAO DOS VALORES INSERIDOS NOS CAMPOS -->
     <script>
+
+        // Funcao que limita valor preenchido para 10.00
         function limitarValor(input) {
             let valor = input.value;
     
@@ -72,7 +81,8 @@
     </script>
 
     
-    {{-- SIMULAÇÃO DE NOTA --}}
+
+    <!-- SIMULACAO DE NOTA -->
     <div class="container d-flex justify-content-center mt-5 gap-lg-3 ga-md-3 gap-sm-3 gap-2 mb-5">
         <form id="simularForm">
             @csrf
@@ -83,12 +93,14 @@
         </div>
     </div>
 
-    {{-- RESULTADOS DA SIMULAÇÃO --}}
+
+
+    <!-- RESULTADOS DA SIMULACAO -->
     <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1">
         <div>
             <div class="input-group mx-lg-1">
                 <button class="btn btn-outline-secondary" type="button">MP</button>
-                <input type="text" class="form-control text-center border border-1 border-dark" maxlength="3"
+                <input type="text" class="form-control text-center border border-1 border-dark" maxlength="4"
                     style="max-width: 90px;" id="notaMP" disabled>
             </div>
         </div>
@@ -101,7 +113,9 @@
         </div>
     </div>
 
-    {{-- INFORMAÇÕES DA SIMULACAO --}}
+
+
+    <!-- INFORMACOES DA SIMULACAO -->
     <div class="text-center mt-3">
         *MP = Média Parcial
         <br>
@@ -110,11 +124,17 @@
         <br>
     </div>
 
+
+
 </div>
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Modal Bootstrap
+
+
+        // Modal de Selecao de Disciplina antes da simulacao
         const modalHTML = `
             <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -133,9 +153,45 @@
                 </div>
             </div>
         `;
-        
         // Adicionando o modal ao DOM
         document.body.insertAdjacentHTML('beforeend', modalHTML);
+        // Move o foco para um evento fora do modal que foi 'escondido' (hidden)
+        const errorModalModal = document.getElementById('errorModal');
+        errorModalModal.addEventListener('hide.bs.modal', function () {
+            document.getElementById('disciplinaSelect')?.focus();
+        });
+
+
+
+
+        // Modal de insercao de, no minimo, um valor maior que 0 antes da simulacao
+        const zeroValueModalHTML = `
+            <div class="modal fade" id="zeroValueModal" tabindex="-1" aria-labelledby="zeroValueModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-warning" id="zeroValueModalLabel">Atenção</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            Informe pelo menos uma nota maior que zero para simular!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', zeroValueModalHTML);
+        // Move o foco para um evento fora do modal que foi 'escondido' (hidden)
+        const zeroValueModalElement = document.getElementById('zeroValueModal');
+        zeroValueModalElement.addEventListener('hide.bs.modal', function () {
+            document.getElementById('disciplinaSelect')?.focus();
+        });
+
+
+
 
         // Pega Formulário quando é submetido
         document.getElementById("simularForm").addEventListener("submit", function(event) {
@@ -148,10 +204,20 @@
             let c2 = document.getElementById("notaC2").value;
             let c3 = document.getElementById("notaC3").value;
 
+            // Verifica se foi informado, no minimo, um valor maior que 0
+            if (
+                    (c1 === '' && c2 === '' && c3 === '') ||
+                    (c1 == 0 && c2 == 0 && c3 == 0)
+            ) {
+                let errorModal = new bootstrap.Modal(document.getElementById("zeroValueModal"));
+                errorModal.show();
+                return;
+            }
+
             // Armazena disciplina selecionada
             let disciplina = document.getElementById("disciplinaSelect").value;
 
-            // Verificando se a disciplina foi selecionada
+            // Verifica se a disciplina foi selecionada
             if (!disciplina) {
                 let errorModal = new bootstrap.Modal(document.getElementById("errorModal"));
                 errorModal.show();
@@ -185,7 +251,7 @@
                         document.getElementById("notaNM").value = 0.0;
                     } else {
                         console.log(data);
-                        document.getElementById("notaMP").value = parseFloat(data.original.mediaAritmetica).toFixed(1);
+                        document.getElementById("notaMP").value = parseFloat(data.original.mediaAritmetica).toFixed(2);
                         document.getElementById("notaNM").value = parseFloat(data.original.mediaProvaFinal).toFixed(2);
                     }
                 })

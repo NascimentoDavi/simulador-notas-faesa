@@ -19,18 +19,21 @@ class LyTurmaService
             if ($turma['DISCIPLINA'] === $disciplina) {
                 $formula = LyTurma::where('DISCIPLINA', $disciplina)
                     ->where('TURMA', $turma['TURMA'])
-                    ->first(['FORMULA_MF1', 'FL_FIELD_01']);
+                    ->first(['FORMULA_MF1', 'FL_FIELD_16']);
 
                 // Caso não possua fórmula cadastrada
-                if($formula['FL_FIELD_01'] === NULL || empty($formula['FL_FIELD_01'])) {
-                    $formula = LyTurma::where('DISCIPLINA', $disciplina)
-                    ->where('TURMA', $turma['TURMA'])
-                    ->first(['FORMULA_MF1', 'FORMULA_MF2']);
+                // if($formula['FL_FIELD_01'] === NULL || empty($formula['FL_FIELD_01'])) {
+                //     $formula = LyTurma::where('DISCIPLINA', $disciplina)
+                //     ->where('TURMA', $turma['TURMA'])
+                //     ->first(['FORMULA_MF1', 'FORMULA_MF2']);
 
-                    if ($formula && isset($formula['FORMULA_MF2'])) {
-                        $formula['FORMULA_MF2'] = str_replace('+(AF*0.4)', '/0.4', $formula['FORMULA_MF2']);
-                    }
-                }
+                //     if ($formula && isset($formula['FORMULA_MF2'])) {
+                //         $formula['FORMULA_MF2'] = str_replace('+(AF*0.4)', '/0.4', $formula['FORMULA_MF2']);
+                //     }
+                // }
+
+                dd($formula);
+
                 return $formula;
             }
         }
