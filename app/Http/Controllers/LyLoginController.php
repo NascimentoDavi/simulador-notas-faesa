@@ -44,6 +44,10 @@ class LyLoginController extends Controller
                 'semestres'   => $loginDataDTO->       semestres,
                 'curso'       => $loginDataDTO->       curso,
             ]);
+
+            dd($loginDataDTO->notas);
+
+
             return redirect()->intended('/menu');   
         }
     }

@@ -32,7 +32,7 @@ class LyTurmaService
                 //     }
                 // }
 
-                dd($formula);
+                // dd($formula);
 
                 return $formula;
             }

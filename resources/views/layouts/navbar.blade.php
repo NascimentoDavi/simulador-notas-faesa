@@ -13,17 +13,33 @@
         </a>
 
         {{-- Nome e Matrícula do aluno --}}
-        <div class="d-none d-md-flex flex-column ms-5">
-            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
-                {{ $aluno->NOME_COMPL }}
-            </p>
-            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
-                {{ $aluno->ALUNO }}
-            </p>
-            <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
-                {{ $curso->CURSO }} | {{ $curso->NOME }}
-            </p>
+        <div class="d-none d-md-flex flex-column ms-5" style="position: relative;">
+            <!-- Botão para alternar a visibilidade -->
+            <button id="toggle-info" class="" style="color: #ecf5f9; font-size: 16px; background: transparent;">
+                <i class="bi bi-person-square"></i>  Info >
+            </button>
+
+            <div id="info-container" class="info-container d-flex align-items-start">
+                <!-- Barra lateral -->
+                <div class="info-bar"></div>
+
+                <!-- Conteúdo das informações -->
+                <div class="info-content ms-2">
+                    <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                        {{ $aluno->NOME_COMPL }}
+                    </p>
+                    <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                        {{ $aluno->ALUNO }}
+                    </p>
+                    <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                        {{ $curso->CURSO }} | {{ $curso->NOME }}
+                    </p>
+                </div>
+            </div>
+
         </div>
+
+
         
         <!-- Botão para abrir o offcanvas -->
         <button class="navbar-toggler btn-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuOffcanvas">
@@ -51,9 +67,32 @@
         <!-- Bootstrap JS (inclui Popper.js) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <button type="button" class="d-none d-md-block btn btn-warning ms-4" style="white-space: nowrap">
-                <a href="{{ route("logout") }}" class="text-decoration-none" style="color:black">Log-out</a>
-        </button>
+        <form action="{{ route('logout') }}" method="POST" class="d-none d-md-inline ms-4">
+            @csrf
+            <button type="submit" class="btn btn-warning logout-button">
+                <span class="logout-text">Log-out</span>
+                <span class="logout-icon"><i class="bi bi-box-arrow-in-right"></i></span>
+            </button>
+        </form>
+
+
+        <script>
+
+            // Alternar a visibilidade das informações ao clicar no botão
+            document.getElementById('toggle-info').addEventListener('click', function() {
+                var infoContainer = document.getElementById('info-container');
+                var icon = this.querySelector('i');
+                
+                // Alterna a classe 'show' para mostrar/ocultar o conteúdo
+                infoContainer.classList.toggle('show');
+                
+                // Alterna a rotação do ícone
+                this.classList.toggle('active');
+            });
+
+
+        </script>
+
 
     </div>
 </nav>

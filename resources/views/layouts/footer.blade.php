@@ -16,13 +16,14 @@
 
 <style>
     .social-icon i {
-        font-size: 18px; /* Tamanho inicial */
-        transition: transform 0.3s ease-in-out; /* Animação suave */
-        color: #fff; /* Cor inicial dos ícones */
+        font-size: 20px; /* Tamanho reduzido */
+        transition: transform 0.4s ease, filter 0.4s ease;
+        color: #fff;
     }
 
     .social-icon:hover i {
-        transform: scale(1.2); /* Aumenta em 20% ao passar o mouse */
-        color: #085ca4; /* Cor ao passar o mouse (opcional) */
+        transform: scale(1.4) skewX(10deg) skewY(10deg); /* Expansão e distorção */
+        filter: brightness(1.3); /* Aumenta o brilho */
+        color: #00cfff; /* Cor azul vibrante */
     }
 </style>

@@ -30,15 +30,16 @@
             <!-- C1 -->
             <div>
                 <div class="input-group mx-lg-1">
-                    <button class="btn btn-outline-secondary" type="button">C1</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('notaC1').focus();">C1</button>
                     <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0" max="10" style="max-width: 90px;" id="notaC1" value="" oninput="limitarValor(this)">
                 </div>
             </div>
+
     
             <!-- C2 -->
             <div>
                 <div class="input-group mx-lg-1">
-                    <button class="btn btn-outline-secondary" type="button">C2</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('notaC2').focus();">C2</button>
                     <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0" max="10" style="max-width: 90px;" id="notaC2" value="" oninput="limitarValor(this)">
                 </div>
             </div>
@@ -46,7 +47,7 @@
             <!-- C3 -->
             <div>
                 <div class="input-group mx-lg-1">
-                    <button class="btn btn-outline-secondary" type="button">C3</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('notaC3').focus();">C3</button>
                     <input type="number" step="0.1" class="form-control text-center border border-1 border-dark" min="0.00" max="10.00" style="max-width: 90px;" id="notaC3" value="" oninput="limitarValor(this)">
                 </div>
             </div>

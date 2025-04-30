@@ -133,3 +133,86 @@
         width: 50%;   /* Ocupa 50% da largura em telas maiores que 500px */
     }
 }
+
+
+
+
+
+/* ===================== */
+/*      LOGOUT BUTTON    */
+/* ===================== */
+
+.logout-button {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 120px; /* Ajuste conforme necessário */
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-text {
+    display: inline-block;
+    transition: all 0.4s ease;
+  }
+  
+  .logout-icon {
+    position: absolute;
+    right: -30px; /* Começa fora da tela à direita */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+  
+  /* Ao passar o mouse */
+  .logout-button:hover .logout-text {
+    left: -100%; /* Move o texto para fora à esquerda */
+    opacity: 0; /* Torna o texto invisível */
+  }
+  
+  .logout-button:hover .logout-icon {
+    right: 50%; /* Move o "X" para o centro */
+    transform: translate(50%, -50%); /* Ajusta a posição vertical */
+    opacity: 1; /* Torna o "X" visível */
+  }
+  
+
+
+/* ===================== */
+/*    USER INFO NAVBAR   */
+/* ===================== */
+
+.info-container {
+    position: absolute;
+    top: -17px;
+    left: 100%;
+    padding-left: 10px;
+    max-width: 250px;
+    opacity: 0;
+    transform: translateX(-20px); /* Esquerda */
+    pointer-events: none; /* Não permite cliques quando invisível */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.info-container.show {
+    opacity: 1;
+    transform: translateX(0); /* Volta ao lugar original */
+    pointer-events: auto;
+}
+
+.info-bar {
+    width: 2px;
+    height: 58px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Quando .show é aplicado no container, ativa a barra */
+.info-container.show .info-bar {
+    opacity: 1;
+    transform: translateX(0);
+}
