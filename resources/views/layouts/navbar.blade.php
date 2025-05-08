@@ -15,9 +15,10 @@
         {{-- Nome e Matrícula do aluno --}}
         <div class="d-none d-md-flex flex-column ms-5" style="position: relative;">
             <!-- Botão para alternar a visibilidade -->
-            <button id="toggle-info" class="" style="color: #ecf5f9; font-size: 16px; background: transparent;">
-                <i class="bi bi-person-square"></i>  Info >
+            <button id="toggle-info" class="info-button" style="color: #ecf5f9; font-size: 16px; background: transparent;">
+                <i class="bi bi-person-square me-1"></i> <span class="info-text">Info</span> <span class="arrow">&gt;</span>
             </button>
+
 
             <div id="info-container" class="info-container d-flex align-items-start">
                 <!-- Barra lateral -->
@@ -67,7 +68,7 @@
         <!-- Bootstrap JS (inclui Popper.js) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <form action="{{ route('logout') }}" method="POST" class="d-none d-md-inline ms-4">
+        <form action="{{ route('logout') }}" method="GET" class="d-none d-md-inline ms-4">
             @csrf
             <button type="submit" class="btn btn-warning logout-button">
                 <span class="logout-text">Log-out</span>

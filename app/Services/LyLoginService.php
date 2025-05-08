@@ -75,14 +75,14 @@ class LyLoginService
 
         // DISCIPLINA
         $disciplinas = $this->disciplinaService->getDisciplinas($matriculas);
-        
 
+        
         // NOTAS
         $notas = $this->disciplinaService->getNotas($aluno, $anoSemestre[0], $anoSemestre[1], $disciplinas);
-        
 
+        
         // CURSO
-        $curso = $this->alunoService->getCursoFromAluno($aluno);
+        $curso = $this->alunoService->getCursoFromAluno($aluno, $anoSemestre[0], $anoSemestre[1]);
 
         
         // DTO

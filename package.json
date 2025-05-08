@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",  
+        "build": "vite build",
         "dev": "vite",
         "serve": "concurrently \"npm run dev\" \"php artisan serve\""
     },
@@ -15,5 +15,8 @@
         "postcss": "^8.4.47",
         "tailwindcss": "^3.4.13",
         "vite": "^6.1.0"
+    },
+    "dependencies": {
+        "chart.js": "^4.4.9"
     }
 }

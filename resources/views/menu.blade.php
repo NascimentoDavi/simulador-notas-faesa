@@ -60,6 +60,18 @@
                 </div>
 
 
+                <div class="mt-3">
+                    <button id="toggleGraphType" class="btn btn-primary">Alternar para Gráfico de Barras</button>
+                </div>
+
+
+                <div class="mt-5">
+                    <h3>Desempenho do Aluno</h3>
+                    <canvas id="gradesChart"></canvas>
+                </div>
+
+
+
 
 
 
@@ -118,7 +130,111 @@
                 </script>
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const notas = @json(session('notas', [])); // Obtemos os dados da sessão
+        
+        // Prepare os dados para o gráfico
+        const disciplinas = [];
+        const c1Notas = [];
+        const c2Notas = [];
+        const c3Notas = [];
 
+        // Preenche as variáveis com os dados das notas
+        notas.forEach(nota => {
+            disciplinas.push(nota['DISCIPLINA']);
+            c1Notas.push(nota['C1'] ?? 0);  // Caso não haja nota, coloca 0
+            c2Notas.push(nota['C2'] ?? 0);
+            c3Notas.push(nota['C3'] ?? 0);
+        });
+
+        // Criação do gráfico
+        const ctx = document.getElementById('gradesChart').getContext('2d');
+        let chartType = 'line'; // O tipo inicial do gráfico é 'line'
+
+        const chartData = {
+            labels: disciplinas, // Disciplinas no eixo X
+            datasets: [{
+                label: 'C1',
+                data: c1Notas,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(22, 212, 212, 0.2)',
+                fill: true
+            }, {
+                label: 'C2',
+                data: c2Notas,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                fill: false
+            }, {
+                label: 'C3',
+                data: c3Notas,
+                borderColor: 'rgb(103, 33, 243)',
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                fill: true
+            }]
+        };
+
+        let chartOptions = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+        tooltip: {
+            enabled: true
+        }
+    },
+    scales: {
+        x: {
+            title: {
+                display: false,
+                text: 'Disciplinas'
+            },
+            ticks: {
+                font: {
+                    size: 12, // Reduz o tamanho da fonte dos rótulos
+                    family: 'arial',
+                    weight: 'normal'
+                },
+                maxRotation: 90,  // Define a rotação máxima dos rótulos
+                minRotation: 20,  // Garante que todos os rótulos fiquem com 90 graus
+            }
+        },
+        y: {
+            title: {
+                display: false,
+                text: 'Notas'
+            },
+            min: 0,
+            max: 10 // Ajuste conforme a escala de notas
+        }
+    }
+};
+
+
+        // Criação do gráfico inicial
+        const chart = new Chart(ctx, {
+            type: chartType,
+            data: chartData,
+            options: chartOptions
+        });
+
+        // Alternar o tipo de gráfico ao clicar no botão
+        const toggleButton = document.getElementById('toggleGraphType');
+        toggleButton.addEventListener('click', function() {
+            // Alterna entre 'line' e 'bar'
+            chartType = (chartType === 'line') ? 'bar' : 'line';
+            
+            // Atualiza o tipo de gráfico sem destruir o gráfico
+            chart.config.type = chartType;
+            chart.update(); // Atualiza o gráfico com o novo tipo
+
+            // Altera o texto do botão para refletir o novo tipo
+            toggleButton.textContent = (chartType === 'line') ? 'Alternar para Gráfico de Barras' : 'Alternar para Gráfico de Linhas';
+        });
+    });
+</script>
 
 
             </div>

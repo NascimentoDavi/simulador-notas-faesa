@@ -183,6 +183,30 @@
 /*    USER INFO NAVBAR   */
 /* ===================== */
 
+.info-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.info-button .info-text,
+.info-button .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.info-button:hover .info-text {
+    transform: translateX(3px);
+    color: #00cfff;
+}
+
+.info-button:hover .arrow {
+    transform: translateX(5px);
+    color: #00cfff;
+}
+
 .info-container {
     position: absolute;
     top: -17px;

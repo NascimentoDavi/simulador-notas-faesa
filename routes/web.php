@@ -5,6 +5,7 @@ use App\Http\Controllers\LyLoginController;
 use App\Http\Controllers\LyNotaController;
 use App\Http\Controllers\LyDisciplinaController;
 use App\Http\Controllers\LySimuladorNotaFormulaController;
+use App\Http\Controllers\GraficoController;
 use App\Http\Middleware\AuthMiddleware;
 
 
@@ -53,4 +54,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::match(['get', 'post'], '/notas-por-periodo/{aluno}/{ano}/{semestre}', [LyDisciplinaController::class, 'getNotaAnoSemestre'])->name('getNotasAnoSemestre');
 
         Route::match(['get', 'post'],'/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
+
+        // Rota para retornar o gráfico
+        Route::match(['get', 'post'], '/grafico', [GraficoController::class, 'gerarGrafico']);
 });

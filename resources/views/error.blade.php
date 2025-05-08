@@ -34,7 +34,7 @@
                 count--;
                 setTimeout(updateCountdown, 1000);
             } else {
-                window.location.href = "{{ route('login') }}";
+                window.location.href = "{{ route('loginGET') }}";
             }
         }
         window.onload = updateCountdown;
