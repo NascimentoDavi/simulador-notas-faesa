@@ -45,8 +45,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         $formula_nm = session('formula_nm');
         $formula_mp = session('formula_mp');
 
+        // Pega ano e semestre para selecionar fórmula corretamente lá na frente.
+        $ano = session('anos');
+        $semestre = session('semestres');
+
         // Passa os dados para a view
-        return view('menu', compact('aluno', 'curso', 'notas', 'formula_nm', 'formula_mp'));
+        return view('menu', compact('aluno', 'curso', 'notas', 'formula_nm', 'formula_mp', 'ano', 'semestre'));
         })->name('menu');
 
         Route::match(['get', 'post'], '/notas', [LyDisciplinaController::class, 'getNotas'])->name('getNotas');

@@ -28,10 +28,10 @@ class LySimuladorNotaFormulaController extends Controller
         $c1 = floatval($request->input('c1', 0));
         $c2 = floatval($request->input('c2', 0));
         $c3 = floatval($request->input('c3', 0));
+        $ano = session('anos');
+        $semestre = session('semestres');
 
-        $ano = date("Y");
-
-        $result = $this->simuladorNotaFormulaService->simularNotas($c1, $c2, $c3, session('aluno')->ALUNO, $request->input('disciplina'), $ano);
+        $result = $this->simuladorNotaFormulaService->simularNotas($c1, $c2, $c3, session('aluno')->ALUNO, $request->input('disciplina'), $ano, $semestre);
 
         return response()->json($result);
     }

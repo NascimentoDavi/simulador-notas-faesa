@@ -13,13 +13,20 @@ class LyTurmaService
 
 
     // FORMULA DE CÁLCULO
-    public function getFormulaFromTurma($disciplina, $turmas)
+    public function getFormulaFromTurma($disciplina, $turmas, $ano, $semestre)
     {
+
+
+        // Modified By Davi R : Add ano e semestre para filtragem de formulas.
+
         foreach ($turmas as $turma) {
             if ($turma['DISCIPLINA'] === $disciplina) {
                 $formula = LyTurma::where('DISCIPLINA', $disciplina)
                     ->where('TURMA', $turma['TURMA'])
+                    ->where('ANO', $ano)
+                    ->where('SEMESTRE', $semestre)
                     ->first(['FORMULA_MF1', 'FL_FIELD_16']);
+                    
 
                 // Caso não possua fórmula cadastrada
                 // if($formula['FL_FIELD_01'] === NULL || empty($formula['FL_FIELD_01'])) {
@@ -42,12 +49,16 @@ class LyTurmaService
 
 
     // Retorna Turma a partir da Disciplina
-    public function getTurma($aluno, $disciplina)
+    public function getTurma($aluno, $disciplina, $ano, $semestre)
     {
         $turmas = LyMatricula::where('DISCIPLINA', $disciplina)
             ->where('ALUNO', $aluno)
             
             ->where('SIT_MATRICULA', 'Matriculado') // Não utilizamos o valor da coluna 'Aprovado', pois pegamos somente as disciplinas do semestre atual
+
+            ->where('ANO', $ano)
+
+            ->where('SEMESTRE', $semestre)
 
             ->get(['TURMA', 'DISCIPLINA'])
 
