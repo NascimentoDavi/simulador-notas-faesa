@@ -214,6 +214,7 @@
 
 
         // Criação do gráfico inicial
+        
         const chart = new Chart(ctx, {
             type: chartType,
             data: chartData,
@@ -241,5 +242,5 @@
         </div>
     </div>
 </div>
-W
+
 @endsection

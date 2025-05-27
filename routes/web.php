@@ -35,7 +35,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         // MENU GET
         Route::get('/menu', function () {
                 if (!session()->has('aluno')) {
-                        return redirect()->route('login');
+                        return redirect()->route('loginGET');
                 }
 
         // Armazena os dados da sessao nas variaveis

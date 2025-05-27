@@ -1,24 +1,26 @@
-<div class="d-none d-md-block container text-end" style="height: 17px;">
-    <a href="https://portaldoaluno.faesa.br/Login/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 123px">Portal do Aluno | </a>
-    <a href="https://ava.faesa.br/d2l/login" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 95px"> AVA</a>
+<div class="d-none d-md-flex flex-row justify-content-start container-fluid text-end" style="height: 17px; position: relative;">
+    <p id="frase-carousel" class="frase-carousel" style="position: absolute; left: 105px;">O melhor Centro Universitário do Estado.</p>
+
+    <a href="https://www.faesa.br/contato/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 125px;">Fale Conosco</a>
 </div>
 
-<nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top border-y border-black">
+<nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top border-top border-warning">
     <div class="container">
 
         {{-- Navbar Brand --}}
         <a href="#" class="navbar-brand d-flex align-items-center me-sm-3 me-md-5 p-0">
             <img class="m-0 p-0" src="{{ asset('faesa.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">
-            <span class="ms-3" id="simulador-notas" style="color: #ecf5f9">Simulador de Notas</span>
+            <span class="ms-3" id="simulador-notas" style="color: #ecf5f9">
+                <span class="">|</span>
+                Simulador de Notas</span>
         </a>
 
         {{-- Nome e Matrícula do aluno --}}
         <div class="d-none d-md-flex flex-column ms-5" style="position: relative;">
             <!-- Botão para alternar a visibilidade -->
-            <button id="toggle-info" class="info-button" style="color: #ecf5f9; font-size: 16px; background: transparent;">
+           <button id="toggle-info" class="info-button d-none d-lg-inline" style="color: #ecf5f9; font-size: 16px; background: transparent;">
                 <i class="bi bi-person-square me-1"></i> <span class="info-text">Info</span> <span class="arrow">&gt;</span>
             </button>
-
 
             <div id="info-container" class="info-container d-flex align-items-start">
                 <!-- Barra lateral -->
@@ -68,7 +70,28 @@
         <!-- Bootstrap JS (inclui Popper.js) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <form action="{{ route('logout') }}" method="GET" class="d-none d-md-inline ms-4">
+        <div class="mx-5 px-2 d-none d-xxl-flex">
+            <a href="https://ava.faesa.br/d2l/login" class="btn logout-button text-decoration-none text-light d-inline-flex align-items-center">
+                <span class="logout-text text-white">
+                    <p class="fs-6 p-0 m-0">AVA</p>
+                </span>
+                <span class="logout-icon">
+                    <i class="bi bi-box-arrow-in-right text-white"></i>
+                </span>
+            </a>
+
+            <a href="https://portaldoaluno.faesa.br/Login/" class="btn logout-button text-decoration-none text-light d-inline-flex align-items-center">
+                <span class="logout-text text-white">
+                    <p class="fs-6 p-0 m-0">Portal</p>
+                </span>
+                <span class="logout-icon">
+                    <i class="bi bi-box-arrow-in-right text-white"></i>
+                </span>
+            </a>
+        </div>
+
+
+        <form action="{{ route('logout') }}" method="GET" class="d-none d-md-inline ms-4 mx-2">
             @csrf
             <button type="submit" class="btn btn-warning logout-button">
                 <span class="logout-text">Log-out</span>
@@ -76,24 +99,51 @@
             </button>
         </form>
 
-
         <script>
+            const btn = document.getElementById('toggle-info');
+            const infoContainer = document.getElementById('info-container');
 
-            // Alternar a visibilidade das informações ao clicar no botão
-            document.getElementById('toggle-info').addEventListener('click', function() {
-                var infoContainer = document.getElementById('info-container');
-                var icon = this.querySelector('i');
-                
-                // Alterna a classe 'show' para mostrar/ocultar o conteúdo
+            function isVisible(element) {
+                return element && element.offsetParent !== null;
+            }
+
+            if (isVisible(btn)) {
+                btn.addEventListener('click', function() {
                 infoContainer.classList.toggle('show');
-                
-                // Alterna a rotação do ícone
                 this.classList.toggle('active');
+                });
+            } else {
+                
+                infoContainer.classList.remove('show');
+            }
+
+            window.addEventListener('resize', () => {
+                if (!isVisible(btn)) {
+                infoContainer.classList.remove('show');
+                }
             });
 
+            const frases = [
+                "O melhor Centro Universitário do Estado.",
+                "Excelência no ensino superior.",
+                "Inovação que transforma futuros.",
+                "Compromisso com sua carreira.",
+                "Educação de verdade, na prática."
+            ];
 
+            let index = 0;
+            const fraseElement = document.getElementById('frase-carousel');
+
+            setInterval(() => {
+                fraseElement.style.opacity = 0;
+
+                setTimeout(() => {
+                    index = (index + 1) % frases.length;
+                    fraseElement.textContent = frases[index];
+                    fraseElement.style.opacity = 1;
+                }, 1000);
+            }, 4000);
         </script>
-
-
+        
     </div>
 </nav>

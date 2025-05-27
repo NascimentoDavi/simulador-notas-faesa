@@ -25,7 +25,7 @@ class LyLoginController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function login(Request $request)
-    {
+{
 
         // Pega os dados da Request
         $usuario = $request->input('login');
@@ -33,6 +33,7 @@ class LyLoginController extends Controller
         // DTO - Cria Objeto Login
         $loginDataDTO = $this->loginService->realizarLogin($usuario);
 
+        // Caso não ache os dados de matrícula, retorna mensagem de erro 'Matrícula não encontrada'
         if (!$loginDataDTO) {
             return response()->view('error',['message' => 'Erro no login'], 400);
         } else {

@@ -1,4 +1,4 @@
-<footer class="p-2 text-center fixed-bottom footer-bg-color border-top border-black">
+<footer class="p-2 text-center fixed-bottom footer-bg-color border-top border-warning">
     <span style="color: white">Todos os Direitos Reservados</span>
     <br>
     <div id="footer-links" class="d-flex flex-row justify-content-center">
@@ -24,6 +24,6 @@
     .social-icon:hover i {
         transform: scale(1.4) skewX(10deg) skewY(10deg); /* Expansão e distorção */
         filter: brightness(1.3); /* Aumenta o brilho */
-        color: #00cfff; /* Cor azul vibrante */
+        color:rgb(256,196,4); /* Cor azul vibrante */
     }
 </style>
