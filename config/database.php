@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'sqlserver'),
 
     /*
     |--------------------------------------------------------------------------
@@ -111,6 +111,17 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+
+        'lyceum_secondary' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SECONDARY_HOST', '10.1.100.102'),
+            'port' => env('DB_SECONDARY_PORT', '1433'),
+            'database'=> env('DB_SECONDARY_DATABASE', 'LYCEUM_BKP_PRODUCAO'),
+            'username' => env('DB_SECONDARY_USERNAME', ''),
+            'password' => env('DB_SECONDARY_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ]
 
     ],
 

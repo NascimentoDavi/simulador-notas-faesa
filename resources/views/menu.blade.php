@@ -14,8 +14,30 @@
 
 
 
-                
-                <h2 class="poppins-semibold m-0 p-0">Notas do Aluno</h2>
+                <form class="d-flex flex-row align-items-center flex-wrap" id="selectYearSemester">
+                    <h2 class="poppins-semibold m-0 p-0 mx-3">Notas do Aluno</h2>
+
+                    <div class="input-group input-group-sm me-2" style="width: auto;">
+                        <label class="input-group-text bg-primary-subtle" for="selectAno">Ano</label>
+                        <select class="form-select form-select-sm" id="selectAno" style="width: auto;">
+                            <option selected>Escolha...</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group input-group-sm me-2" style="width: auto;">
+                        <label class="input-group-text bg-primary-subtle" for="selectSemestre">Semestre</label>
+                        <select class="form-select form-select-sm" id="selectSemestre" style="width: auto;">
+                            <option selected>Escolha...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary btn-sm" type="submit">Pesquisar</button>
+                </form>
+
 
                 <div class="mb-3">
                     {{-- INFORMAÇÕES ALUNO --}}
@@ -235,6 +257,11 @@
             toggleButton.textContent = (chartType === 'line') ? 'Alternar para Gráfico de Barras' : 'Alternar para Gráfico de Linhas';
         });
     });
+
+    document.getElementById("selectYearSemester").addEventListener("change", function() {
+        // Define method to select grades by year and semester
+    })
+
 </script>
 
 

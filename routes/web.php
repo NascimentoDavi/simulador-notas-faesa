@@ -11,6 +11,9 @@ use App\Http\Middleware\AuthMiddleware;
 
 // Primeira Rota
 Route::get('/', function () {
+if(session()->has('aluno')) {
+        return redirect()->route('menu');
+}
 return view('login');
 })->name('beginning');
 
@@ -18,6 +21,7 @@ return view('login');
 Route::middleware([AuthMiddleware::class])->group(function () {
 
         // LOGIN GET
+        // Caso o aluno já tenha logado e acesse a rota de login novamente, ele permanecerá logado, considerando tempo de session definida
         Route::get('/login', function () {
         if(session()->has('aluno')) {
                 return redirect()->route('menu');
