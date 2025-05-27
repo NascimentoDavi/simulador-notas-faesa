@@ -17,12 +17,13 @@ return view('login');
 
 Route::middleware([AuthMiddleware::class])->group(function () {
 
-
         // LOGIN GET
         Route::get('/login', function () {
+        if(session()->has('aluno')) {
+                return redirect()->route('menu');
+        }
         return view('login');
         })->name('loginGET');
-
 
         // LOGIN POST
         Route::post('/login', [LyLoginController::class, 'login'])
