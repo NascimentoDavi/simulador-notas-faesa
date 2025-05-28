@@ -28,13 +28,13 @@ class LyAlunoService
      */
     public function getCursoFromAluno($aluno)
     {
-        return LyCurso::where('CURSO', '=', $aluno['CURSO'])->first();
+        return LyCurso::where('CURSO', '=', $aluno->CURSO)->first();
     }
 
 
     public function getNotaAnoSemestreFromAluno($aluno, $ano, $semestre)
         {
-            if ($ano === session('anos')) {
+            if ($ano === session('anos') && $semestre === session('semestres')) {
 
                 $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
                     ->select(
@@ -61,7 +61,7 @@ class LyAlunoService
                         'C3' => optional($notasDisciplina->where('PROVA', 'C3')->first())->CONCEITO ?? 0
                     ];
                 }
-
+                // dd($notasOrganizadas);
                 return $notasOrganizadas;
             }
 
@@ -94,4 +94,15 @@ class LyAlunoService
 
             return $notasOrganizadas;
         }
+
+    public function getAnosSemestresCursados($aluno)
+    {
+        $anosSemestresCursados = LyNotaHistMatr::where('ALUNO', '=', $aluno['ALUNO'])
+        ->select('ano', 'semestre')
+        ->distinct()
+        ->get()
+        ->toArray();
+
+        return $anosSemestresCursados;
+    }
 }

@@ -13,31 +13,33 @@
 
 
 
-
+                <!-- Seleção de Ano e Semestre para mostrar as Notas -->
                 <form class="d-flex flex-row align-items-center flex-wrap" id="selectYearSemester">
                     <h2 class="poppins-semibold m-0 p-0 mx-3">Notas do Aluno</h2>
 
                     <div class="input-group input-group-sm me-2" style="width: auto;">
                         <label class="input-group-text bg-primary-subtle" for="selectAno">Ano</label>
-                        <select class="form-select form-select-sm" id="selectAno" style="width: auto;">
-                            <option selected>Escolha...</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
+                        <select class="form-select form-select-sm" id="selectAno" style="width: auto;" name="ano">
+                            <option value="" selected disabled>Escolha...</option>
+                            @foreach (session('anosCursados', []) as $ano)
+                                <option value="{{ $ano }}">{{ $ano }}</option>
+                            @endforeach
+                            <option value="{{ session('anos') }}">{{ session('anos') }}</option>
                         </select>
                     </div>
 
                     <div class="input-group input-group-sm me-2" style="width: auto;">
                         <label class="input-group-text bg-primary-subtle" for="selectSemestre">Semestre</label>
-                        <select class="form-select form-select-sm" id="selectSemestre" style="width: auto;">
-                            <option selected>Escolha...</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
+                        <select class="form-select form-select-sm" id="selectSemestre" style="width: auto;" name="semestre">
+                             <option value="" selected disabled>Escolha...</option>
+                             <option value="1">1</option>
+                             <option value="2">2</option>
                         </select>
                     </div>
 
                     <button class="btn btn-primary btn-sm" type="submit">Pesquisar</button>
                 </form>
+
 
 
                 <div class="mb-3">
@@ -114,7 +116,7 @@
                         <p><strong>C3:</strong> <span id="modalC3"></span></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
                     </div>
                     </div>
                 </div>
@@ -127,29 +129,26 @@
                 <!-- EXIBICAO DE MODAL - INFORMACOES DA DISCIPLINA -->
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        const rows = document.querySelectorAll('#grades-table tbody tr');
+                    const btnCloseModal = document.getElementById('btnCloseModal');
+                    const infoModalEl = document.getElementById('infoModal');
+                    const infoModal = bootstrap.Modal.getOrCreateInstance(infoModalEl);
 
-                        rows.forEach(row => {
-                            row.addEventListener('click', function() {
-                                const disciplina = row.cells[0].textContent;  // Disciplina
-                                const nomeDisciplina = row.cells[1].textContent;  // Nome da Disciplina
-                                const c1 = row.cells[2].textContent;  // C1
-                                const c2 = row.cells[3].textContent;  // C2
-                                const c3 = row.cells[4].textContent;  // C3
-
-                                // PREENCHE MODAL
-                                document.getElementById('modalDisciplina').textContent = disciplina;
-                                document.getElementById('modalNomeDisciplina').textContent = nomeDisciplina;
-                                document.getElementById('modalC1').textContent = c1;
-                                document.getElementById('modalC2').textContent = c2;
-                                document.getElementById('modalC3').textContent = c3;
-
-                                // EXIBE MODAL
-                                var myModal = new bootstrap.Modal(document.getElementById('infoModal'));
-                                myModal.show();
-                            });
+                    btnCloseModal.addEventListener('click', function() {
+                        // Cria e dispara evento keydown simulando ESC
+                        const escEvent = new KeyboardEvent('keydown', {
+                            key: 'Escape',
+                            keyCode: 27,
+                            code: 'Escape',
+                            which: 27,
+                            bubbles: true,
+                            cancelable: true,
                         });
+                        document.dispatchEvent(escEvent);
+
+                        // Opcional: também fecha o modal diretamente
+                        infoModal.hide();
                     });
+                });
                 </script>
 
 
@@ -267,6 +266,10 @@
     // Função para ativar eventos do modal nas linhas
     function ativarEventoModal() {
         const rows = document.querySelectorAll('#grades-table tbody tr');
+                // Crie a instância uma vez
+        const infoModalElement = document.getElementById('infoModal');
+        const infoModal = new bootstrap.Modal(infoModalElement);
+
         rows.forEach(row => {
             row.addEventListener('click', function() {
                 document.getElementById('modalDisciplina').textContent = row.cells[0].textContent;
@@ -275,9 +278,10 @@
                 document.getElementById('modalC2').textContent = row.cells[3].textContent;
                 document.getElementById('modalC3').textContent = row.cells[4].textContent;
 
-                new bootstrap.Modal(document.getElementById('infoModal')).show();
+                infoModal.show();
             });
         });
+
     }
 
     ativarEventoModal();
@@ -290,7 +294,7 @@
         const ano = document.getElementById('selectAno').value;
         const semestre = document.getElementById('selectSemestre').value;
 
-        if (!ano || !semestre) {
+        if (ano === "Escolha..." || semestre === "Escolha...") {
             alert('Por favor, selecione o ano e o semestre.');
             return;
         }

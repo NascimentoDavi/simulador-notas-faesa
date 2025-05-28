@@ -50,8 +50,8 @@ class LyLoginService
         
         // ANO SEMESTRE ATUAIS
         $anoSemestre = $this->opcoesService->getAnoSemestreAtual();
-    
-        
+
+
         // PESSOA
         $pessoa = $this->pessoaService->getPessoa($usuario);
         if (!$pessoa) {
@@ -64,6 +64,11 @@ class LyLoginService
         if (!$aluno) {
             return null;
         }
+
+        // ANOS E SEMESTRES JA CURSADOS
+        $anosSemestresCursados = $this->alunoService->getAnosSemestresCursados($aluno);
+        $anosCursados = array_unique(array_column($anosSemestresCursados, 'ano'));
+        $semestresCursados = array_unique(array_column($anosSemestresCursados, 'semestre'));
 
         
         // MATRICULA
@@ -93,7 +98,8 @@ class LyLoginService
             $notas,
             $anoSemestre[1],
             $curso,
-            $notas
+            $anosCursados,
+            $semestresCursados
         );
     }
 }
