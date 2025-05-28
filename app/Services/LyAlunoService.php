@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\LyAluno;
+use App\Models\LyNota;
 use App\Models\LyCurso;
 use App\Models\LyNotaHistMatr;
 
@@ -32,33 +33,65 @@ class LyAlunoService
 
 
     public function getNotaAnoSemestreFromAluno($aluno, $ano, $semestre)
-    {
-        $notas = LyNotaHistMatr::join('LY_DISCIPLINA', 'LY_NOTA_HISTMATR.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
-            ->select(
-                'LY_NOTA_HISTMATR.DISCIPLINA',
-                'LY_NOTA_HISTMATR.NOTA_ID',
-                'LY_NOTA_HISTMATR.CONCEITO',
-                'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
-            )
-            ->where('LY_NOTA_HISTMATR.ALUNO', $aluno['ALUNO'])
-            ->where('LY_NOTA_HISTMATR.ANO', $ano)
-            ->where('LY_NOTA_HISTMATR.SEMESTRE', $semestre)
-            ->whereIn('LY_NOTA_HISTMATR.NOTA_ID', ['C1', 'C2', 'C3'])
-            ->get()
-            ->groupBy('DISCIPLINA');
+        {
+            if ($ano === session('anos')) {
 
-        $notasOrganizadas = [];
+                $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
+                    ->select(
+                        'LY_NOTA.DISCIPLINA',
+                        'LY_NOTA.PROVA',
+                        'LY_NOTA.CONCEITO',
+                        'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
+                    )
+                    ->where('LY_NOTA.ALUNO', $aluno['ALUNO'])
+                    ->where('LY_NOTA.ANO', $ano)
+                    ->where('LY_NOTA.SEMESTRE', $semestre)
+                    ->whereIn('LY_NOTA.PROVA', ['C1', 'C2', 'C3'])
+                    ->get()
+                    ->groupBy('DISCIPLINA');
 
-        foreach ($notas as $disciplina => $notasDisciplina) {
-            $notasOrganizadas[] = [
-                'DISCIPLINA' => $disciplina,
-                'NOME_DISCIPLINA' => $notasDisciplina->first()->NOME_DISCIPLINA,
-                'C1' => optional($notasDisciplina->where('NOTA_ID', 'C1')->first())->CONCEITO ?? 'NI',
-                'C2' => optional($notasDisciplina->where('NOTA_ID', 'C2')->first())->CONCEITO ?? 'NI',
-                'C3' => optional($notasDisciplina->where('NOTA_ID', 'C3')->first())->CONCEITO ?? 'NI',
-            ];
+                $notasOrganizadas = [];
+
+                foreach ($notas as $disciplina => $notasDisciplina) {
+                    $notasOrganizadas[] = [
+                        'DISCIPLINA' => $disciplina,
+                        'NOME_DISCIPLINA' => $notasDisciplina->first()->NOME_DISCIPLINA ?? 'Desconhecida',
+                        'C1' => optional($notasDisciplina->where('PROVA', 'C1')->first())->CONCEITO ?? 0,
+                        'C2' => optional($notasDisciplina->where('PROVA', 'C2')->first())->CONCEITO ?? 0,
+                        'C3' => optional($notasDisciplina->where('PROVA', 'C3')->first())->CONCEITO ?? 0
+                    ];
+                }
+
+                return $notasOrganizadas;
+            }
+
+            // Caso session('anos') não exista, usar a tabela histórica
+            $notas = LyNotaHistMatr::join('LY_DISCIPLINA', 'LY_NOTA_HISTMATR.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
+                ->select(
+                    'LY_NOTA_HISTMATR.DISCIPLINA',
+                    'LY_NOTA_HISTMATR.NOTA_ID',
+                    'LY_NOTA_HISTMATR.CONCEITO',
+                    'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
+                )
+                ->where('LY_NOTA_HISTMATR.ALUNO', $aluno['ALUNO'])
+                ->where('LY_NOTA_HISTMATR.ANO', $ano)
+                ->where('LY_NOTA_HISTMATR.SEMESTRE', $semestre)
+                ->whereIn('LY_NOTA_HISTMATR.NOTA_ID', ['C1', 'C2', 'C3'])
+                ->get()
+                ->groupBy('DISCIPLINA');
+
+            $notasOrganizadas = [];
+
+            foreach ($notas as $disciplina => $notasDisciplina) {
+                $notasOrganizadas[] = [
+                    'DISCIPLINA' => $disciplina,
+                    'NOME_DISCIPLINA' => $notasDisciplina->first()->NOME_DISCIPLINA ?? 'Desconhecida',
+                    'C1' => optional($notasDisciplina->where('NOTA_ID', 'C1')->first())->CONCEITO ?? 'NI',
+                    'C2' => optional($notasDisciplina->where('NOTA_ID', 'C2')->first())->CONCEITO ?? 'NI',
+                    'C3' => optional($notasDisciplina->where('NOTA_ID', 'C3')->first())->CONCEITO ?? 'NI',
+                ];
+            }
+
+            return $notasOrganizadas;
         }
-
-        return $notasOrganizadas;
-    }
 }

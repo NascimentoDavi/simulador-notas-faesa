@@ -21,6 +21,7 @@
                         <label class="input-group-text bg-primary-subtle" for="selectAno">Ano</label>
                         <select class="form-select form-select-sm" id="selectAno" style="width: auto;">
                             <option selected>Escolha...</option>
+                            <option value="2024">2023</option>
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
                         </select>
