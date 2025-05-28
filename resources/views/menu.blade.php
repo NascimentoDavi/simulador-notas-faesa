@@ -163,71 +163,91 @@
     let chart;
 
     function criarOuAtualizarGrafico(notasArray) {
-        const disciplinas = [];
-        const c1Notas = [];
-        const c2Notas = [];
-        const c3Notas = [];
+    const ctx = document.getElementById('gradesChart').getContext('2d');
 
-        notasArray.forEach(nota => {
-            disciplinas.push(nota['DISCIPLINA']);
-            c1Notas.push(nota['C1'] ?? 0);
-            c2Notas.push(nota['C2'] ?? 0);
-            c3Notas.push(nota['C3'] ?? 0);
-        });
-
-        const data = {
-            labels: disciplinas,
-            datasets: [{
-                label: 'C1',
-                data: c1Notas,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(22, 212, 212, 0.2)',
-                fill: true
-            }, {
-                label: 'C2',
-                data: c2Notas,
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                fill: false
-            }, {
-                label: 'C3',
-                data: c3Notas,
-                borderColor: 'rgb(103, 33, 243)',
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                fill: true
-            }]
-        };
-
-        const options = {
-            responsive: true,
-            plugins: {
-                legend: { position: 'top' },
-                tooltip: { enabled: true }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        maxRotation: 90,
-                        minRotation: 20
-                    }
-                },
-                y: { min: 0, max: 10 }
-            }
-        };
-
+    if (!notasArray.length) {
+        // Se não tem notas, mostra mensagem no canvas
         if (chart) {
-            chart.data = data;
-            chart.config.type = chartType;
-            chart.options = options;
-            chart.update();
-        } else {
-            chart = new Chart(ctx, {
-                type: chartType,
-                data: data,
-                options: options
-            });
+            chart.destroy();
+            chart = null;
         }
+
+        // Limpa o canvas e escreve mensagem "Nada a ser mostrado"
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.font = '16px Poppins, sans-serif';
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.fillText('Nada a ser mostrado', ctx.canvas.width / 2, ctx.canvas.height / 2);
+        return;
     }
+
+    // Caso tenha dados, cria as arrays para o gráfico
+    const disciplinas = [];
+    const c1Notas = [];
+    const c2Notas = [];
+    const c3Notas = [];
+
+    notasArray.forEach(nota => {
+        disciplinas.push(nota['DISCIPLINA']);
+        c1Notas.push(nota['C1'] ?? 0);
+        c2Notas.push(nota['C2'] ?? 0);
+        c3Notas.push(nota['C3'] ?? 0);
+    });
+
+    const data = {
+        labels: disciplinas,
+        datasets: [{
+            label: 'C1',
+            data: c1Notas,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(22, 212, 212, 0.2)',
+            fill: true
+        }, {
+            label: 'C2',
+            data: c2Notas,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: false
+        }, {
+            label: 'C3',
+            data: c3Notas,
+            borderColor: 'rgb(103, 33, 243)',
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            fill: true
+        }]
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            tooltip: { enabled: true }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxRotation: 90,
+                    minRotation: 20
+                }
+            },
+            y: { min: 0, max: 10 }
+        }
+    };
+
+    if (chart) {
+        chart.data = data;
+        chart.config.type = chartType;
+        chart.options = options;
+        chart.update();
+    } else {
+        chart = new Chart(ctx, {
+            type: chartType,
+            data: data,
+            options: options
+        });
+    }
+}
+
 
     criarOuAtualizarGrafico(notas);
 
