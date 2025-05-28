@@ -14,40 +14,78 @@
 
 
                 <!-- Seleção de Ano e Semestre para mostrar as Notas -->
-                <form class="d-flex flex-row align-items-center flex-wrap" id="selectYearSemester">
-                    <h2 class="poppins-semibold m-0 p-0 mx-3">Notas do Aluno</h2>
+                <!-- Seleção de Ano e Semestre para mostrar as Notas -->
+<form class="p-3 rounded bg-light border mb-3" id="selectYearSemester">
+    <h6 class="poppins-semibold mb-2">
+        Notas do Aluno
+    </h6>
 
-                    <div class="input-group input-group-sm me-2" style="width: auto;">
-                        <label class="input-group-text bg-primary-subtle" for="selectAno">Ano</label>
-                        <select class="form-select form-select-sm" id="selectAno" style="width: auto;" name="ano">
-                            <option value="" selected disabled>Escolha...</option>
-                            @foreach (session('anosCursados', []) as $ano)
-                                <option value="{{ $ano }}">{{ $ano }}</option>
-                            @endforeach
-                            <option value="{{ session('anos') }}">{{ session('anos') }}</option>
-                        </select>
-                    </div>
 
-                    <div class="input-group input-group-sm me-2" style="width: auto;">
-                        <label class="input-group-text bg-primary-subtle" for="selectSemestre">Semestre</label>
-                        <select class="form-select form-select-sm" id="selectSemestre" style="width: auto;" name="semestre">
-                             <option value="" selected disabled>Escolha...</option>
-                             <option value="1">1</option>
-                             <option value="2">2</option>
-                        </select>
-                    </div>
-
-                    <button class="btn btn-primary btn-sm" type="submit">Pesquisar</button>
-                </form>
+    <!-- Dados do Aluno só para telas menores que 768px -->
+<div class="d-block d-lg-none mb-3">
+    <h6 class="m-0">
+        <i class="bi bi-person-badge me-1 ps-2"></i> {{ $aluno->NOME_COMPL }}
+    </h6>
+    <h6 class="m-0">
+        <i class="bi bi-card-list me-1 ps-2"></i> {{ $aluno->ALUNO }}
+    </h6>
+    <h6 class="m-0">
+        <i class="bi bi-mortarboard me-1 ps-2"></i> {{ $curso->CURSO }} | {{ $curso->NOME }}
+    </h6>
+</div>
 
 
 
-                <div class="mb-3">
+    <div class="row g-3 align-items-end mt-1">
+        <div class="col-12 col-md-3">
+            <label for="selectAno" class="form-label small mb-1">
+                <i class="bi bi-calendar me-1"></i> Ano
+            </label>
+            <select class="form-select form-select-sm" id="selectAno" name="ano">
+                <option value="" selected disabled>Escolha...</option>
+                @foreach (session('anosCursados', []) as $ano)
+                    <option value="{{ $ano }}">{{ $ano }}</option>
+                @endforeach
+                <option value="{{ session('anos') }}">{{ session('anos') }}</option>
+            </select>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <label for="selectSemestre" class="form-label small mb-1">
+                <i class="bi bi-calendar2-week me-1"></i> Semestre
+            </label>
+            <select class="form-select form-select-sm" id="selectSemestre" name="semestre">
+                <option value="" selected disabled>Escolha...</option>
+                <option value="1">1º Semestre</option>
+                <option value="2">2º Semestre</option>
+            </select>
+        </div>
+
+        <div class="col-12 col-md-auto">
+            <button class="btn btn-sm btn-primary px-4 mt-md-0 mt-2 w-100" type="submit">Pesquisar</button>
+        </div>
+
+        <div class="col-12 col-md">
+            <div class="alert alert-info p-2 mb-0 small d-flex align-items-center" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Apenas notas do semestre atual podem ser simuladas.
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+                <!-- <div class="mb-3">
                     {{-- INFORMAÇÕES ALUNO --}}
                     <h6 class="d-block d-md-none m-0">{{ $aluno->NOME_COMPL }}</h6>
                     <h6 class="d-block d-md-none m-0">{{ $aluno->ALUNO }}</h6>
                     <h6 class="d-block d-md-none m-0">{{ $curso->CURSO }} | {{ $curso->NOME }}</h6>
-                </div>
+                </div> -->
                 
 
 
