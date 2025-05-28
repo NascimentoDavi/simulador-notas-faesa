@@ -32,8 +32,10 @@ class LyAlunoService
     }
 
 
+    // Retornas as notas de acordo com Ano e Semestre informados
     public function getNotaAnoSemestreFromAluno($aluno, $ano, $semestre)
         {
+            // Caso ano e semestre solicitados sejam ano e semestre atuais
             if ($ano === session('anos') && $semestre === session('semestres')) {
 
                 $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
