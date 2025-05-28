@@ -21,7 +21,7 @@
                         <label class="input-group-text bg-primary-subtle" for="selectAno">Ano</label>
                         <select class="form-select form-select-sm" id="selectAno" style="width: auto;">
                             <option selected>Escolha...</option>
-                            <option value="2024">2023</option>
+                            <option value="2023">2023</option>
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
                         </select>
@@ -155,28 +155,28 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const notas = @json(session('notas', [])); // Obtemos os dados da sessão
-        
-        // Prepare os dados para o gráfico
+    const notas = @json(session('notas', [])); 
+
+    // Inicialização do gráfico, função para criar/atualizar o gráfico
+    const ctx = document.getElementById('gradesChart').getContext('2d');
+    let chartType = 'line';
+    let chart;
+
+    function criarOuAtualizarGrafico(notasArray) {
         const disciplinas = [];
         const c1Notas = [];
         const c2Notas = [];
         const c3Notas = [];
 
-        // Preenche as variáveis com os dados das notas
-        notas.forEach(nota => {
+        notasArray.forEach(nota => {
             disciplinas.push(nota['DISCIPLINA']);
-            c1Notas.push(nota['C1'] ?? 0);  // Caso não haja nota, coloca 0
+            c1Notas.push(nota['C1'] ?? 0);
             c2Notas.push(nota['C2'] ?? 0);
             c3Notas.push(nota['C3'] ?? 0);
         });
 
-        // Criação do gráfico
-        const ctx = document.getElementById('gradesChart').getContext('2d');
-        let chartType = 'line'; // O tipo inicial do gráfico é 'line'
-
-        const chartData = {
-            labels: disciplinas, // Disciplinas no eixo X
+        const data = {
+            labels: disciplinas,
             datasets: [{
                 label: 'C1',
                 data: c1Notas,
@@ -198,122 +198,118 @@
             }]
         };
 
-        let chartOptions = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
-        tooltip: {
-            enabled: true
-        }
-    },
-    scales: {
-        x: {
-            title: {
-                display: false,
-                text: 'Disciplinas'
+        const options = {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { enabled: true }
             },
-            ticks: {
-                font: {
-                    size: 12, // Reduz o tamanho da fonte dos rótulos
-                    family: 'arial',
-                    weight: 'normal'
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 20
+                    }
                 },
-                maxRotation: 90,  // Define a rotação máxima dos rótulos
-                minRotation: 20,  // Garante que todos os rótulos fiquem com 90 graus
+                y: { min: 0, max: 10 }
             }
-        },
-        y: {
-            title: {
-                display: false,
-                text: 'Notas'
-            },
-            min: 0,
-            max: 10 // Ajuste conforme a escala de notas
+        };
+
+        if (chart) {
+            chart.data = data;
+            chart.config.type = chartType;
+            chart.options = options;
+            chart.update();
+        } else {
+            chart = new Chart(ctx, {
+                type: chartType,
+                data: data,
+                options: options
+            });
         }
     }
-};
 
+    criarOuAtualizarGrafico(notas);
 
-        // Criação do gráfico inicial
-        const chart = new Chart(ctx, {
-            type: chartType,
-            data: chartData,
-            options: chartOptions
-        });
-
-        // Alternar o tipo de gráfico ao clicar no botão
-        const toggleButton = document.getElementById('toggleGraphType');
-        toggleButton.addEventListener('click', function() {
-            // Alterna entre 'line' e 'bar'
-            chartType = (chartType === 'line') ? 'bar' : 'line';
-            
-            // Atualiza o tipo de gráfico sem destruir o gráfico
-            chart.config.type = chartType;
-            chart.update(); // Atualiza o gráfico com o novo tipo
-
-            // Altera o texto do botão para refletir o novo tipo
-            toggleButton.textContent = (chartType === 'line') ? 'Alternar para Gráfico de Barras' : 'Alternar para Gráfico de Linhas';
-        });
+    // Alternar gráfico
+    const toggleButton = document.getElementById('toggleGraphType');
+    toggleButton.addEventListener('click', function() {
+        chartType = (chartType === 'line') ? 'bar' : 'line';
+        criarOuAtualizarGrafico(chart.data.datasets[0].data.map((_, i) => ({
+            DISCIPLINA: chart.data.labels[i],
+            C1: chart.data.datasets[0].data[i],
+            C2: chart.data.datasets[1].data[i],
+            C3: chart.data.datasets[2].data[i]
+        })));
+        toggleButton.textContent = (chartType === 'line') ? 'Alternar para Gráfico de Barras' : 'Alternar para Gráfico de Linhas';
     });
 
-    // Função para selecionar ano das notas
-    document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("selectYearSemester");
+    // Função para ativar eventos do modal nas linhas
+    function ativarEventoModal() {
+        const rows = document.querySelectorAll('#grades-table tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', function() {
+                document.getElementById('modalDisciplina').textContent = row.cells[0].textContent;
+                document.getElementById('modalNomeDisciplina').textContent = row.cells[1].textContent;
+                document.getElementById('modalC1').textContent = row.cells[2].textContent;
+                document.getElementById('modalC2').textContent = row.cells[3].textContent;
+                document.getElementById('modalC3').textContent = row.cells[4].textContent;
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Impede o recarregamento da página
+                new bootstrap.Modal(document.getElementById('infoModal')).show();
+            });
+        });
+    }
 
-        const ano = document.getElementById("selectAno").value;
-        const semestre = document.getElementById("selectSemestre").value;
+    ativarEventoModal();
 
-        // Validação simples
-        if (ano === "Escolha..." || semestre === "Escolha...") {
-            alert("Por favor, selecione o ano e o semestre.");
+    // Form submit para buscar notas
+    const form = document.getElementById('selectYearSemester');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const ano = document.getElementById('selectAno').value;
+        const semestre = document.getElementById('selectSemestre').value;
+
+        if (!ano || !semestre) {
+            alert('Por favor, selecione o ano e o semestre.');
             return;
         }
 
-        // Envia os dados para a rota via POST
         fetch("{{ route('selecionar-notas') }}", {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
             },
-            body: JSON.stringify({
-                ano: ano,
-                semestre: semestre
-            })
+            body: JSON.stringify({ ano, semestre })
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-            console.log("Notas recebidas:", data);
-
-            const tbody = document.querySelector("#grades-table tbody");
-            tbody.innerHTML = ""; // Limpa a tabela anterior
+            const tbody = document.querySelector('#grades-table tbody');
+            tbody.innerHTML = '';
 
             data.forEach(nota => {
-                const row = document.createElement("tr");
-
+                const row = document.createElement('tr');
                 row.innerHTML = `
                     <td data-label="Disciplina">${nota.DISCIPLINA}</td>
-                    <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
-                        ${nota.NOME_DISCIPLINA}
-                    </td>
+                    <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">${nota.NOME_DISCIPLINA}</td>
                     <td data-label="C1">${nota.C1 ?? 'NI'}</td>
                     <td data-label="C2">${nota.C2 ?? 'NI'}</td>
                     <td data-label="C3">${nota.C3 ?? 'NI'}</td>
                 `;
-
                 tbody.appendChild(row);
             });
+
+            ativarEventoModal(); // Reativa o modal nas novas linhas
+            criarOuAtualizarGrafico(data); // Atualiza o gráfico com os novos dados
         })
-        .catch(error => {
-            console.error("Erro ao buscar notas:", error);
+        .catch(err => {
+            console.error('Erro ao buscar notas:', err);
+            alert('Erro ao buscar notas.');
         });
     });
 });
+
 </script>
 
 
