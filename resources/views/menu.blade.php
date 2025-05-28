@@ -236,7 +236,6 @@
 
 
         // Criação do gráfico inicial
-        
         const chart = new Chart(ctx, {
             type: chartType,
             data: chartData,
@@ -258,10 +257,62 @@
         });
     });
 
-    document.getElementById("selectYearSemester").addEventListener("change", function() {
-        // Define method to select grades by year and semester
-    })
+    // Função para selecionar ano das notas
+    document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("selectYearSemester");
 
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Impede o recarregamento da página
+
+        const ano = document.getElementById("selectAno").value;
+        const semestre = document.getElementById("selectSemestre").value;
+
+        // Validação simples
+        if (ano === "Escolha..." || semestre === "Escolha...") {
+            alert("Por favor, selecione o ano e o semestre.");
+            return;
+        }
+
+        // Envia os dados para a rota via POST
+        fetch("{{ route('selecionar-notas') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                ano: ano,
+                semestre: semestre
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Notas recebidas:", data);
+
+            const tbody = document.querySelector("#grades-table tbody");
+            tbody.innerHTML = ""; // Limpa a tabela anterior
+
+            data.forEach(nota => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td data-label="Disciplina">${nota.DISCIPLINA}</td>
+                    <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">
+                        ${nota.NOME_DISCIPLINA}
+                    </td>
+                    <td data-label="C1">${nota.C1 ?? 'NI'}</td>
+                    <td data-label="C2">${nota.C2 ?? 'NI'}</td>
+                    <td data-label="C3">${nota.C3 ?? 'NI'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao buscar notas:", error);
+        });
+    });
+});
 </script>
 
 

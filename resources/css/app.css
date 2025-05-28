@@ -194,7 +194,7 @@
 /* Frases do Carrosel da Navbar */
 .frase-carousel {
     font-size: 13px;
-    color: #6c757d; /* Bootstrap text-secondary */
+    color: #042e53;
     font-style: italic;
     transition: opacity 1s ease-in-out;
     white-space: nowrap;

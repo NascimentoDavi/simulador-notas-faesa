@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LyLoginController;
+use App\Http\Controllers\LyAlunoController;
 use App\Http\Controllers\LyNotaController;
 use App\Http\Controllers\LyDisciplinaController;
 use App\Http\Controllers\LySimuladorNotaFormulaController;
@@ -64,6 +65,6 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
         Route::match(['get', 'post'],'/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
 
-        // Rota para retornar o gráfico
-        Route::match(['get', 'post'], '/grafico', [GraficoController::class, 'gerarGrafico']);
+        // Seleção de notas para serem mostradas na tabela
+        Route::match(['get', 'post'], '/selecionar-notas', [LyAlunoController::class, 'getNotaAnoSemestreFromAluno'])->name('selecionar-notas');
 });

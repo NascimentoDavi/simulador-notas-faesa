@@ -25,4 +25,15 @@ class LyAlunoController extends Controller
     {
         return $this->alunoService->getCursoFromAluno($aluno);
     }
+
+    public function getNotaAnoSemestreFromAluno(Request $request)
+    {
+        $aluno = session('aluno');
+        $ano = $request->ano;
+        $semestre = $request->semestre;
+
+        $notas = $this->alunoService->getNotaAnoSemestreFromAluno($aluno, $ano, $semestre);
+        
+        return response()->json($notas); 
+    }
 }
