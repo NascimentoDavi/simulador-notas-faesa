@@ -4,6 +4,9 @@
 
 @section('content')
 
+<!-- Biblitoeca para exportação PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-10 col-md-12 mx-auto">
@@ -74,7 +77,7 @@
 
 
                 {{-- TABELA --}}
-                <div class="table-responsive">
+                <div class="table-responsive" id="grade-table">
                     <table class="table table-bordered table-striped table-hover" id="grades-table">
                         <thead class="table-dark" id="table_notas">
                             <tr>
@@ -106,7 +109,29 @@
 
                 <div class="mt-3">
                     <button id="toggleGraphType" class="btn btn-primary">Alternar para Gráfico de Barras</button>
-                </div>
+                    <button id="printTable" class="btn btn-secondary">
+                        <i class="bi bi-printer"></i>
+                        Imprimir
+                    </button>
+                </div\>
+
+                <script>
+                    document.getElementById("printTable").addEventListener("click", function() {
+                        const printHeader = document.getElementById("print-header");
+                        const tableDiv = document.querySelector(".table-responsive");
+
+                        printHeader.classList.add("print-area");
+                        printHeader.classList.remove("d-none");
+                        tableDiv.classList.add("print-area");
+                        
+                        window.print();
+
+                        setTimeout(() => {
+                            tableDiv.classList.remove("print-area");
+                            printHeader.classList.remove("print-area");
+                        }, 1000);
+                    });
+                </script>
 
 
                 <div class="mt-5">
@@ -174,20 +199,20 @@
 
                     <!-- Modal de alerta personalizado -->
                     <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="alertModalLabel">Atenção</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="alertModalLabel">Atenção</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Mensagem será inserida via JS -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                            </div>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <!-- Mensagem será inserida via JS -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                        </div>
-                        </div>
-                    </div>
                     </div>
 
 
@@ -239,21 +264,21 @@
                     {
                         label: 'C1',
                         data: c1Notas,
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderColor: 'rgb(230, 97, 67)',
                         backgroundColor: 'rgba(22, 212, 212, 0.2)',
                         fill: true
                     },
                     {
                         label: 'C2',
                         data: c2Notas,
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderColor: 'rgb(63, 255, 5)',
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         fill: false
                     },
                     {
                         label: 'C3',
                         data: c3Notas,
-                        borderColor: 'rgb(103, 33, 243)',
+                        borderColor: 'rgb(84, 0, 253)',
                         backgroundColor: 'rgba(153, 102, 255, 0.2)',
                         fill: true
                     }
@@ -390,6 +415,27 @@ form.addEventListener('submit', function(event) {
 });
 
 
+    });
+</script>
+
+<div id="print-header" class="d-none">
+    <h2>Resultado de notas do aluno em {{ session('anos') }}/{{ session('semestres') }}</h2>
+    <ul class="print-header-student-info">
+        <li>Nome Completo: {{ session('aluno')->NOME_COMPL }}</li>
+        <li>Matrícula: {{ session('aluno')->ALUNO }}</li>
+        <li>Curso: {{ session('curso')->NOME }}</li>
+        <li>Período: {{ session('aluno')->SERIE }}</li>
+    </ul>
+</div>
+
+<script>
+    document.addEventListener("keydown", function(e) {
+        if (e.ctrlKey && e.key.toLowerCase() === "p") {
+            e.preventDefault(); // Impede o comportamento padrão do navegador (abrir print direto)
+
+            // Dispara o clique no botão de impressão personalizado
+            document.getElementById("printTable").click();
+        }
     });
 </script>
 @endsection

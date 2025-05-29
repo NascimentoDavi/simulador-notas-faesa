@@ -191,6 +191,69 @@
     transition: all 0.3s ease;
 }
 
+/* Opcoes para impressão de tabela de Notas */
+@media print {
+
+    /* Definicao dos estilos para impressao | navegador nao reconhece estilos aplicados diretamente pelo bootstrap */
+    /* Estilos específicos para sua tabela na impressão */
+    #grades-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+    }
+
+    /* Bordas visíveis */
+    #grades-table th,
+    #grades-table td {
+        border: 1px solid #000 !important;
+        padding: 8px !important;
+    }
+
+    #grades-table thead.table-dark th {
+        background-color: #212529 !important;
+        color: white !important;
+    }
+
+    /* Linhas alternadas (striped) */
+    #grades-table tbody tr:nth-child(odd) {
+        background-color: white !important;
+    }
+
+    #grades-table tbody tr:nth-child(even) {
+        background-color: #f8f9fa !important;
+    }
+
+    .print-header-student-info {
+        text-align: left;
+        list-style-type: circle;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    .print-area, .print-area * {
+        visibility: visible;
+    }
+
+    .print-area {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin-bottom: 30px;
+        page-break-inside: avoid;
+    }
+
+    #print-header {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    #grade-table {
+        margin-top: 220px;
+    }
+}
+
 /* Frases do Carrosel da Navbar */
 .frase-carousel {
     font-size: 13px;
