@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-md-12 mx-auto">
+        <div class="col-lg-12 col-md-12 mx-auto">
             <div class="mb-3 p-0">
 
 
@@ -126,10 +126,12 @@
                         
                         window.print();
 
+                        // Tempo para remover/adicionar classes aos elementos
                         setTimeout(() => {
                             tableDiv.classList.remove("print-area");
                             printHeader.classList.remove("print-area");
-                        }, 1000);
+                            printHeader.classList.add("d-none");
+                        }, 100);
                     });
                 </script>
 
@@ -425,6 +427,7 @@ form.addEventListener('submit', function(event) {
         <li>Matrícula: {{ session('aluno')->ALUNO }}</li>
         <li>Curso: {{ session('curso')->NOME }}</li>
         <li>Período: {{ session('aluno')->SERIE }}</li>
+        <li>Período: {{ session('aluno')->CURRICULO }}</li>
     </ul>
 </div>
 
