@@ -63,7 +63,6 @@ class LyAlunoService
                         'C3' => optional($notasDisciplina->where('PROVA', 'C3')->first())->CONCEITO ?? 0
                     ];
                 }
-                // dd($notasOrganizadas);
                 return $notasOrganizadas;
             }
 

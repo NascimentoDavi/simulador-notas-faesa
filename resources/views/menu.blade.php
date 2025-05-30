@@ -109,7 +109,7 @@
 
                 <div class="mt-3">
                     <button id="toggleGraphType" class="btn btn-primary">Alternar para Gráfico de Barras</button>
-                    <button id="printTable" class="btn btn-secondary">
+                    <button id="printTable" class="btn btn-secondary mt-1">
                         <i class="bi bi-printer"></i>
                         Imprimir
                     </button>
@@ -221,25 +221,31 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        // Pega as notas salvas na sessão do Laravel
         const notas = @json(session('notas', []));
 
         // Inicialização do gráfico, função para criar/atualizar o gráfico
         const ctx = document.getElementById('gradesChart').getContext('2d');
-        let chartType = 'line';
+        let chartType = 'bar';
         let chart;
 
         function criarOuAtualizarGrafico(notasArray) {
-            const ctx = document.getElementById('gradesChart').getContext('2d');
 
+            // Verifica se NÃO existem dados a serem mostrados
             if (!notasArray.length) {
-                // Se não tem notas, mostra mensagem no canvas
                 if (chart) {
                     chart.destroy();
                     chart = null;
                 }
 
                 // Limpa o canvas e escreve mensagem "Nada a ser mostrado"
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.clearRect(
+                0,
+                0,
+                ctx.canvas.width,
+                ctx.canvas.height
+                );
                 ctx.font = '16px Poppins, sans-serif';
                 ctx.fillStyle = '#666';
                 ctx.textAlign = 'center';
@@ -247,7 +253,7 @@
                 return;
             }
 
-            // Caso tenha dados, cria as arrays para o gráfico
+            // Caso TENHA dados, cria as arrays para o gráfico
             const disciplinas = [];
             const c1Notas = [];
             const c2Notas = [];
@@ -261,31 +267,34 @@
             });
 
             const data = {
-                labels: disciplinas,
-                datasets: [
-                    {
-                        label: 'C1',
-                        data: c1Notas,
-                        borderColor: 'rgb(230, 97, 67)',
-                        backgroundColor: 'rgba(22, 212, 212, 0.2)',
-                        fill: true
-                    },
-                    {
-                        label: 'C2',
-                        data: c2Notas,
-                        borderColor: 'rgb(63, 255, 5)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        fill: false
-                    },
-                    {
-                        label: 'C3',
-                        data: c3Notas,
-                        borderColor: 'rgb(84, 0, 253)',
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                        fill: true
-                    }
-                ]
-            };
+    labels: disciplinas,
+    datasets: [
+        {
+            label: 'C1',
+            data: c1Notas,
+            backgroundColor: c1Notas.map(() => 'rgba(8, 92, 164, 0.3)'), // --blue-color com opacidade
+            borderColor: c1Notas.map(() => '#085ca4'),
+            borderWidth: 1,
+            fill: true
+        },
+        {
+            label: 'C2',
+            data: c2Notas,
+            backgroundColor: c2Notas.map(() => 'rgba(122, 172, 206, 0.3)'), // --secondary-color com opacidade
+            borderColor: c2Notas.map(() => '#7aacce'),
+            borderWidth: 1,
+            fill: true
+        },
+        {
+            label: 'C3',
+            data: c3Notas,
+            backgroundColor: c3Notas.map(() => 'rgba(252, 124, 52, 0.3)'), // --third-color com opacidade
+            borderColor: c3Notas.map(() => '#fc7c34'),
+            borderWidth: 1,
+            fill: true
+        }
+    ]
+};
 
             const options = {
                 responsive: true,
@@ -300,7 +309,13 @@
                             minRotation: 20
                         }
                     },
-                    y: { min: 0, max: 10 }
+                    y: {
+                        min: 0,
+                        max: 10,
+                        ticks: {
+                            stepSize: 2
+                        }
+                    }
                 }
             };
 
@@ -421,13 +436,12 @@ form.addEventListener('submit', function(event) {
 </script>
 
 <div id="print-header" class="d-none">
-    <h2>Resultado de notas do aluno em {{ session('anos') }}/{{ session('semestres') }}</h2>
     <ul class="print-header-student-info">
         <li>Nome Completo: {{ session('aluno')->NOME_COMPL }}</li>
         <li>Matrícula: {{ session('aluno')->ALUNO }}</li>
         <li>Curso: {{ session('curso')->NOME }}</li>
         <li>Período: {{ session('aluno')->SERIE }}</li>
-        <li>Período: {{ session('aluno')->CURRICULO }}</li>
+        <li>Currículo: {{ session('aluno')->CURRICULO }}</li>
     </ul>
 </div>
 

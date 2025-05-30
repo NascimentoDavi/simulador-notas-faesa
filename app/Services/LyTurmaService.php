@@ -39,8 +39,6 @@ class LyTurmaService
                 //     }
                 // }
 
-                // dd($formula);
-
                 return $formula;
             }
         }

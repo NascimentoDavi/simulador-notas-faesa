@@ -38,7 +38,7 @@
     <title>@yield('title') - FAESA</title>
 </head>
 
-<body class="bg-main-color poppins-light conaine">
+<body class="bg-main-color poppins-light">
 
     @include('layouts.navbar')
 
@@ -50,7 +50,7 @@
 
     @include('layouts.formula-calc')
     
-    <div class="pt-5 mt-5">
+    <div class="pt-4 mt-4">
         <br>
     </div>
 

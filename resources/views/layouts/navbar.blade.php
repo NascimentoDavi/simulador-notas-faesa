@@ -1,7 +1,7 @@
-<div class="d-none d-md-flex flex-row justify-content-start container-fluid text-end" style="height: 17px; position: relative;">
-    <p id="frase-carousel" class="frase-carousel" style="position: absolute; left: 105px;">O melhor Centro Universitário do Estado.</p>
+<div class="d-none d-md-flex flex-row justify-content-start container text-end" style="height: 17px; position: relative;">
+    <p id="frase-carousel" class="frase-carousel" style="position: absolute; left: 15px;">O melhor Centro Universitário do Estado.</p>
 
-    <a href="https://www.faesa.br/contato/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 125px;">Fale Conosco</a>
+    <a href="https://www.faesa.br/contato/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 1rem;">Fale Conosco</a>
 </div>
 
 <nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top border-top border-warning">

@@ -114,8 +114,6 @@
         </div>
     </div>
 
-
-
     <!-- INFORMACOES DA SIMULACAO -->
     <div class="text-center mt-3">
         *MP = Média Parcial
@@ -253,10 +251,15 @@
                     } else {
                         console.log(data);
                         document.getElementById("notaMP").value = parseFloat(data.original.mediaAritmetica).toFixed(2);
-                        document.getElementById("notaNM").value = parseFloat(data.original.mediaProvaFinal).toFixed(2);
+
+                        const nmValue = data.original.mediaProvaFinal;
+                        if (nmValue === null || nmValue === '') {
+                            document.getElementById("notaNM").value = '';
+                        } else {
+                            document.getElementById("notaNM").value = parseFloat(nmValue).toFixed(2);
+                        }
                     }
                 })
-                .catch(error => console.error("Erro ao processar a simulação:", error));
         });
 
         // Limpar os campos ao clicar no botão "Limpar"

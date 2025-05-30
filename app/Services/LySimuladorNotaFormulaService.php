@@ -55,13 +55,20 @@ class LySimuladorNotaFormulaService
             $mediaProvaFinal = eval("return ($formulaNM);");
 
             $mediaAritmetica = number_format((float) $mediaAritmetica, 2, '.', '');
-            $mediaProvaFinal = number_format((float) $mediaProvaFinal, 2, '.', '');
+
+            $mediaProvaFinalFloat = (float) $mediaProvaFinal;
+            if ($mediaProvaFinalFloat < 0) {
+                $mediaProvaFinal = '';
+            } else {
+                $mediaProvaFinal = number_format($mediaProvaFinalFloat, 2, '.', '');
+            }
 
         } catch (\Throwable $e) {
             return response()->json([
                 'error' => 'Erro ao calcular a fórmula: ' . $e->getMessage()
             ], 500);
         }
+
 
         return response()->json([
             'mediaAritmetica' => $mediaAritmetica,
