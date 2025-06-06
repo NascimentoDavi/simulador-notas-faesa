@@ -447,17 +447,26 @@
                 const inputC1 = document.getElementById('notaC1');
                 const inputC2 = document.getElementById('notaC2');
                 const inputC3 = document.getElementById('notaC3');
+                disciplinaSelect.value = "";
+
+                // Botoes de Simular e Limpar
+                const simularTrigger = document.getElementById("simularTrigger");
+                const limparBtn = document.getElementById("limparBtn");
 
                 if (data === 1) {
                     inputC1.disabled = false;
                     inputC2.disabled = false;
                     inputC3.disabled = false;
                     disciplinaSelect.disabled = false;
+                    simularTrigger.disabled = false;
+                    limparBtn.disabled = false;
                 } else {
                     inputC1.disabled = true;
                     inputC2.disabled = true;
                     inputC3.disabled = true;
                     disciplinaSelect.disabled = true;
+                    simularTrigger.disabled = true;
+                    limparBtn.disabled = true;
                 }
             })
         });

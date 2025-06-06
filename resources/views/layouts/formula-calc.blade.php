@@ -87,7 +87,7 @@
     <div class="container d-flex justify-content-center mt-5 gap-lg-3 ga-md-3 gap-sm-3 gap-2 mb-5">
         <form id="simularForm">
             @csrf
-            <button type="submit" class="btn btn-primary">Simular</button>
+            <button type="submit" class="btn btn-primary" id="simularTrigger">Simular</button>
         </form>
         <div>
             <button class="btn btn-warning" id="limparBtn">Limpar</button>
@@ -267,6 +267,7 @@
             document.getElementById("notaC3").value = "";
             document.getElementById("notaMP").value = "";
             document.getElementById("notaNM").value = "";
+            document.getElementById("disciplinaSelect").value = "";
         });
 
         var curso = @json($curso->CURSO);
