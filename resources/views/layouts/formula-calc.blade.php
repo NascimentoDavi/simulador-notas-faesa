@@ -131,8 +131,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-
-
         // Modal de Selecao de Disciplina antes da simulacao
         const modalHTML = `
             <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
@@ -295,7 +293,6 @@
         // Ensure focus is properly handled when modal is hidden
         const errorModalElement = document.getElementById("errorModal");
         errorModalElement.addEventListener("hidden.bs.modal", function () {
-            // Reset focus to the first element in the form or the trigger element
             document.getElementById("disciplinaSelect").focus();
         });
     });

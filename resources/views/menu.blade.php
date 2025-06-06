@@ -41,13 +41,14 @@
                             <label for="selectAno" class="form-label small mb-1">
                                 <i class="bi bi-calendar me-1"></i> Ano
                             </label>
-                            <select class="form-select form-select-sm" id="selectAno" name="ano">
+                            <select class="form-select form-select-sm" id="selectAno" name="ano" onchange="atualizaSemestres()">
                                 <option value="" selected disabled>Escolha...</option>
-                                @foreach (session('anosCursados', []) as $ano)
+                                @foreach (session('anosSemestresCursados', []) as $ano => $semestres)
                                     <option value="{{ $ano }}">{{ $ano }}</option>
                                 @endforeach
-                                <option value="{{ session('anos') }}">{{ session('anos') }}</option>
+                                {{-- Remove a opção que estava com session('anos') pois já está no foreach --}}
                             </select>
+
                         </div>
 
                         <div class="col-12 col-md-3">
@@ -55,10 +56,9 @@
                                 <i class="bi bi-calendar2-week me-1"></i> Semestre
                             </label>
                             <select class="form-select form-select-sm" id="selectSemestre" name="semestre">
-                                <option value="" selected disabled>Escolha...</option>
-                                <option value="1">1º Semestre</option>
-                                <option value="2">2º Semestre</option>
+                                <option value="" selected disabled>Escolha o ano primeiro...</option>
                             </select>
+
                         </div>
 
                         <div class="col-12 col-md-auto">
@@ -76,7 +76,7 @@
 
 
 
-                {{-- TABELA --}}
+                <!-- TABELA -->
                 <div class="table-responsive" id="grade-table">
                     <table class="table table-bordered table-striped table-hover" id="grades-table">
                         <thead class="table-dark" id="table_notas">
@@ -106,7 +106,7 @@
                     </table>
                 </div>
 
-
+                <!-- ALTERNAR TIPO DE GRAFICO -->
                 <div class="mt-3">
                     <button id="toggleGraphType" class="btn btn-primary">Alternar para Gráfico de Barras</button>
                     <button id="printTable" class="btn btn-secondary mt-1">
@@ -115,6 +115,7 @@
                     </button>
                 </div\>
 
+                <!-- SCRIPT PARA BOTAO DE IMPRIMIR NOTAS -->
                 <script>
                     document.getElementById("printTable").addEventListener("click", function() {
                         const printHeader = document.getElementById("print-header");
@@ -126,7 +127,6 @@
                         
                         window.print();
 
-                        // Tempo para remover/adicionar classes aos elementos
                         setTimeout(() => {
                             tableDiv.classList.remove("print-area");
                             printHeader.classList.remove("print-area");
@@ -175,53 +175,54 @@
                 <!-- EXIBICAO DE MODAL - INFORMACOES DA DISCIPLINA -->
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                    const btnCloseModal = document.getElementById('btnCloseModal');
-                    const infoModalEl = document.getElementById('infoModal');
-                    const infoModal = bootstrap.Modal.getOrCreateInstance(infoModalEl);
+                        const btnCloseModal = document.getElementById('btnCloseModal');
+                        const infoModalEl = document.getElementById('infoModal');
+                        const infoModal = bootstrap.Modal.getOrCreateInstance(infoModalEl);
 
-                    btnCloseModal.addEventListener('click', function() {
-                        // Cria e dispara evento keydown simulando ESC
-                        const escEvent = new KeyboardEvent('keydown', {
-                            key: 'Escape',
-                            keyCode: 27,
-                            code: 'Escape',
-                            which: 27,
-                            bubbles: true,
-                            cancelable: true,
+                        btnCloseModal.addEventListener('click', function() {
+                            // Cria e dispara evento keydown simulando ESC
+                            const escEvent = new KeyboardEvent('keydown', {
+                                key: 'Escape',
+                                keyCode: 27,
+                                code: 'Escape',
+                                which: 27,
+                                bubbles: true,
+                                cancelable: true,
+                            });
+                            document.dispatchEvent(escEvent);
+
+                            // Opcional: também fecha o modal diretamente
+                            infoModal.hide();
                         });
-                        document.dispatchEvent(escEvent);
-
-                        // Opcional: também fecha o modal diretamente
-                        infoModal.hide();
                     });
-                });
                 </script>
 
 
 
-                    <!-- Modal de alerta personalizado -->
-                    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="alertModalLabel">Atenção</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Mensagem será inserida via JS -->
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                            </div>
+                <!-- Modal de alerta personalizado -->
+                <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="alertModalLabel">Atenção</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                        </div>
                         </div>
                     </div>
-
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-
         // Pega as notas salvas na sessão do Laravel
         const notas = @json(session('notas', []));
 
@@ -267,34 +268,34 @@
             });
 
             const data = {
-    labels: disciplinas,
-    datasets: [
-        {
-            label: 'C1',
-            data: c1Notas,
-            backgroundColor: c1Notas.map(() => 'rgba(8, 92, 164, 0.3)'), // --blue-color com opacidade
-            borderColor: c1Notas.map(() => '#085ca4'),
-            borderWidth: 1,
-            fill: true
-        },
-        {
-            label: 'C2',
-            data: c2Notas,
-            backgroundColor: c2Notas.map(() => 'rgba(122, 172, 206, 0.3)'), // --secondary-color com opacidade
-            borderColor: c2Notas.map(() => '#7aacce'),
-            borderWidth: 1,
-            fill: true
-        },
-        {
-            label: 'C3',
-            data: c3Notas,
-            backgroundColor: c3Notas.map(() => 'rgba(252, 124, 52, 0.3)'), // --third-color com opacidade
-            borderColor: c3Notas.map(() => '#fc7c34'),
-            borderWidth: 1,
-            fill: true
-        }
-    ]
-};
+                labels: disciplinas,
+                datasets: [
+                    {
+                        label: 'C1',
+                        data: c1Notas,
+                        backgroundColor: c1Notas.map(() => 'rgba(8, 92, 164, 0.3)'), // --blue-color com opacidade
+                        borderColor: c1Notas.map(() => '#085ca4'),
+                        borderWidth: 1,
+                        fill: true
+                    },
+                    {
+                        label: 'C2',
+                        data: c2Notas,
+                        backgroundColor: c2Notas.map(() => 'rgba(122, 172, 206, 0.3)'), // --secondary-color com opacidade
+                        borderColor: c2Notas.map(() => '#7aacce'),
+                        borderWidth: 1,
+                        fill: true
+                    },
+                    {
+                        label: 'C3',
+                        data: c3Notas,
+                        backgroundColor: c3Notas.map(() => 'rgba(252, 124, 52, 0.3)'), // --third-color com opacidade
+                        borderColor: c3Notas.map(() => '#fc7c34'),
+                        borderWidth: 1,
+                        fill: true
+                    }
+                ]
+            };
 
             const options = {
                 responsive: true,
@@ -377,64 +378,62 @@
 
         // FORMUÁRIO DE BUSCA DE NOTAS
         // Inicializa o modal do Bootstrap
-const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
 
-const form = document.getElementById('selectYearSemester');
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
+        const form = document.getElementById('selectYearSemester');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-    const ano = document.getElementById('selectAno').value;
-    const semestre = document.getElementById('selectSemestre').value;
+            const ano = document.getElementById('selectAno').value;
+            const semestre = document.getElementById('selectSemestre').value;
 
-    if (ano === "" || semestre === "") {
-        // Insere a mensagem no corpo do modal
-        document.querySelector('#alertModal .modal-body').textContent = 'Por favor, selecione o ano e o semestre.';
-        
-        // Mostra o modal
-        alertModal.show();
-        return;
-    }
+            if (ano === "" || semestre === "") {
+                document.querySelector('#alertModal .modal-body').textContent = 'Por favor, selecione o ano e o semestre.';
+                alertModal.show();
+                return;
+            }
 
-    fetch("{{ route('selecionar-notas') }}", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-        },
-        body: JSON.stringify({ ano, semestre })
-    })
-    .then(res => res.json())
-    .then(data => {
-        const tbody = document.querySelector('#grades-table tbody');
-        tbody.innerHTML = '';
+            fetch("{{ route('selecionar-notas') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ ano, semestre })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector('#grades-table tbody');
+                tbody.innerHTML = '';
 
-        data.forEach(nota => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td data-label="Disciplina">${nota.DISCIPLINA}</td>
-                <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">${nota.NOME_DISCIPLINA}</td>
-                <td data-label="C1">${nota.C1 ?? 'NI'}</td>
-                <td data-label="C2">${nota.C2 ?? 'NI'}</td>
-                <td data-label="C3">${nota.C3 ?? 'NI'}</td>
-            `;
-            tbody.appendChild(row);
+                data.forEach(nota => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td data-label="Disciplina">${nota.DISCIPLINA}</td>
+                        <td data-label="Nome da Disciplina" class="text-truncate" style="max-width: 150px;">${nota.NOME_DISCIPLINA}</td>
+                        <td data-label="C1">${nota.C1 ?? 'NI'}</td>
+                        <td data-label="C2">${nota.C2 ?? 'NI'}</td>
+                        <td data-label="C3">${nota.C3 ?? 'NI'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                ativarEventoModal();
+                criarOuAtualizarGrafico(data);
+            })
+            .catch(err => {
+                console.error('Erro ao buscar notas:', err);
+                document.querySelector('#alertModal .modal-body').textContent = 'Erro ao buscar notas.';
+                alertModal.show();
+            });
         });
-
-        ativarEventoModal(); // Reativa o modal nas novas linhas
-        criarOuAtualizarGrafico(data); // Atualiza o gráfico com os novos dados
-    })
-    .catch(err => {
-        console.error('Erro ao buscar notas:', err);
-        // Também pode mostrar o modal para erro, se quiser:
-        document.querySelector('#alertModal .modal-body').textContent = 'Erro ao buscar notas.';
-        alertModal.show();
-    });
-});
-
-
     });
 </script>
 
+
+
+
+<!-- INFORMCAOES QUE APARECEM SOMENTE AO CLICAR EM IMPRIMIR NOTAS -->
 <div id="print-header" class="d-none">
     <ul class="print-header-student-info">
         <li>Nome Completo: {{ session('aluno')->NOME_COMPL }}</li>
@@ -445,14 +444,47 @@ form.addEventListener('submit', function(event) {
     </ul>
 </div>
 
+
+
+
+
+<!-- SCRIPT PARA IMPRIMIR AO CLICAR CONTROL+P -->
 <script>
     document.addEventListener("keydown", function(e) {
         if (e.ctrlKey && e.key.toLowerCase() === "p") {
-            e.preventDefault(); // Impede o comportamento padrão do navegador (abrir print direto)
-
-            // Dispara o clique no botão de impressão personalizado
+            e.preventDefault();
             document.getElementById("printTable").click();
         }
     });
 </script>
+
+
+
+
+
+<!-- LIMITA A SELECAO DE ANO E SEMESTRE DE ACORDO COM OS QUE FORAM CURSAODS -->
+<script>
+    const anosSemestres = @json(session('anosSemestresCursados', []));
+
+    function atualizaSemestres() {
+        const selectAno = document.getElementById('selectAno');
+        const selectSemestre = document.getElementById('selectSemestre');
+        const anoSelecionado = selectAno.value;
+
+        selectSemestre.innerHTML = '<option value="" selected disabled>Escolha...</option>';
+
+        if (anosSemestres.hasOwnProperty(anoSelecionado)) {
+            anosSemestres[anoSelecionado].forEach(function(semestre) {
+                const option = document.createElement('option');
+                option.value = semestre;
+                option.text = semestre + 'º Semestre';
+                selectSemestre.appendChild(option);
+            });
+        }
+    }
+</script>
+
+
+
+
 @endsection
