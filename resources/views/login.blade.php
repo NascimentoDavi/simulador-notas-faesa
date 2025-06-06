@@ -120,7 +120,7 @@
         <img src="faesa.png" alt="Logo">
         
         
-        <form action="{{ route('loginPOST') }}" method="POST">
+        <form action="{{ route('login') }}" method="POST">
             @csrf
 
             <!-- USUARIO -->

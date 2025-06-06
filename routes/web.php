@@ -10,12 +10,12 @@ use App\Http\Controllers\GraficoController;
 use App\Http\Middleware\AuthMiddleware;
 
 
-// Primeira Rota
+// Primeira Rota - Caso sessao ainda esteja ativa, redireciona
 Route::get('/', function () {
-if(session()->has('aluno')) {
-        return redirect()->route('menu');
-}
-return view('login');
+        if(session()->has('aluno')) {
+                return redirect()->route('menu');
+        }
+        return view('login');
 })->name('beginning');
 
 
@@ -23,25 +23,21 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
         // LOGIN GET
         // Caso o aluno já tenha logado e acesse a rota de login novamente, ele permanecerá logado, considerando tempo de session definida
-        Route::get('/login', function () {
+        Route::match(['get', 'post'], function () {
         if(session()->has('aluno')) {
                 return redirect()->route('menu');
         }
         return view('login');
-        })->name('loginGET');
+        })->name('login');
 
-        // LOGIN POST
-        Route::post('/login', [LyLoginController::class, 'login'])
-        ->name('loginPOST');
-
-        // LOGOUT GET
+        // LOGOUT
         Route::get('/logout', [LyLoginController::class, 'logout'])
         ->name('logout');
 
         // MENU GET
         Route::get('/menu', function () {
                 if (!session()->has('aluno')) {
-                        return redirect()->route('loginGET');
+                        return redirect()->route('login');
                 }
 
         // Armazena os dados da sessao nas variaveis
@@ -60,8 +56,6 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         })->name('menu');
 
         Route::match(['get', 'post'], '/notas', [LyDisciplinaController::class, 'getNotas'])->name('getNotas');
-
-        Route::match(['get', 'post'], '/notas-por-periodo/{aluno}/{ano}/{semestre}', [LyDisciplinaController::class, 'getNotaAnoSemestre'])->name('getNotasAnoSemestre');
 
         Route::match(['get', 'post'],'/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
 

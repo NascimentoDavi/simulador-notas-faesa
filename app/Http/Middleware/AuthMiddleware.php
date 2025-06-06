@@ -19,7 +19,7 @@ class AuthMiddleware
         }
 
         // Se Usuário tentou acessar sistema com usuario e senha
-        if ($request->route()->getName() == 'loginPOST') {
+        if ($request->route()->getName() == 'login') {
 
             // Armazena Credenciais
             $credentials = [

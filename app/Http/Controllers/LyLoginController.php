@@ -23,10 +23,9 @@ class LyLoginController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
-     */
+    */
     public function login(Request $request)
-{
-
+    {
         // Pega os dados da Request
         $usuario = $request->input('login');
 
@@ -46,14 +45,12 @@ class LyLoginController extends Controller
                 'curso'       => $loginDataDTO->       curso,
                 'anosSemestresCursados' => $loginDataDTO-> anosSemestresCursados
             ]);
-
-            //dd($loginDataDTO);
-
             return redirect()->intended('/menu');   
         }
     }
 
 
+    // Funcao de deslogar - apaga dados da sessao do Usuario
     public function logout()
     {
         // Remove todos os dados da Sessão - Desloga
@@ -62,6 +59,4 @@ class LyLoginController extends Controller
         // Redireciona para a tela de login
         return redirect()->intended('/login');
     }
-
-    
 }

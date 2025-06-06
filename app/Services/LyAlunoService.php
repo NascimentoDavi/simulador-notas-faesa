@@ -15,10 +15,7 @@ class LyAlunoService
      */
     public function getAluno($pessoa)
     {
-
         // Caso o aluo tenha mais de uma matrícula, pega a mais recente
-        // In case the student has more than one enrollment, it captures the most recent one
-
         return LyAluno::where('NOME_COMPL', '=', $pessoa->NOME_COMPL)
         ->latest('DT_INGRESSO')
         ->first();
@@ -66,8 +63,7 @@ class LyAlunoService
                 'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? 0
             ];
         });
-        // dd($notasOrganizadas);
-        return $notasOrganizadas;
+            return $notasOrganizadas;
         }
 
         // Caso session('anos') não exista, usar a tabela histórica
@@ -96,10 +92,10 @@ class LyAlunoService
                 'C3' => optional($notasDisciplina->where('NOTA_ID', 'C3')->first())->CONCEITO ?? 'NI',
             ];
         }
-
         return $notasOrganizadas;
     }
 
+    // RETORNA ANOS E SEMESTRES CURSADOS
     public function getAnosSemestresCursados($aluno)
     {
         // ANO / SEMESTRES PASSADOS

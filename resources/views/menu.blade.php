@@ -376,7 +376,7 @@
 
         ativarEventoModal();
 
-        // FORMUÁRIO DE BUSCA DE NOTAS
+        // FORMULÁRIO DE BUSCA DE NOTAS
         // Inicializa o modal do Bootstrap
         const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
 
@@ -447,8 +447,6 @@
                 const inputC1 = document.getElementById('notaC1');
                 const inputC2 = document.getElementById('notaC2');
                 const inputC3 = document.getElementById('notaC3');
-
-                console.log(data);
 
                 if (data === 1) {
                     inputC1.disabled = false;

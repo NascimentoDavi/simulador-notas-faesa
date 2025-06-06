@@ -16,16 +16,19 @@ class LyAlunoController extends Controller
         $this->alunoService = $alunoService;
     }
 
+    // GET ALUNO
     public function getAluno($pessoa)
     {
        return $this->alunoService->getAluno($pessoa);
     }
 
+    // GET CURSO FROM ALUNO
     public function getCursoFromAluno($aluno)
     {
         return $this->alunoService->getCursoFromAluno($aluno);
     }
 
+    // RETORNA NOTAS POR ANO E SEMESTRE
     public function getNotaAnoSemestreFromAluno(Request $request)
     {
         $aluno = session('aluno');
@@ -37,6 +40,7 @@ class LyAlunoController extends Controller
         return response()->json($notas); 
     }
 
+    // VERIFICA SE DISCIPLINAS SAO DO SEMESTRE ATUAL
     public function verificarDisciplinas (Request $request)
     {
         $disciplinas = $request->disciplinas;
