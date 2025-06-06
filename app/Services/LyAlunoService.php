@@ -6,6 +6,7 @@ use App\Models\LyAluno;
 use App\Models\LyNota;
 use App\Models\LyCurso;
 use App\Models\LyNotaHistMatr;
+use App\Models\LyMatricula;
 
 class LyAlunoService
 {
@@ -142,7 +143,22 @@ class LyAlunoService
                 $agrupados[$ano][] = $semestre;
             }
         }
-
         return $agrupados;
     }
+
+    // VERIFICA SE DISCIPLINAS CORRESPONDEM A SEMESTRE ATUAL
+    public function verificarDisciplinas($disciplina)
+    {
+        $aluno = session('aluno')->ALUNO;
+
+        $registros = LyMatricula::where('ALUNO', '=', $aluno)
+        ->where('DISCIPLINA', '=', $disciplina[0])
+        ->get();
+
+        if($registros->isEmpty()) {
+            return 0;
+        }
+        return 1;
+    }
+    
 }

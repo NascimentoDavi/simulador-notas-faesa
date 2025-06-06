@@ -67,4 +67,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
         // Seleção de notas para serem mostradas na tabela
         Route::match(['get', 'post'], '/selecionar-notas', [LyAlunoController::class, 'getNotaAnoSemestreFromAluno'])->name('selecionar-notas');
+
+        Route::post('/verificar-disciplinas', [LyAlunoController::class, 'verificarDisciplinas'])
+        ->name('verificar-disciplinas');
 });

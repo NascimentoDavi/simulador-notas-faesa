@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="col-12 col-md-auto">
-                            <button class="btn btn-sm btn-primary px-4 mt-md-0 mt-2 w-100" type="submit">Pesquisar</button>
+                            <button class="btn btn-sm btn-primary px-4 mt-md-0 mt-2 w-100" id="searchGradesButton" type="submit">Pesquisar</button>
                         </div>
 
                         <div class="col-12 col-md">
@@ -387,7 +387,6 @@
             const ano = document.getElementById('selectAno').value;
             const semestre = document.getElementById('selectSemestre').value;
 
-            // Modal informando selecao de ano e semestre obrigatoria
             if (ano === "" || semestre === "") {
                 document.querySelector('#alertModal .modal-body').textContent = 'Por favor, selecione o ano e o semestre.';
                 alertModal.show();
@@ -421,12 +420,48 @@
 
                 ativarEventoModal();
                 criarOuAtualizarGrafico(data);
+
+                const tabela = document.getElementById("grades-table");
+                const linhas = tabela.querySelectorAll("tbody tr");
+
+                const dadosTabela = Array.from(linhas).map(linha => {
+                    const colunas = linha.querySelectorAll("td");
+                    return {
+                        disciplina: colunas[0].textContent.trim()
+                    };
+                });
+
+                return fetch("{{ route('verificar-disciplinas') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        disciplinas: dadosTabela
+                    })
+                });
             })
-            .catch(err => {
-                console.error('Erro ao buscar notas:', err);
-                document.querySelector('#alertModal .modal-body').textContent = 'Erro ao buscar notas.';
-                alertModal.show();
-            });
+            .then(response => response.json())
+            .then(data => {
+                const inputC1 = document.getElementById('notaC1');
+                const inputC2 = document.getElementById('notaC2');
+                const inputC3 = document.getElementById('notaC3');
+
+                console.log(data);
+
+                if (data === 1) {
+                    inputC1.disabled = false;
+                    inputC2.disabled = false;
+                    inputC3.disabled = false;
+                    disciplinaSelect.disabled = false;
+                } else {
+                    inputC1.disabled = true;
+                    inputC2.disabled = true;
+                    inputC3.disabled = true;
+                    disciplinaSelect.disabled = true;
+                }
+            })
         });
     });
 </script>

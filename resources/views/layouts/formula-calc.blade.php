@@ -258,7 +258,7 @@
                         }
                     }
                 })
-        });
+            });
 
         // Limpar os campos ao clicar no botão "Limpar"
         document.getElementById("limparBtn").addEventListener("click", function() {
@@ -296,4 +296,10 @@
             document.getElementById("disciplinaSelect").focus();
         });
     });
+</script>
+
+
+<!-- BLOQUEIO DE CAMSPOS DE NOTA NÃO SENDO ANO E SEMESTRE ATUAIS -->
+<script>
+    
 </script>

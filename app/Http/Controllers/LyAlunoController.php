@@ -36,4 +36,10 @@ class LyAlunoController extends Controller
         
         return response()->json($notas); 
     }
+
+    public function verificarDisciplinas (Request $request)
+    {
+        $disciplinas = $request->disciplinas;
+        return $this->alunoService->verificarDisciplinas($disciplinas);
+    }
 }
