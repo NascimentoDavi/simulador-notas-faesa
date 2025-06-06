@@ -80,8 +80,8 @@ class LyLoginService
 
         // DISCIPLINA
         $disciplinas = $this->disciplinaService->getDisciplinas($matriculas);
-
         
+
         // NOTAS
         $notas = $this->disciplinaService->getNotas($aluno, $anoSemestre[0], $anoSemestre[1], $disciplinas);
 
@@ -89,6 +89,7 @@ class LyLoginService
         // CURSO
         $curso = $this->alunoService->getCursoFromAluno($aluno, $anoSemestre[0], $anoSemestre[1]);
 
+        // dd($notas);
         
         // DTO
         return LoginDataDTO::create(

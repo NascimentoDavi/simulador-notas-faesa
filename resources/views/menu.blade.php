@@ -387,6 +387,7 @@
             const ano = document.getElementById('selectAno').value;
             const semestre = document.getElementById('selectSemestre').value;
 
+            // Modal informando selecao de ano e semestre obrigatoria
             if (ano === "" || semestre === "") {
                 document.querySelector('#alertModal .modal-body').textContent = 'Por favor, selecione o ano e o semestre.';
                 alertModal.show();

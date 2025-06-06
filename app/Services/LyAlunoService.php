@@ -35,35 +35,38 @@ class LyAlunoService
     // Retornas as notas de acordo com Ano e Semestre informados
     public function getNotaAnoSemestreFromAluno($aluno, $ano, $semestre)
     {
+        $disciplinas = session('disciplinas');
+        
         // Caso ano e semestre solicitados sejam ano e semestre atuais
         if ($ano === session('anos') && $semestre === session('semestres')) {
 
             $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
-                ->select(
-                    'LY_NOTA.DISCIPLINA',
-                    'LY_NOTA.PROVA',
-                    'LY_NOTA.CONCEITO',
-                    'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
-                )
-                ->where('LY_NOTA.ALUNO', $aluno['ALUNO'])
-                ->where('LY_NOTA.ANO', $ano)
-                ->where('LY_NOTA.SEMESTRE', $semestre)
-                ->whereIn('LY_NOTA.PROVA', ['C1', 'C2', 'C3'])
-                ->get()
-                ->groupBy('DISCIPLINA');
+            ->select(
+                'LY_NOTA.DISCIPLINA',
+                'LY_NOTA.PROVA',
+                'LY_NOTA.CONCEITO',
+                'LY_DISCIPLINA.NOME AS NOME_DISCIPLINA'
+            )
+            ->where('LY_NOTA.ALUNO', $aluno['ALUNO'])
+            ->where('LY_NOTA.ANO', $ano)
+            ->where('LY_NOTA.SEMESTRE', $semestre)
+            ->whereIn('LY_NOTA.PROVA', ['C1', 'C2', 'C3'])
+            ->get()
+            ->groupBy('DISCIPLINA');
 
-            $notasOrganizadas = [];
+        $notasOrganizadas = $disciplinas->map(function ($disciplina) use ($notas) {
+            $notasDisciplina = $notas->get($disciplina->DISCIPLINA, collect());
 
-            foreach ($notas as $disciplina => $notasDisciplina) {
-                $notasOrganizadas[] = [
-                    'DISCIPLINA' => $disciplina,
-                    'NOME_DISCIPLINA' => $notasDisciplina->first()->NOME_DISCIPLINA ?? 'Desconhecida',
-                    'C1' => optional($notasDisciplina->where('PROVA', 'C1')->first())->CONCEITO ?? 0,
-                    'C2' => optional($notasDisciplina->where('PROVA', 'C2')->first())->CONCEITO ?? 0,
-                    'C3' => optional($notasDisciplina->where('PROVA', 'C3')->first())->CONCEITO ?? 0
-                ];
-            }
-            return $notasOrganizadas;
+            return [
+                'DISCIPLINA' => $disciplina->DISCIPLINA,
+                'NOME_DISCIPLINA' => $disciplina->NOME,
+                'C1' => $notasDisciplina->where('PROVA', 'C1')->first()->CONCEITO ?? 0,
+                'C2' => $notasDisciplina->where('PROVA', 'C2')->first()->CONCEITO ?? 0,
+                'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? 0
+            ];
+        });
+        // dd($notasOrganizadas);
+        return $notasOrganizadas;
         }
 
         // Caso session('anos') não exista, usar a tabela histórica
