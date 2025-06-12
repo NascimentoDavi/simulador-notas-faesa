@@ -28,6 +28,7 @@ class LyDisciplinaService
         return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])
                           ->where('ANO', $ano)
                           ->where('SEMESTRE',  $semestre)
+                          ->where('SIT_MATRICULA', 'Matriculado')
         ->get(['DISCIPLINA', 'ANO', 'SEMESTRE']);
     }
 

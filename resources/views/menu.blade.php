@@ -108,7 +108,7 @@
 
                 <!-- ALTERNAR TIPO DE GRAFICO -->
                 <div class="mt-3">
-                    <button id="toggleGraphType" class="btn btn-primary">Alternar para Gráfico de Barras</button>
+                    <button id="toggleGraphType" class="btn btn-primary">Alternar para Gráfico de Linhas</button>
                     <button id="printTable" class="btn btn-secondary mt-1">
                         <i class="bi bi-printer"></i>
                         Imprimir
@@ -222,31 +222,21 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Pega as notas salvas na sessão do Laravel
-        const notas = @json(session('notas', []));
+    document.addEventListener('DOMContentLoaded', function () {
+        // Variável global que conterá sempre as notas mais recentes
+        let notasAtuais = @json(session('notas', []));
 
-        // Inicialização do gráfico, função para criar/atualizar o gráfico
         const ctx = document.getElementById('gradesChart').getContext('2d');
         let chartType = 'bar';
         let chart;
 
         function criarOuAtualizarGrafico(notasArray) {
-
-            // Verifica se NÃO existem dados a serem mostrados
             if (!notasArray.length) {
                 if (chart) {
                     chart.destroy();
                     chart = null;
                 }
-
-                // Limpa o canvas e escreve mensagem "Nada a ser mostrado"
-                ctx.clearRect(
-                0,
-                0,
-                ctx.canvas.width,
-                ctx.canvas.height
-                );
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 ctx.font = '16px Poppins, sans-serif';
                 ctx.fillStyle = '#666';
                 ctx.textAlign = 'center';
@@ -254,14 +244,19 @@
                 return;
             }
 
-            // Caso TENHA dados, cria as arrays para o gráfico
             const disciplinas = [];
             const c1Notas = [];
             const c2Notas = [];
             const c3Notas = [];
 
             notasArray.forEach(nota => {
-                disciplinas.push(nota['DISCIPLINA']);
+                let nomeDisciplina = nota['NOME_DISCIPLINA'];
+                if (nomeDisciplina.length > 15) {
+                    nomeDisciplina = nomeDisciplina.substring(0, 15) + '...';
+                }
+
+                const labelComQuebra = nomeDisciplina.includes(' ') ? nomeDisciplina.split(' ') : [nomeDisciplina];
+                disciplinas.push(labelComQuebra);
                 c1Notas.push(nota['C1'] ?? 0);
                 c2Notas.push(nota['C2'] ?? 0);
                 c3Notas.push(nota['C3'] ?? 0);
@@ -273,7 +268,7 @@
                     {
                         label: 'C1',
                         data: c1Notas,
-                        backgroundColor: c1Notas.map(() => 'rgba(8, 92, 164, 0.3)'), // --blue-color com opacidade
+                        backgroundColor: c1Notas.map(() => 'rgba(8, 92, 164, 0.3)'),
                         borderColor: c1Notas.map(() => '#085ca4'),
                         borderWidth: 1,
                         fill: true
@@ -281,7 +276,7 @@
                     {
                         label: 'C2',
                         data: c2Notas,
-                        backgroundColor: c2Notas.map(() => 'rgba(122, 172, 206, 0.3)'), // --secondary-color com opacidade
+                        backgroundColor: c2Notas.map(() => 'rgba(122, 172, 206, 0.3)'),
                         borderColor: c2Notas.map(() => '#7aacce'),
                         borderWidth: 1,
                         fill: true
@@ -289,7 +284,7 @@
                     {
                         label: 'C3',
                         data: c3Notas,
-                        backgroundColor: c3Notas.map(() => 'rgba(252, 124, 52, 0.3)'), // --third-color com opacidade
+                        backgroundColor: c3Notas.map(() => 'rgba(252, 124, 52, 0.3)'),
                         borderColor: c3Notas.map(() => '#fc7c34'),
                         borderWidth: 1,
                         fill: true
@@ -313,8 +308,11 @@
                     y: {
                         min: 0,
                         max: 10,
+                        suggestedMin: 0,
+                        suggestedMax: 10,
                         ticks: {
-                            stepSize: 2
+                            stepSize: 2,
+                            beginAtZero: true
                         }
                     }
                 }
@@ -334,41 +332,29 @@
             }
         }
 
-        criarOuAtualizarGrafico(notas);
+        criarOuAtualizarGrafico(notasAtuais);
 
-        // ALTERNAR GRÁFICO
         const toggleButton = document.getElementById('toggleGraphType');
-        toggleButton.addEventListener('click', function() {
+        toggleButton.addEventListener('click', function () {
             chartType = (chartType === 'line') ? 'bar' : 'line';
-            criarOuAtualizarGrafico(
-                chart.data.datasets[0].data.map((_, i) => ({
-                    DISCIPLINA: chart.data.labels[i],
-                    C1: chart.data.datasets[0].data[i],
-                    C2: chart.data.datasets[1].data[i],
-                    C3: chart.data.datasets[2].data[i]
-                }))
-            );
+            criarOuAtualizarGrafico(notasAtuais);
             toggleButton.textContent = (chartType === 'line') 
                 ? 'Alternar para Gráfico de Barras' 
                 : 'Alternar para Gráfico de Linhas';
         });
 
-        // ATIVA EVENTOS DE MODAL NAS LINHAS DA TABELA
         function ativarEventoModal() {
             const rows = document.querySelectorAll('#grades-table tbody tr');
-
-            // Crie a instância uma vez
             const infoModalElement = document.getElementById('infoModal');
             const infoModal = new bootstrap.Modal(infoModalElement);
 
             rows.forEach(row => {
-                row.addEventListener('click', function() {
+                row.addEventListener('click', function () {
                     document.getElementById('modalDisciplina').textContent = row.cells[0].textContent;
                     document.getElementById('modalNomeDisciplina').textContent = row.cells[1].textContent;
                     document.getElementById('modalC1').textContent = row.cells[2].textContent;
                     document.getElementById('modalC2').textContent = row.cells[3].textContent;
                     document.getElementById('modalC3').textContent = row.cells[4].textContent;
-
                     infoModal.show();
                 });
             });
@@ -376,12 +362,10 @@
 
         ativarEventoModal();
 
-        // FORMULÁRIO DE BUSCA DE NOTAS
-        // Inicializa o modal do Bootstrap
         const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-
         const form = document.getElementById('selectYearSemester');
-        form.addEventListener('submit', function(event) {
+
+        form.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const ano = document.getElementById('selectAno').value;
@@ -418,8 +402,11 @@
                     tbody.appendChild(row);
                 });
 
+                // Atualiza os dados globais com os dados novos
+                notasAtuais = data;
+
                 ativarEventoModal();
-                criarOuAtualizarGrafico(data);
+                criarOuAtualizarGrafico(notasAtuais);
 
                 const tabela = document.getElementById("grades-table");
                 const linhas = tabela.querySelectorAll("tbody tr");
@@ -447,31 +434,21 @@
                 const inputC1 = document.getElementById('notaC1');
                 const inputC2 = document.getElementById('notaC2');
                 const inputC3 = document.getElementById('notaC3');
+                const disciplinaSelect = document.getElementById('disciplinaSelect');
                 disciplinaSelect.value = "";
 
-                // Botoes de Simular e Limpar
                 const simularTrigger = document.getElementById("simularTrigger");
                 const limparBtn = document.getElementById("limparBtn");
 
-                if (data === 1) {
-                    inputC1.disabled = false;
-                    inputC2.disabled = false;
-                    inputC3.disabled = false;
-                    disciplinaSelect.disabled = false;
-                    simularTrigger.disabled = false;
-                    limparBtn.disabled = false;
-                } else {
-                    inputC1.disabled = true;
-                    inputC2.disabled = true;
-                    inputC3.disabled = true;
-                    disciplinaSelect.disabled = true;
-                    simularTrigger.disabled = true;
-                    limparBtn.disabled = true;
-                }
-            })
+                const habilitar = data === 1;
+                [inputC1, inputC2, inputC3, disciplinaSelect, simularTrigger, limparBtn].forEach(el => {
+                    el.disabled = !habilitar;
+                });
+            });
         });
     });
 </script>
+
 
 
 

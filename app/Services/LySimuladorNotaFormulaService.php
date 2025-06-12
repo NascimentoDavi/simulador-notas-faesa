@@ -63,7 +63,7 @@ class LySimuladorNotaFormulaService
                 $mediaProvaFinal = number_format($mediaProvaFinalFloat, 2, '.', '');
             }
 
-            // dd($formulaMP);
+        // dd($formulaNM);
             
         } catch (\Throwable $e) {
             return response()->json([
