@@ -1,4 +1,4 @@
-<footer class="p-2 text-center fixed-bottom footer-bg-color border-top border-warning">
+<footer class="p-2 text-center footer-bg-color border-top border-warning">
     <span style="color: white">Todos os Direitos Reservados</span>
     <br>
     <div id="footer-links" class="d-flex flex-row justify-content-center">
@@ -16,7 +16,7 @@
 
 <style>
     .social-icon i {
-        font-size: 20px; /* Tamanho reduzido */
+        font-size: 15px; /* Tamanho reduzido */
         transition: transform 0.4s ease, filter 0.4s ease;
         color: #fff;
     }

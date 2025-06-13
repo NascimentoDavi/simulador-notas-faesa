@@ -23,7 +23,6 @@ class LyDisciplinaController extends Controller
         return $this->disciplinaService->getdMatriculas($aluno);
     }
 
-
     public function getFormulaFromDisciplina($matriculas)
     {
         return $this->disciplinaService->getFormulaFromDisciplina($matriculas);

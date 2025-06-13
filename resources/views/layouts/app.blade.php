@@ -38,22 +38,16 @@
     <title>@yield('title') - FAESA</title>
 </head>
 
-<body class="bg-main-color poppins-light conaine">
+<body class="bg-main-color poppins-light">
 
     @include('layouts.navbar')
 
-    <div class="container-fluid my-lg-4 my-md-3 my-3">
+    <div class="container-fluid mt-2 mb-1">
         @yield('content')
     </div>
 
-    <hr>
-
     @include('layouts.formula-calc')
     
-    <div class="pt-5 mt-5">
-        <br>
-    </div>
-
     @include('layouts.footer')
 
 </body>

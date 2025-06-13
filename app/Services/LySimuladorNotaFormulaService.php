@@ -8,30 +8,24 @@ use App\Services\LyTurmaService;
 
 class LySimuladorNotaFormulaService
 {
-
-    // Injecao de Dependencia via Construtor
     protected $turmaService;
+
     public function __construct(LyTurmaService $turmaService)
     {
         $this->turmaService = $turmaService;
     }
-    
 
     /**
-     * Simula as notas e calcula as médias.
+     * Simula as notas e calcula as médias truncando para duas casas decimais.
      *
      * @param float $c1 Nota da prova c1
      * @param float $c2 Nota da prova c2
      * @param float $c3 Nota da prova c3
-     * @return array Retorna as médias formatadas
+     * @return \Illuminate\Http\JsonResponse
      */
     public function simularNotas($c1, $c2, $c3, $aluno, $disciplina, $ano, $semestre)
     {
-
-        // Armazena as turmas nas quais o aluno está matriculado
         $turmas = $this->turmaService->getTurma($aluno, $disciplina, $ano, $semestre);
-
-        // Armazena a formula 
         $formula = $this->turmaService->getFormulaFromTurma($disciplina, $turmas, $ano, $semestre);
 
         if (!$formula) {
@@ -41,6 +35,10 @@ class LySimuladorNotaFormulaService
         $formulaArray = array_values($formula->toArray());
         $formulaMP = $formulaArray[0] ?? null;
         $formulaNM = $formulaArray[1] ?? null;
+
+        if($formulaMP == null) {
+            return null;
+        }
 
         if (!$formulaMP || !$formulaNM) {
             return response()->json(['error' => 'Fórmula não encontrada para esta turma.'], 500);
@@ -54,8 +52,14 @@ class LySimuladorNotaFormulaService
             $mediaAritmetica = eval("return ($formulaMP);");
             $mediaProvaFinal = eval("return ($formulaNM);");
 
-            $mediaAritmetica = number_format((float) $mediaAritmetica, 2, '.', '');
-            $mediaProvaFinal = number_format((float) $mediaProvaFinal, 2, '.', '');
+            // Truncamento para 2 casas decimais
+            $mediaAritmetica = $this->truncar($mediaAritmetica, 2);
+
+            if ($mediaAritmetica >= 7) {
+                $mediaProvaFinal = '';
+            } else {
+                $mediaProvaFinal = $this->truncar($mediaProvaFinal, 2);
+            }
 
         } catch (\Throwable $e) {
             return response()->json([
@@ -68,5 +72,18 @@ class LySimuladorNotaFormulaService
             'mediaProvaFinal' => $mediaProvaFinal,
             'debug' => [$mediaAritmetica, $mediaProvaFinal]
         ]);
+    }
+
+    /**
+     * Trunca um número decimal para a quantidade desejada de casas decimais (sem arredondar).
+     *
+     * @param float $numero
+     * @param int $casas
+     * @return float
+     */
+    private function truncar($numero, $casas)
+    {
+        $fator = pow(10, $casas);
+        return floor($numero * $fator) / $fator;
     }
 }

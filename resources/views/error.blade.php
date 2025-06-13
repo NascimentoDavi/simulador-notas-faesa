@@ -39,7 +39,9 @@
         }
         window.onload = updateCountdown;
     </script>
+
 </head>
+
 <body style="background-color: #ecf5f9">
     <div class="container d-flex justify-content-center align-items-center flex-column">
 
@@ -54,4 +56,5 @@
 
     </div>
 </body>
+
 </html>

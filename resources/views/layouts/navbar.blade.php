@@ -1,7 +1,7 @@
-<div class="d-none d-md-flex flex-row justify-content-start container-fluid text-end" style="height: 17px; position: relative;">
-    <p id="frase-carousel" class="frase-carousel" style="position: absolute; left: 105px;">O melhor Centro Universitário do Estado.</p>
+<div class="d-none d-md-flex flex-row justify-content-start container text-end shadow" style="height: 17px; position: relative;">
+    <p id="frase-carousel" class="frase-carousel" style="position: absolute; left: 15px;">O melhor Centro Universitário do Estado.</p>
 
-    <a href="https://www.faesa.br/contato/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 125px;">Fale Conosco</a>
+    <a href="https://www.faesa.br/contato/" class="mx-1 text-decoration-none" style="font-size: 13px; position: absolute; right: 1rem;">Fale Conosco</a>
 </div>
 
 <nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top border-top border-warning">
@@ -60,7 +60,7 @@
             </div>
 
             <div class="offcanvas-body text-center d-md-none">
-                <a href="{{ route('logout') }}" class="btn btn-danger w-75 mb-2">Log-out</a>
+                <a href="{{ route('logout') }}" class="btn btn-danger w-75 mb-2">Sair</a>
                 <a href="https://portaldoaluno.faesa.br/Login/" class="btn btn-primary w-75 mb-2">Portal do Aluno</a>
                 <a href="https://ava.faesa.br/d2l/login" class="btn btn-secondary w-75 mb-2">AVA</a>
             </div>
@@ -94,7 +94,7 @@
         <form action="{{ route('logout') }}" method="GET" class="d-none d-md-inline ms-4 mx-2">
             @csrf
             <button type="submit" class="btn btn-warning logout-button">
-                <span class="logout-text">Log-out</span>
+                <span class="logout-text">Sair</span>
                 <span class="logout-icon"><i class="bi bi-box-arrow-in-right"></i></span>
             </button>
         </form>
