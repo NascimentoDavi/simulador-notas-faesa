@@ -312,3 +312,7 @@
     opacity: 1;
     transform: translateX(0);
 }
+
+.copy-success {
+    color: #28a745 !important; /* verde Bootstrap padrão */
+}

@@ -174,11 +174,11 @@
 </div>
 
 <!-- Modal de Erro | Quando não há fórmula cadastrada para cálculo de nota -->
-<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+<div class="modal fade" id="errorFormulaException" tabindex="-1" aria-labelledby="errorFormulaExceptionLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content border-danger">
       <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="errorModalLabel">Erro</h5>
+        <h5 class="modal-title" id="errorFormulaExceptionLabel">Erro</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
       <div class="modal-body">
@@ -290,39 +290,43 @@
 
             console.log(requestData);
 
-            fetch("{{ route('simular') }}", {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(requestData)
-                })
-                .then(response => response.json())
-                .then(data => {
+            $.ajax({
+                url: "{{ route('simular') }}",
+                type: "POST",
+                data: JSON.stringify(requestData),
+                contentType: "application/json",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                success: function (data) {
                     if (Object.keys(data).length === 0) {
-                        const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                        const errorModal = new bootstrap.Modal(document.getElementById('errorFormulaException'));
                         errorModal.show();
                         return;
                     }
+
                     if (data.error) {
                         alert(data.error);
                         return;
                     } else if (c1 + c2 + c3 < 0.16) {
-                        document.getElementById("notaMP").value = 0.0;
-                        document.getElementById("notaNM").value = 0.0;
+                        $("#notaMP").val(0.0);
+                        $("#notaNM").val(0.0);
                     } else {
                         console.log(data);
-                        document.getElementById("notaMP").value = parseFloat(data.original.mediaAritmetica);
+                        $("#notaMP").val(parseFloat(data.original.mediaAritmetica));
 
                         const nmValue = data.original.mediaProvaFinal;
                         if (nmValue === null || nmValue === '') {
-                            document.getElementById("notaNM").value = '';
+                            $("#notaNM").val('');
                         } else {
-                            document.getElementById("notaNM").value = parseFloat(nmValue)
+                            $("#notaNM").val(parseFloat(nmValue));
                         }
                     }
-                })
+                },
+                error: function (xhr, status, error) {
+                    console.error("Erro na requisição AJAX:", error);
+                }
+            });
         });
 
         // Limpar os campos ao clicar no botão "Limpar"
@@ -363,9 +367,6 @@
         });
     });
 </script>
-
-
-<!-- BLOQUEIO DE CAMSPOS DE NOTA NÃO SENDO ANO E SEMESTRE ATUAIS -->
 <script>
 
 </script>

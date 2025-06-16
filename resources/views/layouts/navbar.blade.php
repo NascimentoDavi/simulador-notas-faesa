@@ -28,18 +28,19 @@
 
                 <!-- Conteúdo das informações -->
                 <div class="info-content ms-2">
-                    <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                    <p class="navbar-text p-0 m-0 font-color d-flex align-items-center" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
                         {{ $aluno->NOME_COMPL }}
                     </p>
-                    <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                    <p class="navbar-text p-0 m-0 font-color d-flex align-items-center" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
                         {{ $aluno->ALUNO }}
+                        <i class="bi bi-clipboard ms-2 copy-icon" title="Copiar" data-text="{{ $aluno->ALUNO }}" style="cursor: pointer;"></i>
                     </p>
-                    <p class="navbar-text p-0 m-0 font-color" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
+                    <p class="navbar-text p-0 m-0 font-color d-flex align-items-center" style="color: #ecf5f9; font-size: 13px; white-space: nowrap;">
                         {{ $curso->CURSO }} | {{ $curso->NOME }}
+                        <i class="bi bi-clipboard ms-2 copy-icon" title="Copiar" data-text="{{ $curso->CURSO }} | {{ $curso->NOME }}" style="cursor: pointer;"></i>
                     </p>
                 </div>
             </div>
-
         </div>
 
 
@@ -143,7 +144,26 @@
                     fraseElement.style.opacity = 1;
                 }, 1000);
             }, 4000);
-        </script>
-        
+
+            document.querySelectorAll('.copy-icon').forEach(function (icon) {
+                icon.addEventListener('click', function () {
+
+                    // Pega a informacao
+                    const text = this.getAttribute('data-text');
+                    
+                    // Adiciona ao clipboard
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.classList.remove('bi-clipboard');
+                        this.classList.add('bi-clipboard-check');
+
+                        // Voltar para o ícone original depois de 1s
+                        setTimeout(() => {
+                            this.classList.remove('bi-clipboard-check');
+                            this.classList.add('bi-clipboard');
+                        }, 1000);
+                    });
+                });
+            });
+        </script>        
     </div>
 </nav>

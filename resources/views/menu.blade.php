@@ -17,17 +17,20 @@
 
                     <div class="d-block d-lg-none mb-3">
                         <h6 class="m-0">
-                            <i class="bi bi-person-badge me-1 ps-2"></i> {{ $aluno->NOME_COMPL }}
+                            <i class="bi bi-person-badge me-1 ps-2"></i>
+                            {{ $aluno->NOME_COMPL }}
                         </h6>
                         <h6 class="m-0">
-                            <i class="bi bi-card-list me-1 ps-2"></i> {{ $aluno->ALUNO }}
+                            <i class="bi bi-card-list me-1 ps-2"></i>
+                            <span>{{ $aluno->ALUNO }}</span>
+                            <i class="bi bi-clipboard ms-2 copy-icon" title="Copiar" data-text="{{ $aluno->ALUNO }}" style="cursor: pointer;"></i>
                         </h6>
                         <h6 class="m-0">
-                            <i class="bi bi-mortarboard me-1 ps-2"></i> {{ $curso->CURSO }} | {{ $curso->NOME }}
+                            <i class="bi bi-mortarboard me-1 ps-2"></i>
+                            <span>{{ $curso->CURSO }} | {{ $curso->NOME }}</span>
+                            <i class="bi bi-clipboard ms-2 copy-icon" title="Copiar" data-text="{{ $curso->CURSO }}" style="cursor: pointer;"></i>
                         </h6>
                     </div>
-
-
 
                     <div class="row g-3 align-items-end">
                         <div class="col-12 col-md-3">
@@ -108,11 +111,28 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p><strong>Disciplina:</strong> <span id="modalDisciplina"></span></p>
-                                <p><strong>Nome da Disciplina:</strong> <span id="modalNomeDisciplina"></span></p>
-                                <p><strong>C1:</strong> <span id="modalC1"></span></p>
-                                <p><strong>C2:</strong> <span id="modalC2"></span></p>
-                                <p><strong>C3:</strong> <span id="modalC3"></span></p>
+                                <p>
+                                    <strong>Disciplina:</strong> 
+                                    <span id="modalDisciplina"></span>
+                                    <i class="bi bi-clipboard ms-2 copy-icon" title="Copiar" data-text="" style="cursor: pointer;"></i>
+                                </p>
+                                <p>
+                                    <strong>Nome da Disciplina:</strong> 
+                                    <span id="modalNomeDisciplina"></span>
+                                    <i class="bi bi-clipboard ms-2 copy-icon" title="Copiar" data-text="" style="cursor: pointer;"></i>
+                                </p>
+                                <p>
+                                    <strong>C1:</strong> 
+                                    <span id="modalC1"></span>
+                                </p>
+                                <p>
+                                    <strong>C2:</strong> 
+                                    <span id="modalC2"></span>
+                                </p>
+                                <p>
+                                    <strong>C3:</strong> 
+                                    <span id="modalC3"></span>
+                                </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
@@ -466,7 +486,118 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 </script>
 
+<!-- SCRIPT ICONE DE COPIAR EM INFORMACOES DE ALUNO TELAS PEQUENAS -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.copy-icon').forEach(icon => {
+        icon.addEventListener('click', function () {
+            const textToCopy = this.getAttribute('data-text');
+            if (!textToCopy) return alert('Não há texto para copiar');
 
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Alterar ícone e cor
+                this.classList.remove('bi-clipboard');
+                this.classList.add('bi-clipboard-check');
+                this.classList.add('text-success');
 
+                // Criar mensagem "Copiado!"
+                const msg = document.createElement('div');
+                msg.innerText = 'Copiado!';
+                // Estilo simples para posicionar acima do ícone
+                msg.style.position = 'absolute';
+                msg.style.backgroundColor = '#28a745'; // verde Bootstrap
+                msg.style.color = 'white';
+                msg.style.padding = '2px 6px';
+                msg.style.borderRadius = '4px';
+                msg.style.fontSize = '0.75rem';
+                msg.style.top = '-25px';
+                msg.style.left = '50%';
+                msg.style.transform = 'translateX(-50%)';
+                msg.style.whiteSpace = 'nowrap';
+                msg.style.zIndex = '1000';
+
+                // Para o posicionamento funcionar, o pai precisa ter position relative
+                this.style.position = 'relative';
+
+                this.appendChild(msg);
+
+                setTimeout(() => {
+                    this.classList.remove('bi-clipboard-check', 'text-success');
+                    this.classList.add('bi-clipboard');
+                    this.removeChild(msg);
+                }, 1500);
+            }).catch(err => alert('Erro ao copiar: ' + err));
+        });
+    });
+});
+
+</script>
+
+<!-- SCRIPT ICONE DE COPIAR EM MODAIS -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const infoModalEl = document.getElementById('infoModal');
+
+    infoModalEl.addEventListener('shown.bs.modal', function () {
+        // Atualiza os ícones com os textos dinâmicos dos spans
+        const mappings = [
+            { spanId: 'modalDisciplina', iconIndex: 0 },
+            { spanId: 'modalNomeDisciplina', iconIndex: 1 },
+        ];
+
+        mappings.forEach(({ spanId, iconIndex }) => {
+            const span = document.getElementById(spanId);
+            const icon = infoModalEl.querySelectorAll('.copy-icon')[iconIndex];
+            if (span && icon) {
+                icon.setAttribute('data-text', span.innerText || span.textContent);
+            }
+        });
+
+        // Ativa os eventos de cópia
+        infoModalEl.querySelectorAll('.copy-icon').forEach(icon => {
+            // Evita múltiplas atribuições do mesmo listener
+            if (!icon.dataset.listenerAdded) {
+                icon.addEventListener('click', function () {
+                    const textToCopy = this.getAttribute('data-text');
+                    if (!textToCopy) return alert('Não há texto para copiar');
+
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // Ícone e estilo
+                        this.classList.remove('bi-clipboard');
+                        this.classList.add('bi-clipboard-check', 'text-success');
+
+                        // Tooltip "Copiado!"
+                        const msg = document.createElement('div');
+                        msg.innerText = 'Copiado!';
+                        msg.style.position = 'absolute';
+                        msg.style.backgroundColor = '#28a745';
+                        msg.style.color = 'white';
+                        msg.style.padding = '2px 6px';
+                        msg.style.borderRadius = '4px';
+                        msg.style.fontSize = '0.75rem';
+                        msg.style.top = '-25px';
+                        msg.style.left = '50%';
+                        msg.style.transform = 'translateX(-50%)';
+                        msg.style.whiteSpace = 'nowrap';
+                        msg.style.zIndex = '1000';
+
+                        this.style.position = 'relative';
+                        this.appendChild(msg);
+
+                        setTimeout(() => {
+                            this.classList.remove('bi-clipboard-check', 'text-success');
+                            this.classList.add('bi-clipboard');
+                            this.removeChild(msg);
+                        }, 1500);
+                    }).catch(err => alert('Erro ao copiar: ' + err));
+                });
+
+                // Marca como já adicionado
+                icon.dataset.listenerAdded = 'true';
+            }
+        });
+    });
+});
+</script>
 
 @endsection

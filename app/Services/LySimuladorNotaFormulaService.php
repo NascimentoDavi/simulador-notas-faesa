@@ -28,6 +28,8 @@ class LySimuladorNotaFormulaService
         $turmas = $this->turmaService->getTurma($aluno, $disciplina, $ano, $semestre);
         $formula = $this->turmaService->getFormulaFromTurma($disciplina, $turmas, $ano, $semestre);
 
+        // dd($formula);
+        
         if (!$formula) {
             return response()->json(['error' => 'Disciplina não encontrada.'], 404);
         }
@@ -40,7 +42,7 @@ class LySimuladorNotaFormulaService
             return null;
         }
 
-        if (!$formulaMP || !$formulaNM) {
+        if ($formulaMP == null) {
             return response()->json(['error' => 'Fórmula não encontrada para esta turma.'], 500);
         }
 
