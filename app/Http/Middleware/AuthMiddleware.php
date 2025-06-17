@@ -29,16 +29,18 @@ class AuthMiddleware
             if ($response['success']) {
                 return $next($request);
             } else {
+                // Apaga os dados da sessao caso digite a senha incorretamente
+                session()->flush();
                 return redirect()->back()->with('error', "Credenciais Inválidas");
             }
         }
 
-        // ❗ Verifica se está logado
+        // Verifica se está logado
         if (!session()->has('aluno')) {
             return redirect()->route('loginGET');
-        }
+        } 
 
-        // ✅ Adiciona cabeçalhos de controle de cache
+        // Adiciona cabeçalhos de controle de cache
         $response = $next($request);
         return $response->header('Cache-Control', 'no-cache, no-store, must-revalidate')
                         ->header('Pragma', 'no-cache')

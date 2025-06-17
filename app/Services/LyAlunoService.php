@@ -87,9 +87,9 @@ class LyAlunoService
             $notasOrganizadas[] = [
                 'DISCIPLINA' => $disciplina,
                 'NOME_DISCIPLINA' => $notasDisciplina->first()->NOME_DISCIPLINA ?? 'Desconhecida',
-                'C1' => optional($notasDisciplina->where('NOTA_ID', 'C1')->first())->CONCEITO ?? 'NI',
-                'C2' => optional($notasDisciplina->where('NOTA_ID', 'C2')->first())->CONCEITO ?? 'NI',
-                'C3' => optional($notasDisciplina->where('NOTA_ID', 'C3')->first())->CONCEITO ?? 'NI',
+                'C1' => optional($notasDisciplina->where('NOTA_ID', 'C1')->first())->CONCEITO ?? 0,
+                'C2' => optional($notasDisciplina->where('NOTA_ID', 'C2')->first())->CONCEITO ?? 0,
+                'C3' => optional($notasDisciplina->where('NOTA_ID', 'C3')->first())->CONCEITO ?? 0,
             ];
         }
         return $notasOrganizadas;
@@ -104,8 +104,8 @@ class LyAlunoService
         ->distinct()
         ->get();
 
-        // ANO / SEMESTRE(S) ATUAIS
-        $anoSemestreAtuais = LyNota::where('ALUNO', '=', $aluno['ALUNO'])
+        // ANO / SEMESTRE ATUAIS
+        $anoSemestreAtuais = LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])
         ->select('ano', 'semestre')
         ->distinct()
         ->get();
