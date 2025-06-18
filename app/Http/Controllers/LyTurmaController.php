@@ -8,10 +8,8 @@ use App\Models\LyTurma;
 
 class LyTurmaController extends Controller
 {   
-
     protected $turmaService;
 
-    // Dependencie Injection
     public function __construct(LyTurmaService $turmaService)
     {
         $this->turmaService = $turmaService;

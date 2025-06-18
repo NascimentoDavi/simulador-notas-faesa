@@ -73,7 +73,7 @@
         </div>
 
         <!-- Botão para redirecionar -->
-        <a href="{{ route('loginGET') }}" class="btn-login-again">Voltar para o Login</a>
+        <a href="{{ route('logoutAndClear') }}" class="btn-login-again">Voltar para o Login</a>
     </div>
 </body>
 </html>

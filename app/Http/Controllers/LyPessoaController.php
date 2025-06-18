@@ -8,7 +8,6 @@ use App\Services\LyPessoaService;
 
 class LyPessoaController extends Controller
 {
-
     protected $pessoaService;
 
     public function __constructed(LyPessoaService $pessoaService)

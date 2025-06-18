@@ -1,26 +1,19 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use Illuminate\Http\Request;
 use App\Services\LySimuladorNotaFormulaService;
 
-
 class LySimuladorNotaFormulaController extends Controller
 {   
-
-    
-    // Injecao de Dependencia via Construtor
     protected $simuladorNotaFormulaService;
     public function __construct(LySimuladorNotaFormulaService $simuladorNotaFormulaService)
     {
         $this->simuladorNotaFormulaService = $simuladorNotaFormulaService;
     }
 
-
-    // Função para realizar Simulacao
+    // REALIZA SIMULACAO
     public function simular(Request $request)
     {
 
@@ -35,5 +28,4 @@ class LySimuladorNotaFormulaController extends Controller
 
         return response()->json($result);
     }
-
 }

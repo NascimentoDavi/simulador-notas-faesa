@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class LyDisciplinaController extends Controller
 {
-
     protected $disciplinaService;
 
     public function __construct(LyDisciplinaService $disciplinaService)

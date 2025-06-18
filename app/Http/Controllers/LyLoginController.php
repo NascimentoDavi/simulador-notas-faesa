@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class LyLoginController extends Controller
 {
-    // Injeção de Dependência via Construtor
+    // INJECAO DE DEPENDENCIA
     protected $loginService;
     public function __construct(LyLoginService $loginService)
     {
@@ -19,17 +19,17 @@ class LyLoginController extends Controller
     }
 
     /**
-     * Realiza o login do usuário.
+     * REALIZA LOGIN
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
     */
     public function login(Request $request)
     {
-        // Pega os dados da Request
+        // Pega os Dados da Request
         $usuario = $request->input('login');
 
-        // DTO - Cria Objeto Login
+        // DTO - Cria Objeto para Login
         $loginDataDTO = $this->loginService->realizarLogin($usuario);
 
         // Caso não ache os dados de matrícula, retorna mensagem de erro 'Matrícula não encontrada'
@@ -50,7 +50,7 @@ class LyLoginController extends Controller
     }
 
 
-    // Funcao de deslogar - apaga dados da sessao do Usuario
+    // LOGOUT - APAGA A SESSAO DO USUARIO
     public function logout()
     {
         // Remove todos os dados da Sessão - Desloga

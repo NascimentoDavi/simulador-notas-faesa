@@ -7,7 +7,5 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LyMatricula extends Model
 {
-    use HasFactory;
-
     protected $table = 'LY_MATRICULA';
 }

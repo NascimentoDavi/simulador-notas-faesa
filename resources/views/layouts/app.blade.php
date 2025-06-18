@@ -37,20 +37,23 @@
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
     <title>@yield('title') - FAESA</title>
 </head>
 
 <body class="bg-main-color poppins-light">
 
+    <!-- NAVBAR -->
     @include('layouts.navbar')
 
+    <!-- CONTEUDO PRINCIPAL -->
     <div class="container-fluid mt-2 mb-1">
         @yield('content')
     </div>
 
+    <!-- SECAO DE SIMULACAO DE NOTA -->
     @include('layouts.formula-calc')
     
+    <!-- FOOTER -->
     @include('layouts.footer')
 
 </body>
@@ -61,7 +64,7 @@
     function resetTimer() {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
-            window.location.href = "{{ route('logout') }}"; // Rota do logout no Laravel
+            window.location.href = "{{ route('logout') }}"; // Rota do logout
         }, 30 * 60 * 1000); // 30 minutos de inatividade
     }
 

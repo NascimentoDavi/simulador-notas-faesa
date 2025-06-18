@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class LyOpcoesController extends Controller
 {
-
     protected $opcoesService;
 
     public function __construct(LyOpcoesService $opcoesService)

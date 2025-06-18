@@ -75,7 +75,10 @@ class LyLoginService
         // CURSO
         $curso = $this->alunoService->getCursoFromAluno($aluno, $anoSemestre[0], $anoSemestre[1]);
 
-        // DTO
+        // DTO - Objeto de Transferencia de dados entre camada de uma aplicacao de forma mais EFICIENTE
+        // - Isolamento da logica de negocio
+        // - Melhora a flexibilidade
+        // - Otimiza Desemepenho
         return LoginDataDTO::create(
             $aluno,
             $disciplinas,

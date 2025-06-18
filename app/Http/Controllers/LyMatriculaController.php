@@ -7,5 +7,5 @@ use Illuminate\Http\Request;
 
 class LyMatriculaController extends Controller
 {
-    // Jesus te ama!
+    // Jesus loves you!
 }

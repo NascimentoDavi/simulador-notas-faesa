@@ -64,7 +64,6 @@ class LyDisciplinaService
                 'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? 0
             ];
         });
-        // dd($notasOrganizadas);
         return $notasOrganizadas;
     }
 }

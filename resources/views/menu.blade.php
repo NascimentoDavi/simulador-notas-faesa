@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 <!-- Biblitoeca para exportação PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -14,7 +13,7 @@
         <div class="col-lg-12 col-md-12 mx-auto">
             <div class="mb-3 p-0">
 
-
+                <!-- SELECAO DE NOTA E SEMESTRE PARA VISUALIZACAO DE NOTAS -->
                 <form class="p-3 rounded bg-light border mb-3" id="selectYearSemester">
 
                     <div class="d-block d-lg-none mb-3">
@@ -35,6 +34,8 @@
                     </div>
 
                     <div class="row g-3 align-items-end">
+
+                        <!-- SELECAO DE ANO -->
                         <div class="col-12 col-md-3">
                             <label for="selectAno" class="form-label small mb-1">
                                 <i class="bi bi-calendar me-1"></i> Ano
@@ -49,6 +50,7 @@
 
                         </div>
 
+                        <!-- SELECAO DE SEMESTRE -->
                         <div class="col-12 col-md-3">
                             <label for="selectSemestre" class="form-label small mb-1">
                                 <i class="bi bi-calendar2-week me-1"></i> Semestre
@@ -63,6 +65,7 @@
                             <button class="btn btn-sm btn-primary px-4 mt-md-0 mt-2 w-100" id="searchGradesButton" type="submit">Pesquisar</button>
                         </div>
 
+                        <!-- ALERTA DE NOTAS QUE PODEM SER SIMULADAS -->
                         <div class="col-12 col-md">
                             <div class="alert alert-info p-2 mb-0 small d-flex align-items-center" role="alert">
                                 <i class="bi bi-info-circle-fill me-2"></i>
@@ -87,7 +90,7 @@
                             </tr>
                         </thead>
 
-                        {{-- DISCIPLINAS E NOTAS --}}
+                        <!-- DISCIPLINAS E NOTAS -->
                         <tbody>
                             @foreach(session('notas', []) as $nota)
                             <tr>
@@ -171,7 +174,7 @@
 
 
 
-                <!-- Modal de alerta personalizado -->
+                <!-- MODAL DE ALERTA PERSONALIZÁVEL -->
                 <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -187,6 +190,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -195,7 +199,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Pega as notas salvas na sessão do Laravel no carregamento inicial
+    // ARMAZENA AS NOTAS SAVAS NA SESSAO
     let notas = @json(session('notas', []));
 
     const ctx = document.getElementById('gradesChart').getContext('2d');
@@ -268,6 +272,30 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         };
 
+        // PLUGIN PERSONALIZADO PARA VISUALIZAR CADA NOTA EM CIMA DA SUA RESPECTIVA COLUNA
+        // MMOSTRA OS VALORES DAS COLUNAS SEM DEPENDER DO TOOLTIP
+        const customDataLabelPlugin = {
+            id: 'customDataLabelPlugin',
+
+            // Hook chamado após datasets desenhados
+            afterDatasetsDraw(chart) {
+                const ctx = chart.ctx;
+                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    if (!meta.hidden) {
+                        meta.data.forEach((element, index) => {
+                            ctx.fillStyle = '#000';
+                            ctx.font = '12px Poppins, sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            const dataValue = dataset.data[index];
+                            ctx.fillText(dataValue, element.x, element.y - 4);
+                        });
+                    }
+                });
+            }
+        };
+
         const options = {
             responsive: true,
             maintainAspectRatio: false,
@@ -280,7 +308,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 legend: {
-                    position: 'top'
+                    // POSICAO DA LEGENDA DAS CORES DO GRAFICO
+                    position: 'bottom',
+                },
+                tooltip: {
+                    enabled: true
                 }
             }
         };
@@ -294,15 +326,16 @@ document.addEventListener('DOMContentLoaded', function() {
             chart = new Chart(ctx, {
                 type: chartType,
                 data: data,
-                options: options
+                options: options,
+                plugins: [customDataLabelPlugin]
             });
         }
     }
 
-    // Cria o gráfico inicial com as notas da sessão
+    // CRIA GRAFICO INICIAL COM AS NOTAS GRAVADAS NA SESSAO DO USUARIO
     criarOuAtualizarGrafico(notas);
 
-    // Botão para alternar tipo do gráfico
+    // BOTAO ALTERNAR TIPO DE GRAFICO
     const toggleButton = document.getElementById('toggleGraphType');
     toggleButton.addEventListener('click', function() {
         chartType = (chartType === 'line') ? 'bar' : 'line';
@@ -310,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleButton.textContent = (chartType === 'line') ? 'Alternar para Gráfico de Barras' : 'Alternar para Gráfico de Linhas';
     });
 
-    // Função para ativar evento de modal nas linhas da tabela
+    // ATIVA MODAL NOS REGISTROS (LINHAS) DA TABELA
     function ativarEventoModal() {
         const rows = document.querySelectorAll('#grades-table tbody tr');
         const infoModalElement = document.getElementById('infoModal');
@@ -327,18 +360,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
     ativarEventoModal();
 
     const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
 
     const form = document.getElementById('selectYearSemester');
+
+    // SUBMISSAO DE FORMULARIO DE ESCOLHA DE NOTA/SEMESTRE
     form.addEventListener('submit', function(event) {
+
+        // IMPEDE RECARREGAMENTO DA PÁGINA
         event.preventDefault();
 
+        // COLETA VALORES DE ANO E SEMESTRE ENVIADOS COM FORMULARIO
         const ano = document.getElementById('selectAno').value;
         const semestre = document.getElementById('selectSemestre').value;
 
+        // CHAMA MODAL DE ERRO | INSERE CONTEUDO DO ERRO DIRETAMENTE NO MODAL
         if (ano === "" || semestre === "") {
             document.querySelector('#alertModal .modal-body').textContent = 'Por favor, selecione o ano e o semestre.';
             alertModal.show();
@@ -355,9 +393,12 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(res => res.json())
         .then(data => {
+
+            // LIMPA TABELA DE NOTAS PARA INSERCAO DAS NOVAS NOTAS
             const tbody = document.querySelector('#grades-table tbody');
             tbody.innerHTML = '';
 
+            // PREENCHE A TABELA COM AS NOVAS NOTAS
             data.forEach(nota => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -370,15 +411,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 tbody.appendChild(row);
             });
 
+            // ATIVA OS MODAIS | ATUALIZA O GRAFICO
             ativarEventoModal();
-
-            // *** Atualiza a variável global notas com os novos dados ***
             notas = data;
-
-            // Atualiza o gráfico com os dados atualizados
             criarOuAtualizarGrafico(notas);
 
-            // Abaixo continua seu código original para a verificação das disciplinas
             const tabela = document.getElementById("grades-table");
             const linhas = tabela.querySelectorAll("tbody tr");
 
@@ -389,6 +426,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
             });
 
+            // VERIFICA SE DISCIPLINAS SAO DO SEMESTRE ATUAL
             return fetch("{{ route('verificar-disciplinas') }}", {
                 method: "POST",
                 headers: {
@@ -402,6 +440,11 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+
+            // HABILITA OU DESABILITA OS CAMPOS DE ACORDO COM O RETORNO
+            // 1 - SEMESTRE ATUAL
+            // 0 - NAO E SEMESTRE ATUAL - IMPEDE DE SIMULAR
+
             const inputC1 = document.getElementById('notaC1');
             const inputC2 = document.getElementById('notaC2');
             const inputC3 = document.getElementById('notaC3');
@@ -488,6 +531,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 </script>
 
+
+
+
 <!-- SCRIPT ICONE DE COPIAR EM INFORMACOES DE ALUNO TELAS PEQUENAS -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -532,8 +578,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
 </script>
+
+
+
 
 <!-- SCRIPT ICONE DE COPIAR EM MODAIS -->
 <script>
@@ -601,5 +649,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+
+
 
 @endsection

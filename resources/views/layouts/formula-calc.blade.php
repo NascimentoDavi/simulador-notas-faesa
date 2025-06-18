@@ -97,6 +97,8 @@
 
     <!-- RESULTADOS DA SIMULACAO -->
     <div class="d-flex justify-content-center gap-lg-2 gap-md-2 gap-sm-2 gap-1 mx-2">
+
+    <!-- MEDIA PARCIAL -->
         <div>
             <div class="input-group mx-lg-1">
                 <button class="btn btn-outline-secondary" type="button" style="font-size: 14px;">Média Parcial</button>
@@ -104,15 +106,19 @@
                     style="max-width: 90px;" id="notaMP" disabled>
             </div>
         </div>
+
+        <!-- NOTA MINIMA NECESSARIA NA AVALIACAO FINAL -->
         <div>
             <div class="input-group mx-lg-1">
-                <button class="btn btn-outline-secondary" type="button" style="font-size: 14px;">Nota Mínima</button>
+                <button class="btn btn-outline-secondary" type="button" style="font-size: 14px;">Nota Mínima AF*</button>
                 <input type="text" class="form-control text-center border border-1 border-dark" maxlength="4" title="Nota mínima necessária na avaliação final"
                     style="max-width: 90px;" id="notaNM" disabled>
             </div>
+            <small>*Nota mínima na avaliação final</small>
         </div>
     </div>
 
+    <!-- GRAFICO DE DESEMPENHO DO ALUNO -->
     <div class="container my-5">
         <div class="chart-container mt-5 mb-3">
             <h4 class="text-center">Notas por Disciplina</h4>
@@ -121,7 +127,7 @@
         </div>
     </div>
 
-        <!-- botão pra ALTERNAR TIPO DE GRAFICO -->
+        <!-- BOTAO ALTERNAR TIPO DE GRAFICO -->
     <div class="mb-5 container text-center">
         <button id="toggleGraphType" class="btn btn-primary me-2 my-1">
             Alternar para Gráfico de Linhas
@@ -161,16 +167,6 @@
                 }, 100);
             });
         </script>
-
-    <!-- INFORMACOES DA SIMULACAO -->
-    <!-- <div class="text-center mt-3">
-        *MP = Média Parcial
-        <br>
-        *NM = Nota mínima necessária na avaliação final
-        <br>
-        <br>
-    </div>-->
-
 </div>
 
 <!-- Modal de Erro | Quando não há fórmula cadastrada para cálculo de nota -->
@@ -212,7 +208,10 @@
                 </div>
             </div>
         `;
-        // Adicionando o modal ao DOM
+
+
+
+        // ADICIONA MODAL AO DOM
         document.body.insertAdjacentHTML('beforeend', modalHTML);
         // Move o foco para um evento fora do modal que foi 'escondido' (hidden)
         const errorModalModal = document.getElementById('errorModal');
@@ -223,7 +222,7 @@
 
 
 
-        // Modal de insercao de, no minimo, um valor maior que 0 antes da simulacao
+        // MODAL - INSERCAO DE NO MINIMO UM VALOR MAIOR QUE 0 PARA SIMULACAO
         const zeroValueModalHTML = `
             <div class="modal fade" id="zeroValueModal" tabindex="-1" aria-labelledby="zeroValueModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -288,8 +287,6 @@
                 disciplina: disciplina
             }
 
-            console.log(requestData);
-
             $.ajax({
                 url: "{{ route('simular') }}",
                 type: "POST",
@@ -312,7 +309,6 @@
                         $("#notaMP").val(0.0);
                         $("#notaNM").val(0.0);
                     } else {
-                        console.log(data);
                         $("#notaMP").val(parseFloat(data.original.mediaAritmetica));
 
                         const nmValue = data.original.mediaProvaFinal;
@@ -329,7 +325,7 @@
             });
         });
 
-        // Limpar os campos ao clicar no botão "Limpar"
+        // LIMPAR INFORMACOES AO CLICAR EM LIMPAR
         document.getElementById("limparBtn").addEventListener("click", function() {
             document.getElementById("notaC1").value = "";
             document.getElementById("notaC2").value = "";
@@ -360,7 +356,6 @@
             }
         });
 
-        // Ensure focus is properly handled when modal is hidden
         const errorModalElement = document.getElementById("errorModal");
         errorModalElement.addEventListener("hidden.bs.modal", function() {
             document.getElementById("disciplinaSelect").focus();

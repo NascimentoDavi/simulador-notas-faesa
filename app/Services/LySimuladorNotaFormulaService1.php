@@ -63,8 +63,6 @@ class LySimuladorNotaFormulaService
                 $mediaProvaFinal = number_format($mediaProvaFinalFloat, 2, '.', '');
             }
 
-            // dd($formulaMP);
-            
         } catch (\Throwable $e) {
             return response()->json([
                 'error' => 'Erro ao calcular a fórmula: ' . $e->getMessage()

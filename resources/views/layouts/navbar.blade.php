@@ -7,7 +7,7 @@
 <nav class="navbar navbar-expand-md bg-blue-navbar-footer sticky-top border-top border-warning">
     <div class="container">
 
-        {{-- Navbar Brand --}}
+        <!-- NAVBAR BRAND -->
         <a href="#" class="navbar-brand d-flex align-items-center me-sm-3 me-md-5 p-0">
             <img class="m-0 p-0" src="{{ asset('faesaBranco.png') }}" alt="FAESA LOGO" id="faesa-logo-navbar">
             <span class="ms-3" id="simulador-notas" style="color: #ecf5f9">
@@ -15,7 +15,7 @@
                 Simulador de Notas</span>
         </a>
 
-        {{-- Nome e Matrícula do aluno --}}
+        <!-- NOME E MATRICULA DO ALUNO -->
         <div class="d-none d-md-flex flex-column ms-5" style="position: relative;">
             <!-- Botão para alternar a visibilidade -->
            <button id="toggle-info" class="info-button d-none d-lg-inline" style="color: #ecf5f9; font-size: 16px; background: transparent;">
@@ -45,12 +45,12 @@
 
 
         
-        <!-- Botão para abrir o offcanvas -->
+        <!-- BOTAO PARA ABRIR OFFCANVAS - MENU LATERAL EM TELAS PEQUENAS -->
         <button class="navbar-toggler btn-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuOffcanvas">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menu Offcanvas -->
+        <!-- MENU OFFCANVAS - MENU LATERAL EM TELAS PEQUENAS -->
         <div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="menuOffcanvas" aria-labelledby="menuOffcanvasLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="menuOffcanvasLabel">
@@ -68,9 +68,10 @@
 
         </div>
 
-        <!-- Bootstrap JS (inclui Popper.js) -->
+        <!-- BOOTSTRAP JS - INCLUI POPPER JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+        <!-- BOTAO AVA E PORTAL DO ALUNO -->
         <div class="mx-5 px-2 d-none d-xxl-flex">
             <a href="https://ava.faesa.br/d2l/login" class="btn logout-button text-decoration-none text-light d-inline-flex align-items-center">
                 <span class="logout-text text-white">
@@ -91,7 +92,7 @@
             </a>
         </div>
 
-
+        <!-- BOTAO DE LOGOUT -->
         <form action="{{ route('logout') }}" method="GET" class="d-none d-md-inline ms-4 mx-2">
             @csrf
             <button type="submit" class="btn btn-warning logout-button">

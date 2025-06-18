@@ -10,13 +10,13 @@ use App\Http\Controllers\GraficoController;
 use App\Http\Middleware\AuthMiddleware;
 
 
-// Primeira Rota
+// PRIMEIRA ROTA - ROTA DE LOGIN
 Route::get('/', function () {
-if(session()->has('aluno')) {
-        return redirect()->route('menu');
-}
-return view('login');
-})->name('beginning');
+        if(session()->has('aluno')) {
+                return redirect()->route('menu');
+        }
+        return view('login');
+});
 
 
 Route::middleware([AuthMiddleware::class])->group(function () {
@@ -59,15 +59,22 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         return view('menu', compact('aluno', 'curso', 'notas', 'formula_nm', 'formula_mp', 'ano', 'semestre'));
         })->name('menu');
 
+        // Retornar Notas
         Route::match(['get', 'post'], '/notas', [LyDisciplinaController::class, 'getNotas'])->name('getNotas');
 
-        Route::match(['get', 'post'], '/notas-por-periodo/{aluno}/{ano}/{semestre}', [LyDisciplinaController::class, 'getNotaAnoSemestre'])->name('getNotasAnoSemestre');
-
+        // Simulacao
         Route::match(['get', 'post'],'/simular', [LySimuladorNotaFormulaController::class, 'simular'])->name('simular');
 
         // Seleção de notas para serem mostradas na tabela
         Route::match(['get', 'post'], '/selecionar-notas', [LyAlunoController::class, 'getNotaAnoSemestreFromAluno'])->name('selecionar-notas');
 
+        // Verifica Disciplinas
         Route::post('/verificar-disciplinas', [LyAlunoController::class, 'verificarDisciplinas'])
         ->name('verificar-disciplinas');
+
+        // LOGOUT E LIMPA DADOSS DA SESSAO - EM CASOS DE ERRO 419
+        Route::get('/logout-and-clear', function () {
+                Session::flush();
+                return redirect()->route('loginGET');
+        })->name('logoutAndClear');
 });
