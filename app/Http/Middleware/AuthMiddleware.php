@@ -10,20 +10,22 @@ class AuthMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        // ARMAZENA NOME DA ROTA QUE USUARIO TENTOU ACESSAR
         $routeName = $request->route()->getName();
 
-        // Permitir rotas públicas (login/logout)
+        // PERMITE ROTAS PUBLICAS
         if (in_array($routeName, ['loginGET', 'logout'])) {
             return $next($request);
         }
 
-        // Autenticação via POST (login)
+        // AUTENTICAÇÃO VIA POST
         if ($routeName === 'loginPOST') {
             $credentials = [
                 'username' => $request->input('login'),
                 'password' => $request->input('senha'),
             ];
 
+            // CHAMA API
             $response = $this->getApiData($credentials);
 
             if ($response['success']) {
@@ -50,7 +52,7 @@ class AuthMiddleware
     public function getApiData(array $credentials): array
     {
         $apiUrl = config('services.faesa.api_url');
-        $apiKey = env('FAESA_API_KEY');
+        $apiKey = config('services.faesa.api_key');
 
         try {
             $response = Http::withHeaders([

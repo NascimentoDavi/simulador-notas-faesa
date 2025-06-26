@@ -18,7 +18,6 @@ Route::get('/', function () {
         return view('login');
 });
 
-
 Route::middleware([AuthMiddleware::class])->group(function () {
 
         // LOGIN GET

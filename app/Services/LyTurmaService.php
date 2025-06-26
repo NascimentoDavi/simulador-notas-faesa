@@ -38,7 +38,7 @@ class LyTurmaService
                 //         $formula['FORMULA_MF2'] = str_replace('+(AF*0.4)', '/0.4', $formula['FORMULA_MF2']);
                 //     }
                 // }
-
+                // dd($formula);
                 return $formula;
             }
         }
@@ -50,16 +50,11 @@ class LyTurmaService
     public function getTurma($aluno, $disciplina, $ano, $semestre)
     {
         $turmas = LyMatricula::where('DISCIPLINA', $disciplina)
-            ->where('ALUNO', $aluno)
-            
-            ->where('SIT_MATRICULA', 'Matriculado') // Não utilizamos o valor da coluna 'Aprovado', pois pegamos somente as disciplinas do semestre atual
-
+            ->where('ALUNO', '=', $aluno)
+            ->where('SIT_MATRICULA', '!=', 'Cancelado') // Não utilizamos o valor da coluna 'Aprovado', pois pegamos somente as disciplinas do semestre atual
             ->where('ANO', $ano)
-
             ->where('SEMESTRE', $semestre)
-
             ->get(['TURMA', 'DISCIPLINA'])
-
             ->map(function ($turma) {
                 $turma['DISCIPLINA'] = ucfirst(strtolower($turma['DISCIPLINA'])); // Garante a capitalização correta | Primeira letra maiúscula e restante minúsculo
                 return $turma;
