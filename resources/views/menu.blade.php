@@ -140,7 +140,7 @@
                                 </p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-danger" id="btnCloseModal" data-bs-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                     </div>
