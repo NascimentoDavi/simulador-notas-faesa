@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/loginScreen.css') }}" />
     <title>Login</title>
-    <link rel="icon" type="image/png" href="faesa_favicon.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
