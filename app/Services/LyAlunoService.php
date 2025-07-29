@@ -35,9 +35,11 @@ class LyAlunoService
     public function getNotaAnoSemestreFromAluno($aluno, $ano, $semestre)
     {
         $disciplinas = session('disciplinas');
-        
+
         // Caso ano e semestre solicitados sejam ano e semestre atuais
-        if ($ano === session('anos') && $semestre === session('semestres')) {
+        if ($ano == session('anos') && $semestre == session('semestres')) {
+
+            // dd($disciplinas);
 
             $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->select(
@@ -53,18 +55,18 @@ class LyAlunoService
             ->get()
             ->groupBy('DISCIPLINA');
 
-        $notasOrganizadas = $disciplinas->map(function ($disciplina) use ($notas) {
-            $notasDisciplina = $notas->get($disciplina->DISCIPLINA, collect());
+            $notasOrganizadas = $disciplinas->map(function ($disciplina) use ($notas) {
+                $notasDisciplina = $notas->get($disciplina->DISCIPLINA, collect());
 
-            return [
-                'DISCIPLINA' => $disciplina->DISCIPLINA,
-                'NOME_DISCIPLINA' => $disciplina->NOME,
-                'C1' => $notasDisciplina->where('PROVA', 'C1')->first()->CONCEITO ?? 0,
-                'C2' => $notasDisciplina->where('PROVA', 'C2')->first()->CONCEITO ?? 0,
-                'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? 0
-            ];
-        });
-            return $notasOrganizadas;
+                return [
+                    'DISCIPLINA' => $disciplina->DISCIPLINA,
+                    'NOME_DISCIPLINA' => $disciplina->NOME,
+                    'C1' => $notasDisciplina->where('PROVA', 'C1')->first()->CONCEITO ?? 0,
+                    'C2' => $notasDisciplina->where('PROVA', 'C2')->first()->CONCEITO ?? 0,
+                    'C3' => $notasDisciplina->where('PROVA', 'C3')->first()->CONCEITO ?? 0
+                ];
+            });
+                return $notasOrganizadas;
         }
 
         // Caso session('anos') não exista, usar a tabela histórica
@@ -144,6 +146,7 @@ class LyAlunoService
     }
 
     // VERIFICA SE DISCIPLINAS CORRESPONDEM A SEMESTRE ATUAL
+    // MODIFICAÇÃO PARA ADERIR TURMAS DE MEDICINA - FIXAR APÓS PARA ADERIR DEMAIS
     public function verificarDisciplinas($disciplina)
     {
         $aluno = session('aluno')->ALUNO;

@@ -25,10 +25,15 @@ class LyDisciplinaService
      */
     public function getMatriculas($aluno, $ano, $semestre)
     {
+        // return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])
+        //                   ->where('ANO', $ano)
+        //                   ->where('SEMESTRE',  $semestre)
+        //                   ->where('SIT_MATRICULA', '!=', 'Cancelado')
+        // ->get(['DISCIPLINA', 'ANO', 'SEMESTRE']);
+
         return LyMatricula::where('ALUNO', '=', $aluno['ALUNO'])
-                          ->where('ANO', $ano)
-                          ->where('SEMESTRE',  $semestre)
                           ->where('SIT_MATRICULA', '!=', 'Cancelado')
+                          ->whereIn('SEMESTRE', [1, 2])
         ->get(['DISCIPLINA', 'ANO', 'SEMESTRE']);
     }
 

@@ -15,7 +15,7 @@
                 @foreach ($notas as $nota)
                 <option value="{{ $nota['DISCIPLINA'] }}" data-c1="{{ $nota['C1'] }}" data-c2="{{ $nota['C2'] }}" data-c3="{{ $nota['C3'] }}">
                     {{ $nota['NOME_DISCIPLINA'] }}
-                </option>
+                </option>   
                 @endforeach
             </select>
         </div>
@@ -169,23 +169,23 @@
         </script>
 </div>
 
-<!-- Modal de Erro | Quando não há fórmula cadastrada para cálculo de nota -->
-<div class="modal fade" id="errorFormulaException" tabindex="-1" aria-labelledby="errorFormulaExceptionLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content border-danger">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="errorFormulaExceptionLabel">Erro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
-      <div class="modal-body">
-        Não foi encontrada uma fórmula cadastrada para a disciplina nesta turma. Por favor, entre em contato com a coordenação do seu curso.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
-      </div>
+    <!-- Modal de Erro | Quando não há fórmula cadastrada para cálculo de nota -->
+    <div class="modal fade" id="errorFormulaException" tabindex="-1" aria-labelledby="errorFormulaExceptionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-danger">
+        <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="errorFormulaExceptionLabel">Erro</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+            Não foi encontrada uma fórmula cadastrada para a disciplina nesta turma. Por favor, entre em contato com a coordenação do seu curso.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        </div>
     </div>
-  </div>
-</div>
+    </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -296,7 +296,7 @@
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 },
                 success: function (data) {
-                    if (Object.keys(data).length === 0) {
+                    if (data?.original?.error) {
                         const errorModal = new bootstrap.Modal(document.getElementById('errorFormulaException'));
                         errorModal.show();
                         return;

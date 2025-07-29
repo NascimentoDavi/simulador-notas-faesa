@@ -65,7 +65,7 @@ class LyLoginService
         if ($matriculas->isEmpty()) {
             return null;
         }
-        
+
         // DISCIPLINA
         $disciplinas = $this->disciplinaService->getDisciplinas($matriculas);
         
