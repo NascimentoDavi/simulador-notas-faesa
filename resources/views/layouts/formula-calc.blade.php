@@ -308,15 +308,18 @@
                     } else if (c1 + c2 + c3 < 0.16) {
                         $("#notaMP").val(0.0);
                         $("#notaNM").val(0.0);
-                    } else {
+                    }else {
+
                         $("#notaMP").val(parseFloat(data.original.mediaAritmetica));
 
-                        const nmValue = data.original.mediaProvaFinal;
-                        if (nmValue === null || nmValue === '') {
+                        const nmValue = parseFloat(data.original.mediaProvaFinal);
+
+                        if (isNaN(nmValue) || nmValue > 10) {
                             $("#notaNM").val('');
                         } else {
-                            $("#notaNM").val(parseFloat(nmValue));
+                            $("#notaNM").val(nmValue);
                         }
+
                     }
                 },
                 error: function (xhr, status, error) {
@@ -364,4 +367,14 @@
 </script>
 <script>
 
+</script>
+
+<!-- VALIDAÇÃO DE VALOR MÁXIMO A SER MOSTRADO NO CAMPO NM - NOTA MÍNIMA NA AVALIAÇÃO FINAL -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const nm = document.getElementById("notaNM");
+        if(nm.value > 10) {
+            nm.value = "";
+        }
+    });
 </script>
