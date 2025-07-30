@@ -39,8 +39,6 @@ class LyAlunoService
         // Caso ano e semestre solicitados sejam ano e semestre atuais
         if ($ano == session('anos') && $semestre == session('semestres')) {
 
-            // dd($disciplinas);
-
             $notas = LyNota::join('LY_DISCIPLINA', 'LY_NOTA.DISCIPLINA', '=', 'LY_DISCIPLINA.DISCIPLINA')
             ->select(
                 'LY_NOTA.DISCIPLINA',

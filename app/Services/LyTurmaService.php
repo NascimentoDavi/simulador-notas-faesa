@@ -29,6 +29,7 @@ class LyTurmaService
                     
 
                 // Caso não possua fórmula cadastrada
+                // if($formula['FL_FIELD_16'] === NULL || empty($formula['FL_FIELD_16'])) {
                 if($formula['FL_FIELD_16'] === NULL || empty($formula['FL_FIELD_16'])) {
                     // $formula = LyTurma::where('DISCIPLINA', $disciplina)
                     // ->where('TURMA', $turma['TURMA'])
@@ -38,7 +39,6 @@ class LyTurmaService
                     //     $formula['FORMULA_MF2'] = str_replace('+(AF*0.4)', '/0.4', $formula['FORMULA_MF2']);
                     // }
                 }
-                // dd($formula);
                 return $formula;
             }
         }
